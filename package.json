@@ -1,0 +1,43 @@
+{
+  "name": "influence-web",
+  "version": "0.1.0",
+  "description": "Web client for influence",
+  "private": true,
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sthobis/influence-web.git"
+  },
+  "author": "sthobis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sthobis/influence-web/issues"
+  },
+  "scripts": {
+    "precommit": "pretty-quick --staged",
+    "dev": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "emotion": "^9.2.8",
+    "immer": "^1.6.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-emotion": "^9.2.8",
+    "react-google-login": "^3.2.1",
+    "react-loadable": "^5.5.0",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.1.5",
+    "redux": "^4.0.0"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "prettier": "^1.14.2",
+    "pretty-quick": "^1.6.0"
+  }
+}
