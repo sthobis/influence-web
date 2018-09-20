@@ -7,7 +7,7 @@ import CONFIG from "../config";
 import { addNotification } from "../store";
 import { getInfluencerByUsername } from "../utils/api";
 
-class InfluencerDetail extends Component {
+class InfluencerDetailPage extends Component {
   state = {
     influencer: null,
     fetchStatus: CONFIG.FETCH_STATUS.FETCHING
@@ -105,4 +105,4 @@ const dispatchToProps = dispatch => ({
 export default connect(
   null,
   dispatchToProps
-)(InfluencerDetail);
+)(InfluencerDetailPage);

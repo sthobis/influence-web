@@ -3,40 +3,45 @@ import { connect } from "react-redux";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Loadable from "./components/Loadable";
 
-const AsyncHome = Loadable({
-  loader: () => import(/* webpackChunkName: "home" */ "./pages/Home")
+const AsyncHomePage = Loadable({
+  loader: () => import(/* webpackChunkName: "home" */ "./pages/HomePage")
 });
-const AsyncInfluencerDetail = Loadable({
+const AsyncInfluencerDetailPage = Loadable({
   loader: () =>
-    import(/* webpackChunkName: "influencer-detail" */ "./pages/InfluencerDetail")
+    import(/* webpackChunkName: "influencer-detail" */ "./pages/InfluencerDetailPage")
 });
-const AsyncInfluencerList = Loadable({
+const AsyncInfluencerListPage = Loadable({
   loader: () =>
-    import(/* webpackChunkName: "influencer-list" */ "./pages/InfluencerList")
+    import(/* webpackChunkName: "influencer-list" */ "./pages/InfluencerListPage")
 });
-const AsyncNotFound = Loadable({
-  loader: () => import(/* webpackChunkName: "not-found" */ "./pages/NotFound")
+const AsyncNotFoundPage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "not-found" */ "./pages/NotFoundPage")
 });
 
 const App = ({ user }) => (
   <BrowserRouter>
     <Switch>
-      <Route exact path="/" component={AsyncHome} />
+      <Route exact path="/" component={AsyncHomePage} />
       <Route
         exact
         path="/influencer"
         render={props =>
-          user ? <AsyncInfluencerList {...props} /> : <AsyncNotFound />
+          user ? <AsyncInfluencerListPage {...props} /> : <AsyncNotFoundPage />
         }
       />
       <Route
         exact
         path="/influencer/:username"
         render={props =>
-          user ? <AsyncInfluencerDetail {...props} /> : <AsyncNotFound />
+          user ? (
+            <AsyncInfluencerDetailPage {...props} />
+          ) : (
+            <AsyncNotFoundPage />
+          )
         }
       />
-      <Route component={AsyncNotFound} />
+      <Route component={AsyncNotFoundPage} />
     </Switch>
   </BrowserRouter>
 );

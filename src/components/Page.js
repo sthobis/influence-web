@@ -1,14 +1,36 @@
-import React, { Component } from "react";
+import { css } from "emotion";
+import React, { PureComponent } from "react";
 
-class Page extends Component {
+const styles = {
+  root: css({
+    display: "inline-block",
+    position: "relative",
+    width: "100%",
+    height: "auto",
+    minHeight: "100vh",
+    backgroundColor: "#f5f8fa"
+  }),
+  container: css({
+    width: "100%",
+    maxWidth: "1200",
+    margin: "0 auto",
+    padding: "0 30px"
+  })
+};
+
+class Page extends PureComponent {
   componentDidMount() {
     const { title } = this.props;
     document.title = title || "Influence";
   }
 
   render() {
-    const { children, className } = this.props;
-    return <div className={className}>{children}</div>;
+    const { children } = this.props;
+    return (
+      <div className={styles.root}>
+        <div className={styles.container}>{children}</div>
+      </div>
+    );
   }
 }
 
