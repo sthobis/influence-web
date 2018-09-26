@@ -8,7 +8,7 @@ export default {
     FETCHING: "FETCHING",
     FINISHED: "FINISHED"
   },
-  LOCAL_STORAGE_KEY: {
+  COOKIE: {
     USER: "__influence_user",
     ACCESS_TOKEN: "__influence_access_token"
   }

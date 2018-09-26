@@ -1,7 +1,7 @@
 import { css } from "emotion";
+import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
-import { Link } from "react-router-dom";
 
 const styles = {
   root: css({
@@ -116,12 +116,8 @@ const InfluencerItem = ({ influencer, viewType }) => (
         ))}
       </div>
     </div>
-    <Link
-      to={`/influencer/${influencer.instagramHandle}`}
-      key={influencer._id}
-      className={styles.detail}
-    >
-      Detail
+    <Link href={`/influencer/${influencer.instagramHandle}`}>
+      <a className={styles.detail}>Detail</a>
     </Link>
   </div>
 );

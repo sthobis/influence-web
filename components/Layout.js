@@ -18,7 +18,7 @@ const styles = {
   })
 };
 
-class Page extends PureComponent {
+class Layout extends PureComponent {
   componentDidMount() {
     const { title } = this.props;
     document.title = title || "Influence";
@@ -34,4 +34,4 @@ class Page extends PureComponent {
   }
 }
 
-export default Page;
+export default Layout;

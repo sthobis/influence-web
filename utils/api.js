@@ -5,6 +5,10 @@ const api = axios.create({
   baseURL: CONFIG.API_BASE_URL[process.env.NODE_ENV]
 });
 
+export function authAdvertiser(body) {
+  return api.post("/auth/advertiser", body).then(res => res.data);
+}
+
 export function createInfluencer(body) {
   return api.post("/influencer", body).then(res => res.data);
 }
