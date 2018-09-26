@@ -1,31 +1,15 @@
 import axios from "axios";
 import produce from "immer";
+import jsCookie from "js-cookie";
 import { applyMiddleware, compose, createStore } from "redux";
 import CONFIG from "./config";
 
-// rehydrate initial state from localStorage data (if any)
-let accessToken =
-  localStorage.getItem(CONFIG.LOCAL_STORAGE_KEY.ACCESS_TOKEN) || null;
-let user =
-  JSON.parse(localStorage.getItem(CONFIG.LOCAL_STORAGE_KEY.USER)) || null;
-
-// check whether access token is still valid (has not expired)
-try {
-  const base64Url = accessToken.split(".")[1];
-  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  const payload = JSON.parse(window.atob(base64));
-  console.log(payload);
-} catch (err) {
-  accessToken = user = null;
-}
-const initialState = { user: { name: "Thobi" }, accessToken, notification: [] };
-
-// if there's an active accessToken (user session is still valid)
-// set it to authorization header for next outgoing requests
-// so API will know the request comes from authenticated user
-if (accessToken) {
-  axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-}
+// initial store state
+const initialState = {
+  user: { name: "Thobi" },
+  accessToken: "",
+  notification: []
+};
 
 // action types
 const ACTION_TYPE = {
@@ -58,11 +42,13 @@ const reducer = produce((draft, action) => {
 
 // redux actions start
 export function setUser(user, accessToken) {
-  // save state to local storage for next rehydration
-  localStorage.setItem(CONFIG.LOCAL_STORAGE_KEY.USER, JSON.stringify(user));
-  localStorage.setItem(CONFIG.LOCAL_STORAGE_KEY.ACCESS_TOKEN, accessToken);
+  // save yser to cookie for next rehydration (server side rendering)
+  jsCookie.set(CONFIG.COOKIE.USER, JSON.stringify(user));
+  jsCookie.set(CONFIG.COOKIE.ACCESS_TOKEN, accessToken);
   // attach access token to request's authorization header
   // so API will know the request comes from authenticated user
+  // this might set server's axios or client's axios
+  // based on request (server-side or client-side)
   axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
   return {
     type: ACTION_TYPE.SET_USER,
@@ -72,11 +58,13 @@ export function setUser(user, accessToken) {
 }
 
 export function removeUser() {
-  // remove state from local storage for next rehydration
-  localStorage.removeItem(CONFIG.LOCAL_STORAGE_KEY.USER);
-  localStorage.removeItem(CONFIG.LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+  // remove state from cookie for next rehydration (server side rendering)
+  jsCookie.remove(CONFIG.COOKIE.USER);
+  jsCookie.remove(CONFIG.COOKIE.ACCESS_TOKEN);
   // detach access token from request's authorization header
   // so API will know the request comes from unauthenticated user
+  // this might set server's axios or client's axios
+  // based on request (server-side or client-side)
   delete axios.defaults.headers.common["Authorization"];
   return {
     type: ACTION_TYPE.REMOVE_USER
@@ -98,21 +86,21 @@ export function removeNotification(index) {
 }
 // redux actions end
 
-const logger = store => next => action => {
+const logger = store => dispatch => action => {
   // log every action dispatched to console
-  const { type, ...payload } = action;
-  console.log("DISPATCH :", type);
-  console.log(payload);
-  let result = next(action);
-  return result;
+  console.log("%cprev :", "color: #2ecc71", store.getState());
+  console.log("%caction :", "color: #3498db", action, "\n\n");
+  return dispatch(action);
 };
 
 // middlewares
 const middlewares = process.env.NODE_ENV === "development" ? [logger] : [];
 
 // redux store
-export default createStore(
-  reducer,
-  initialState,
-  compose(applyMiddleware(...middlewares))
-);
+export default restoredState => {
+  return createStore(
+    reducer,
+    restoredState,
+    compose(applyMiddleware(...middlewares))
+  );
+};
