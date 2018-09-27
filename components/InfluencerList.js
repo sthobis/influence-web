@@ -3,6 +3,19 @@ import PropTypes from "prop-types";
 import React from "react";
 import InfluencerItem from "./InfluencerItem";
 
+const InfluencerList = ({ influencers, viewType }) => (
+  <div className={styles.root}>
+    <ul className={styles.list}>
+      {influencers.map(influencer => (
+        <li key={influencer._id} className={styles.listItem}>
+          <InfluencerItem influencer={influencer} viewType={viewType} />
+        </li>
+      ))}
+    </ul>
+    {influencers.length === 0 && <p>No influencers found.</p>}
+  </div>
+);
+
 const styles = {
   root: css({
     margin: "50px 0 0 0"
@@ -29,22 +42,10 @@ const styles = {
   })
 };
 
-const InfluencerList = ({ influencers, viewType }) => (
-  <div className={styles.root}>
-    <ul className={styles.list}>
-      {influencers.map(influencer => (
-        <li key={influencer._id} className={styles.listItem}>
-          <InfluencerItem influencer={influencer} viewType={viewType} />
-        </li>
-      ))}
-    </ul>
-    {influencers.length === 0 && <p>No influencers found.</p>}
-  </div>
-);
-
 InfluencerList.defaultProps = {
   viewType: "card"
 };
+
 InfluencerList.propTypes = {
   influencers: PropTypes.arrayOf(PropTypes.object).isRequired,
   viewType: PropTypes.oneOf(["card", "list"])

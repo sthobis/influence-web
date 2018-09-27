@@ -2,6 +2,18 @@ import { css } from "emotion";
 import PropTypes from "prop-types";
 import React from "react";
 
+const SearchFilter = ({ keyword, setFilter }) => (
+  <div className={styles.root}>
+    <input
+      type="text"
+      value={keyword}
+      placeholder="Cari influencer.."
+      className={styles.textInput}
+      onChange={e => setFilter(e.target.value)}
+    />
+  </div>
+);
+
 const styles = {
   root: css({
     margin: "50px 0 0 0"
@@ -16,18 +28,6 @@ const styles = {
     fontSize: 15
   })
 };
-
-const SearchFilter = ({ keyword, setFilter }) => (
-  <div className={styles.root}>
-    <input
-      type="text"
-      value={keyword}
-      placeholder="Cari influencer.."
-      className={styles.textInput}
-      onChange={e => setFilter(e.target.value)}
-    />
-  </div>
-);
 
 SearchFilter.propTypes = {
   keyword: PropTypes.string.isRequired,

@@ -2,25 +2,6 @@ import { css } from "emotion";
 import PropTypes from "prop-types";
 import React from "react";
 
-const styles = {
-  root: css({
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: "0 0 50px 0"
-  }),
-  button: css({
-    cursor: "pointer",
-    display: "block",
-    margin: "0 5px",
-    padding: 5,
-    background: "transparent",
-    border: "none",
-    fontWeight: 700,
-    fontSize: 16
-  })
-};
-
 const Paginator = ({ page, limit, count, goToPage }) => {
   const firstPage = 0;
   const lastPage = Math.ceil(count / limit) - 1;
@@ -73,6 +54,25 @@ const Paginator = ({ page, limit, count, goToPage }) => {
       </button>
     </div>
   );
+};
+
+const styles = {
+  root: css({
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "0 0 50px 0"
+  }),
+  button: css({
+    cursor: "pointer",
+    display: "block",
+    margin: "0 5px",
+    padding: 5,
+    background: "transparent",
+    border: "none",
+    fontWeight: 700,
+    fontSize: 16
+  })
 };
 
 Paginator.propTypes = {

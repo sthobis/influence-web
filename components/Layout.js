@@ -1,5 +1,22 @@
 import { css } from "emotion";
+import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
+
+class Layout extends PureComponent {
+  componentDidMount() {
+    const { title } = this.props;
+    document.title = title;
+  }
+
+  render() {
+    const { children } = this.props;
+    return (
+      <div className={styles.root}>
+        <div className={styles.container}>{children}</div>
+      </div>
+    );
+  }
+}
 
 const styles = {
   root: css({
@@ -18,20 +35,13 @@ const styles = {
   })
 };
 
-class Layout extends PureComponent {
-  componentDidMount() {
-    const { title } = this.props;
-    document.title = title || "Influence";
-  }
+Layout.defaultProps = {
+  title: "Influence"
+};
 
-  render() {
-    const { children } = this.props;
-    return (
-      <div className={styles.root}>
-        <div className={styles.container}>{children}</div>
-      </div>
-    );
-  }
-}
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+  title: PropTypes.string
+};
 
 export default Layout;

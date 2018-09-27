@@ -2,6 +2,48 @@ import { css } from "emotion";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
+import formatFollower from "../utils/formatFollower";
+
+const InfluencerItem = ({ influencer, viewType }) => (
+  <div className={styles.root}>
+    <div className={styles.info}>
+      <div className={styles.thumbnailContainer}>
+        <img
+          src={influencer.profilePicture}
+          alt={influencer.displayName}
+          className={styles.thumbnail}
+        />
+      </div>
+      <div className={styles.nameContainer}>
+        <h2 className={styles.displayName}>
+          {influencer.displayName
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z ]/gi, "")}
+        </h2>
+        <a
+          href={`https://instagram.com/${influencer.instagramHandle}`}
+          className={styles.link}
+        >
+          <p className={styles.instagramHandle}>
+            @{influencer.instagramHandle}
+          </p>
+        </a>
+      </div>
+      <div>
+        <strong>{formatFollower(influencer.followersCount)}</strong> pengikut
+      </div>
+      <div>
+        {influencer.tags.map(tag => (
+          <span>tag</span>
+        ))}
+      </div>
+    </div>
+    <Link href={`/influencer/${influencer.instagramHandle}`}>
+      <a className={styles.detail}>Detail</a>
+    </Link>
+  </div>
+);
 
 const styles = {
   root: css({
@@ -64,63 +106,6 @@ const styles = {
     borderRadius: "0 0 5px 5px"
   })
 };
-
-const followerFormatter = number => {
-  const hundredMillion = 100000000;
-  const million = 1000000;
-  const thousand = 1000;
-  if (number >= hundredMillion) {
-    return `${(number / million).toFixed(0)}m`.replace(".0", "");
-  }
-  if (number >= million) {
-    return `${(number / million).toFixed(1)}m`.replace(".0", "");
-  } else if (number >= thousand) {
-    return `${(number / thousand).toFixed(1)}k`.replace(".0", "");
-  } else {
-    return number;
-  }
-};
-
-const InfluencerItem = ({ influencer, viewType }) => (
-  <div className={styles.root}>
-    <div className={styles.info}>
-      <div className={styles.thumbnailContainer}>
-        <img
-          src={influencer.profilePicture}
-          alt={influencer.displayName}
-          className={styles.thumbnail}
-        />
-      </div>
-      <div className={styles.nameContainer}>
-        <h2 className={styles.displayName}>
-          {influencer.displayName
-            .trim()
-            .toLowerCase()
-            .replace(/[^a-z ]/gi, "")}
-        </h2>
-        <a
-          href={`https://instagram.com/${influencer.instagramHandle}`}
-          className={styles.link}
-        >
-          <p className={styles.instagramHandle}>
-            @{influencer.instagramHandle}
-          </p>
-        </a>
-      </div>
-      <div>
-        <strong>{followerFormatter(influencer.followersCount)}</strong> pengikut
-      </div>
-      <div>
-        {influencer.tags.map(tag => (
-          <span>tag</span>
-        ))}
-      </div>
-    </div>
-    <Link href={`/influencer/${influencer.instagramHandle}`}>
-      <a className={styles.detail}>Detail</a>
-    </Link>
-  </div>
-);
 
 InfluencerItem.propTypes = {
   influencer: PropTypes.shape({
