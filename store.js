@@ -6,8 +6,8 @@ import CONFIG from "./config";
 
 // initial store state
 const initialState = {
-  user: { name: "Thobi" },
-  accessToken: "",
+  user: null,
+  accessToken: null,
   notification: []
 };
 
@@ -88,8 +88,8 @@ export function removeNotification(index) {
 
 const logger = store => dispatch => action => {
   // log every action dispatched to console
-  console.log("%cprev :", "color: #2ecc71", store.getState());
-  console.log("%caction :", "color: #3498db", action, "\n\n");
+  console.log("prev :", store.getState());
+  console.log("action :", action, "\n\n");
   return dispatch(action);
 };
 
