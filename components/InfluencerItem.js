@@ -29,11 +29,13 @@ const InfluencerItem = ({ influencer, viewType }) => (
         </a>
       </div>
       <div>
-        <strong>{formatFollower(influencer.followersCount)}</strong> pengikut
+        <strong>{formatFollower(influencer.followersCount)}</strong> followers
       </div>
-      <div>
-        {influencer.tags.map(tag => (
-          <span>tag</span>
+      <div className={styles.tagsContainer}>
+        {influencer.tags.map((tag, i) => (
+          <span key={i} className={styles.tags}>
+            {tag}
+          </span>
         ))}
       </div>
     </div>
@@ -76,7 +78,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    margin: "20px 0"
+    margin: "20px 0 10px 0"
   }),
   displayName: css({
     textTransform: "capitalize",
@@ -89,6 +91,23 @@ const styles = {
     color: "#888",
     fontWeight: 400,
     fontSize: 14
+  }),
+  tagsContainer: css({
+    margin: "20px 0 0 0"
+  }),
+  tags: css({
+    display: "inline-block",
+    backgroundColor: "#111",
+    margin: "0 10px 10px 0",
+    padding: "5px 10px 7px 10px",
+    fontWeight: 600,
+    borderRadius: 5,
+    fontSize: 13,
+    textDecoration: "none",
+    color: "#fff",
+    "&:last-child": {
+      marginRight: 0
+    }
   }),
   detail: css({
     display: "block",

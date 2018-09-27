@@ -1,6 +1,8 @@
 import { css } from "emotion";
+import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
+import formatFollower from "../utils/formatFollower";
 
 const InfluencerDetail = ({ influencer }) => (
   <div className={styles.root}>
@@ -11,19 +13,28 @@ const InfluencerDetail = ({ influencer }) => (
         className={styles.profilePicture}
       />
       <div>
-        <p>{influencer.displayName}</p>
-        <p>{influencer.instagramHandle}</p>
-        <p>biography: {influencer.biography}</p>
-        <p>followers: {influencer.followersCount}</p>
-        <p>
-          tags:{" "}
-          {influencer.tags.map((tag, i) => (
-            <span key={i}>{tag}</span>
-          ))}
+        <h1 className={styles.displayName}>
+          {influencer.displayName} (
+          <a href={`https://www.instagram.com/${influencer.instagramHandle}`}>
+            @{influencer.instagramHandle}
+          </a>
+          )
+        </h1>
+        <p className={styles.followersCount}>
+          <strong>{formatFollower(influencer.followersCount)}</strong> followers
         </p>
+        <p className={styles.biography}>{influencer.biography}</p>
+        <div className={styles.tagsContainer}>
+          {influencer.tags.map((tag, i) => (
+            <Link key={i} href={`/influencers?tag=${tag}`}>
+              <a className={styles.tags}>{tag}</a>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
     <section>
+      <h2>Endorse Info</h2>
       <p>endorse pricing post: {influencer.endorsePricing.post}</p>
       <p>endorse pricing story: {influencer.endorsePricing.story}</p>
       <p>contact phone: {influencer.contact.phone}</p>
@@ -33,19 +44,25 @@ const InfluencerDetail = ({ influencer }) => (
       <p>contact email: {influencer.contact.email}</p>
     </section>
     <section>
-      <div>
-        recent photos:
+      <h2>Recent Photos</h2>
+      <ul className={styles.list}>
         {influencer.recentPhotos.map((photo, i) => (
-          <div key={i}>
-            <a href={photo.url}>
-              <img src={photo.thumbnail} alt={influencer.displayName} />
+          <li key={i} className={styles.listItem}>
+            <a
+              href={photo.url}
+              style={{
+                backgroundImage: `url('${photo.thumbnail}')`
+              }}
+              className={styles.photo}
+            >
+              <div className={styles.photoOverlay}>
+                <span>{photo.likesCount.toLocaleString("id")} likes</span>
+                <span>{photo.repliesCount.toLocaleString("id")} replies</span>
+              </div>
             </a>
-            <p>likes : {photo.likesCount}</p>
-            <p>replies : {photo.repliesCount}</p>
-            <br />
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   </div>
 );
@@ -68,6 +85,98 @@ const styles = {
     maxWidth: "200px",
     borderRadius: "50%",
     margin: "0 50px 0 0 "
+  }),
+  displayName: css({
+    margin: "10px 0 10px 0",
+    "& a": {
+      color: "inherit"
+    }
+  }),
+  followersCount: css({
+    margin: "0 0 15px 0"
+  }),
+  biography: css({
+    margin: "0 0 23px 0",
+    lineHeight: "1.5",
+    fontSize: 15
+  }),
+  tagsContainer: css({
+    margin: "0 0 20px 0"
+  }),
+  tags: css({
+    display: "inline-block",
+    backgroundColor: "#111",
+    margin: "0 10px 10px 0",
+    padding: "5px 10px 7px 10px",
+    fontWeight: 600,
+    borderRadius: 5,
+    fontSize: 13,
+    textDecoration: "none",
+    color: "#fff",
+    "&:last-child": {
+      marginRight: 0
+    }
+  }),
+  list: css({
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    alignItems: "stretch",
+    margin: 0,
+    padding: 0,
+    listStyleType: "none"
+  }),
+  listItem: css({
+    position: "relative",
+    width: "calc((100% - 50px) / 3)",
+    margin: "0 25px 25px 0",
+    "&:before": {
+      content: "''",
+      display: "block",
+      width: "100%",
+      paddingTop: "100%"
+    },
+    "&:nth-child(3n+3)": {
+      marginRight: 0
+    },
+    "&:nth-last-child(-n+3)": {
+      marginBottom: 0
+    }
+  }),
+  photo: css({
+    position: "absolute",
+    top: 0,
+    left: 0,
+    display: "block",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#555",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    textDecoration: "none"
+  }),
+  photoOverlay: css({
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    color: "#fff",
+    fontWeight: 600,
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    opacity: 0,
+    transition: ".3s",
+    "& > *": {
+      margin: "10px 20px"
+    },
+    "&:hover": {
+      opacity: 1
+    }
   })
 };
 

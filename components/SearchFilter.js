@@ -6,7 +6,7 @@ const SearchFilter = ({ keyword, setFilter }) => (
   <input
     type="text"
     value={keyword}
-    placeholder="Cari influencer.."
+    placeholder="Search influencer.."
     className={styles.textInput}
     onChange={e => setFilter(e.target.value)}
   />
