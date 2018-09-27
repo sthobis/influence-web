@@ -1,5 +1,6 @@
 import produce from "immer";
 import debounce from "lodash/debounce";
+import Router from "next/router";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -84,13 +85,18 @@ class Influencers extends Component {
       query.limit = parseInt(query.limit, 10);
     }
     this.setState({ ...query });
-    this.setFilter = debounce(this.setFilter, 500);
+    this.debouncedGetInfluencerList = debounce(this.getInfluencerList, 500);
   }
 
   getInfluencerList = async () => {
     const { addNotification } = this.props;
     const { page, limit, keyword } = this.state;
 
+    Router.push(
+      `/influencers?page=${page + 1}&limit=${limit}&keyword=${keyword}`,
+      `/influencers?page=${page + 1}&limit=${limit}&keyword=${keyword}`,
+      { shallow: true }
+    );
     try {
       const { influencers, count } = await getInfluencerList({
         limit,
@@ -119,7 +125,7 @@ class Influencers extends Component {
       produce(draft => {
         draft.keyword = keyword;
       }),
-      this.getInfluencerList
+      this.debouncedGetInfluencerList
     );
   };
 
