@@ -1,6 +1,7 @@
 import axios from "axios";
 import produce from "immer";
 import jsCookie from "js-cookie";
+import Router from "next/router";
 import { applyMiddleware, compose, createStore } from "redux";
 import CONFIG from "./config";
 
@@ -66,6 +67,7 @@ export function removeUser() {
   // this might set server's axios or client's axios
   // based on request (server-side or client-side)
   delete axios.defaults.headers.common["Authorization"];
+  Router.push("/");
   return {
     type: ACTION_TYPE.REMOVE_USER
   };

@@ -30,20 +30,6 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700"
             rel="stylesheet"
           />
-          <style>
-            {`
-            body {
-              margin: 0;
-              padding: 0;
-              font-family: sans-serif;
-            }
-
-            * {
-              box-sizing: border-box;
-              font-family: "Open Sans", sans-serif;
-            }
-          `}
-          </style>
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
         </Head>
         <body>

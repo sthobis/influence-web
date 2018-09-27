@@ -1,6 +1,9 @@
 import Router from "next/router";
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import Layout from "../components/Layout";
 import { addNotification, setUser } from "../store";
 import { authAdvertiser } from "../utils/api";
 import parseUserFromCookie from "../utils/parseUserFromCookie";
@@ -27,6 +30,8 @@ class Login extends Component {
   }
 
   login = async data => {
+    const { setUser } = this.props;
+
     const token = data.tokenId;
     try {
       const { advertiser, accessToken } = await authAdvertiser({ token });
@@ -39,14 +44,23 @@ class Login extends Component {
 
   render() {
     return (
-      <GoogleLogin
-        clientId="753672082179-m23j4kahvq4qpp3e586rrmkiftdsau6d.apps.googleusercontent.com"
-        buttonText="Login with Google"
-        onSuccess={this.login}
-        onFailure={console.log}
-      />
+      <Layout>
+        <GoogleLogin
+          clientId="753672082179-m23j4kahvq4qpp3e586rrmkiftdsau6d.apps.googleusercontent.com"
+          buttonText="Login with Google"
+          onSuccess={this.login}
+          onFailure={console.log}
+        />
+      </Layout>
     );
   }
 }
 
-export default Login;
+const dispatchToProps = dispatch => ({
+  setUser: bindActionCreators(setUser, dispatch)
+});
+
+export default connect(
+  null,
+  dispatchToProps
+)(Login);

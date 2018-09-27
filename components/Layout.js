@@ -3,6 +3,7 @@ import Router from "next/router";
 import NProgress from "nprogress";
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
+import Header from "./Header";
 
 class Layout extends PureComponent {
   componentDidMount() {
@@ -14,7 +15,8 @@ class Layout extends PureComponent {
     const { children } = this.props;
     return (
       <div className={styles.root}>
-        <div className={styles.container}>{children}</div>
+        <Header />
+        <div>{children}</div>
       </div>
     );
   }
@@ -22,22 +24,33 @@ class Layout extends PureComponent {
 
 const styles = {
   root: css({
-    display: "inline-block",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignContent: "center",
     position: "relative",
     width: "100%",
+    maxWidth: "1200",
     height: "auto",
     minHeight: "100vh",
-    backgroundColor: "#f5f8fa"
-  }),
-  container: css({
-    width: "100%",
-    maxWidth: "1200",
     margin: "0 auto",
     padding: "0 30px"
   })
 };
 
 injectGlobal`
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #f5f8fa;
+  }
+
+  * {
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+  }
+
   #nprogress {
     pointer-events: none;
 

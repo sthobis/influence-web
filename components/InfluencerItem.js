@@ -7,13 +7,11 @@ import formatFollower from "../utils/formatFollower";
 const InfluencerItem = ({ influencer, viewType }) => (
   <div className={styles.root}>
     <div className={styles.info}>
-      <div className={styles.thumbnailContainer}>
-        <img
-          src={influencer.profilePicture}
-          alt={influencer.displayName}
-          className={styles.thumbnail}
-        />
-      </div>
+      <img
+        src={influencer.profilePicture}
+        alt={influencer.displayName}
+        className={styles.thumbnail}
+      />
       <div className={styles.nameContainer}>
         <h2 className={styles.displayName}>
           {influencer.displayName
@@ -67,13 +65,10 @@ const styles = {
     textDecoration: "none",
     display: "inline-block"
   }),
-  thumbnailContainer: css({
+  thumbnail: css({
     width: "100%",
     maxWidth: 120,
-    margin: "20px 0 0 0"
-  }),
-  thumbnail: css({
-    maxWidth: "100%",
+    margin: "20px 0 0 0",
     borderRadius: "50%",
     overflow: "hidden"
   }),

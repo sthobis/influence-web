@@ -141,7 +141,7 @@ class Influencers extends Component {
   render() {
     const { influencers, count, limit, page, keyword } = this.state;
     return (
-      <Layout className="page-influencer-list" title="Influencer List">
+      <Layout title="Top Influencers in Indonesia">
         <div>
           <SearchFilter keyword={keyword} setFilter={this.setFilter} />
           {influencers && <InfluencerList influencers={influencers} />}
