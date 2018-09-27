@@ -15,7 +15,7 @@
   },
   "scripts": {
     "precommit": "pretty-quick --staged",
-    "dev": "cross-env NODE_ENV=development nodemon --watch pages --watch utils --watch components --watch static --watch ./server.js --watch ./store.js ./server.js",
+    "dev": "cross-env NODE_ENV=development node server.js",
     "build": "next build",
     "prod": "cross-env NODE_ENV=production node server.js",
     "analyze": "cross-env BUNDLE_ANALYZE=both next build"
@@ -33,7 +33,6 @@
     "lodash": "^4.17.11",
     "next": "^7.0.0",
     "next-redux-wrapper": "^2.0.0",
-    "nodemon": "^1.18.4",
     "nprogress": "^0.2.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
