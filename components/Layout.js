@@ -3,6 +3,7 @@ import Router from "next/router";
 import NProgress from "nprogress";
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
+import Footer from "./Footer";
 import Header from "./Header";
 
 class Layout extends PureComponent {
@@ -16,7 +17,8 @@ class Layout extends PureComponent {
     return (
       <div className={styles.root}>
         <Header />
-        <div>{children}</div>
+        <main>{children}</main>
+        <Footer />
       </div>
     );
   }
