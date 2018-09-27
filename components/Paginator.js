@@ -60,8 +60,7 @@ const styles = {
   root: css({
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
-    margin: "0 0 50px 0"
+    alignItems: "center"
   }),
   button: css({
     cursor: "pointer",
@@ -70,7 +69,7 @@ const styles = {
     padding: 5,
     background: "transparent",
     border: "none",
-    fontWeight: 700,
+    fontWeight: 600,
     fontSize: 16
   })
 };

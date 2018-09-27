@@ -53,7 +53,6 @@ const InfluencerDetail = ({ influencer }) => (
 const styles = {
   root: css({
     display: "block",
-    margin: "50px 0",
     padding: 50,
     backgroundColor: "#fff",
     borderRadius: 5,

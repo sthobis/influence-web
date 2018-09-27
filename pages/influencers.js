@@ -142,16 +142,14 @@ class Influencers extends Component {
     const { influencers, count, limit, page, keyword } = this.state;
     return (
       <Layout title="Top Influencers in Indonesia">
-        <div>
-          <SearchFilter keyword={keyword} setFilter={this.setFilter} />
-          {influencers && <InfluencerList influencers={influencers} />}
-          <Paginator
-            page={page}
-            limit={limit}
-            count={count}
-            goToPage={this.goToPage}
-          />
-        </div>
+        <SearchFilter keyword={keyword} setFilter={this.setFilter} />
+        {influencers && <InfluencerList influencers={influencers} />}
+        <Paginator
+          page={page}
+          limit={limit}
+          count={count}
+          goToPage={this.goToPage}
+        />
       </Layout>
     );
   }

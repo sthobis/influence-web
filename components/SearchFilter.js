@@ -3,29 +3,25 @@ import PropTypes from "prop-types";
 import React from "react";
 
 const SearchFilter = ({ keyword, setFilter }) => (
-  <div className={styles.root}>
-    <input
-      type="text"
-      value={keyword}
-      placeholder="Cari influencer.."
-      className={styles.textInput}
-      onChange={e => setFilter(e.target.value)}
-    />
-  </div>
+  <input
+    type="text"
+    value={keyword}
+    placeholder="Cari influencer.."
+    className={styles.textInput}
+    onChange={e => setFilter(e.target.value)}
+  />
 );
 
 const styles = {
-  root: css({
-    margin: "50px 0 0 0"
-  }),
   textInput: css({
     display: "block",
     width: "100%",
-    padding: "15px 10px",
+    padding: "15px 20px",
     backgroundColor: "#fff",
     border: "none",
     borderRadius: 5,
-    fontSize: 15
+    fontSize: 15,
+    boxShadow: "0 0 30px rgba(35, 0, 95, 0.05)"
   })
 };
 

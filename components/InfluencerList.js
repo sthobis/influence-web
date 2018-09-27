@@ -4,28 +4,28 @@ import React from "react";
 import InfluencerItem from "./InfluencerItem";
 
 const InfluencerList = ({ influencers, viewType }) => (
-  <div className={styles.root}>
-    <ul className={styles.list}>
-      {influencers.map(influencer => (
-        <li key={influencer._id} className={styles.listItem}>
-          <InfluencerItem influencer={influencer} viewType={viewType} />
-        </li>
-      ))}
-    </ul>
-    {influencers.length === 0 && <p>No influencers found.</p>}
-  </div>
+  <>
+    {influencers.length > 0 ? (
+      <ul className={styles.list}>
+        {influencers.map(influencer => (
+          <li key={influencer._id} className={styles.listItem}>
+            <InfluencerItem influencer={influencer} viewType={viewType} />
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p className={styles.empty}>No influencers found.</p>
+    )}
+  </>
 );
 
 const styles = {
-  root: css({
-    margin: "50px 0 0 0"
-  }),
   list: css({
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "stretch",
     flexWrap: "wrap",
-    margin: 0,
+    margin: "50px 0",
     padding: 0,
     listStyleType: "none"
   }),
@@ -38,7 +38,13 @@ const styles = {
     boxShadow: "0 0 30px rgba(35, 0, 95, 0.05)",
     "&:nth-child(3n+3)": {
       marginRight: 0
+    },
+    "&:nth-last-child(-n+3)": {
+      marginBottom: 0
     }
+  }),
+  empty: css({
+    margin: "50px 0"
   })
 };
 
