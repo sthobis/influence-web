@@ -5,9 +5,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import InfluencerList from "../components/InfluencerList";
+import KeywordFilter from "../components/KeywordFilter";
 import Layout from "../components/Layout";
 import Paginator from "../components/Paginator";
-import SearchFilter from "../components/SearchFilter";
+import TagFilter from "../components/TagFilter";
 import CONFIG from "../config";
 import { addNotification, setUser } from "../store";
 import { getInfluencerList } from "../utils/api";
@@ -16,7 +17,8 @@ import parseUserFromCookie from "../utils/parseUserFromCookie";
 const initialState = {
   limit: 9,
   page: 0,
-  keyword: ""
+  keyword: "",
+  tags: []
 };
 
 class Influencers extends Component {
@@ -84,24 +86,32 @@ class Influencers extends Component {
     if (query.limit) {
       query.limit = parseInt(query.limit, 10);
     }
+    if (query.tags) {
+      query.tags = query.tags.split(",");
+    } else {
+      query.tags = initialState.tags;
+    }
     this.setState({ ...query });
     this.debouncedGetInfluencerList = debounce(this.getInfluencerList, 500);
   }
 
   getInfluencerList = async () => {
     const { addNotification } = this.props;
-    const { page, limit, keyword } = this.state;
+    const { page, limit, keyword, tags } = this.state;
 
     Router.push(
-      `/influencers?page=${page + 1}&limit=${limit}&keyword=${keyword}`,
-      `/influencers?page=${page + 1}&limit=${limit}&keyword=${keyword}`,
+      `/influencers?page=${page +
+        1}&limit=${limit}&keyword=${keyword}&tags=${tags.join(",")}`,
+      `/influencers?page=${page +
+        1}&limit=${limit}&keyword=${keyword}&tags=${tags.join(",")}`,
       { shallow: true }
     );
     try {
       const { influencers, count } = await getInfluencerList({
         limit,
         page,
-        keyword
+        keyword,
+        tags
       });
       this.setState(
         produce(draft => {
@@ -120,10 +130,10 @@ class Influencers extends Component {
     }
   };
 
-  setFilter = keyword => {
+  setFilter = (key, value) => {
     this.setState(
       produce(draft => {
-        draft.keyword = keyword;
+        draft[key] = value;
         draft.page = 0;
       }),
       this.debouncedGetInfluencerList
@@ -140,10 +150,13 @@ class Influencers extends Component {
   };
 
   render() {
-    const { influencers, count, limit, page, keyword } = this.state;
+    const { influencers, count, limit, page, keyword, tags } = this.state;
     return (
       <Layout title="Top Influencers in Indonesia">
-        <SearchFilter keyword={keyword} setFilter={this.setFilter} />
+        <KeywordFilter keyword={keyword} setFilter={this.setFilter} />
+        <div>
+          <TagFilter tags={tags} setFilter={this.setFilter} />
+        </div>
         {influencers && <InfluencerList influencers={influencers} />}
         <Paginator
           page={page}
