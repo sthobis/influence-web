@@ -33,9 +33,9 @@ const InfluencerItem = ({ influencer, viewType }) => (
       </div>
       <div className={styles.tagsContainer}>
         {influencer.tags.map((tag, i) => (
-          <span key={i} className={styles.tags}>
-            {tag}
-          </span>
+          <Link key={i} href={`/influencers?tags=${tag}`}>
+            <a className={styles.tags}>{tag}</a>
+          </Link>
         ))}
       </div>
     </div>

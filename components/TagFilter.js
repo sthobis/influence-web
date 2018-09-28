@@ -7,6 +7,7 @@ const TagFilter = ({ tags, setFilter }) => (
   <Select
     value={tags.map(tag => ({ label: tag, value: tag }))}
     isMulti
+    instanceId="tags-filter"
     name="tags"
     options={[
       { label: "general", value: "general" },

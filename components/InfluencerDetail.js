@@ -26,7 +26,7 @@ const InfluencerDetail = ({ influencer }) => (
         <p className={styles.biography}>{influencer.biography}</p>
         <div className={styles.tagsContainer}>
           {influencer.tags.map((tag, i) => (
-            <Link key={i} href={`/influencers?tag=${tag}`}>
+            <Link key={i} href={`/influencers?tags=${tag}`}>
               <a className={styles.tags}>{tag}</a>
             </Link>
           ))}

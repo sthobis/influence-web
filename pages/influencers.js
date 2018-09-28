@@ -9,7 +9,6 @@ import KeywordFilter from "../components/KeywordFilter";
 import Layout from "../components/Layout";
 import Paginator from "../components/Paginator";
 import TagFilter from "../components/TagFilter";
-import CONFIG from "../config";
 import { addNotification, setUser } from "../store";
 import { getInfluencerList } from "../utils/api";
 import parseUserFromCookie from "../utils/parseUserFromCookie";
@@ -21,14 +20,27 @@ const initialState = {
   tags: []
 };
 
+const parseQuery = (query = {}) => {
+  const formatted = { ...query };
+  if (formatted.page) {
+    // page in url string is 1 based index
+    // set it to 0 based index
+    formatted.page = parseInt(formatted.page, 10) - 1;
+  }
+  if (formatted.limit) {
+    formatted.limit = parseInt(formatted.limit, 10);
+  }
+  if (formatted.tags) {
+    formatted.tags = formatted.tags.split(",");
+  } else {
+    formatted.tags = initialState.tags;
+  }
+  return formatted;
+};
+
 class Influencers extends Component {
   static async getInitialProps({ req, res, store, query }) {
-    if (query.page) {
-      // page in url string 1 based index
-      // set it to 0 based index
-      query.page = parseInt(query.page) - 1;
-    }
-    const filter = { ...initialState, ...query };
+    const filter = { ...initialState, ...parseQuery(query) };
     if (req) {
       // server-rendered
       const { user, accessToken } = parseUserFromCookie(req.headers.cookie);
@@ -38,12 +50,12 @@ class Influencers extends Component {
         store.dispatch(setUser(user, accessToken));
         try {
           const { influencers, count } = await getInfluencerList(filter);
-          return { influencers, count, query };
+          return { influencers, count, filter };
         } catch (err) {
           store.dispatch(
             addNotification("Failed to load influencer list, please try again.")
           );
-          return { influencers: null, count: 0, query };
+          return { influencers: null, count: 0, filter };
         }
       } else {
         // user is not logged in
@@ -57,12 +69,12 @@ class Influencers extends Component {
         // user is logged in, fetch influencer list
         try {
           const { influencers, count } = await getInfluencerList(filter);
-          return { influencers, count, query };
+          return { influencers, count, filter };
         } catch (err) {
           store.dispatch(
             addNotification("Failed to load influencer list, please try again.")
           );
-          return { influencers: null, count: 0, query };
+          return { influencers: null, count: 0, filter };
         }
       } else {
         // user is not logged in
@@ -73,61 +85,26 @@ class Influencers extends Component {
   }
 
   state = {
-    ...initialState,
-    influencers: this.props.influencers,
-    count: this.props.count
+    ...initialState
   };
 
-  componentDidMount() {
-    const { query } = this.props;
-    if (query.page) {
-      query.page = parseInt(query.page, 10);
-    }
-    if (query.limit) {
-      query.limit = parseInt(query.limit, 10);
-    }
-    if (query.tags) {
-      query.tags = query.tags.split(",");
-    } else {
-      query.tags = initialState.tags;
-    }
-    this.setState({ ...query });
-    this.debouncedGetInfluencerList = debounce(this.getInfluencerList, 500);
+  componentWillReceiveProps(nextProps) {
+    this.setState({ ...nextProps.filter });
   }
 
-  getInfluencerList = async () => {
-    const { addNotification } = this.props;
+  componentDidMount() {
+    const { filter } = this.props;
+    this.setState({ ...filter });
+    this.debouncedRefreshList = debounce(this.refreshList, 500);
+  }
+
+  refreshList = async () => {
     const { page, limit, keyword, tags } = this.state;
 
     Router.push(
       `/influencers?page=${page +
-        1}&limit=${limit}&keyword=${keyword}&tags=${tags.join(",")}`,
-      `/influencers?page=${page +
-        1}&limit=${limit}&keyword=${keyword}&tags=${tags.join(",")}`,
-      { shallow: true }
+        1}&limit=${limit}&keyword=${keyword}&tags=${tags.join(",")}`
     );
-    try {
-      const { influencers, count } = await getInfluencerList({
-        limit,
-        page,
-        keyword,
-        tags
-      });
-      this.setState(
-        produce(draft => {
-          draft.influencers = influencers;
-          draft.count = count;
-          draft.fetchStatus = CONFIG.FETCH_STATUS.FINISHED;
-        })
-      );
-    } catch (err) {
-      addNotification("Failed to load influencer list. Please try again.");
-      this.setState(
-        produce(draft => {
-          draft.fetchStatus = CONFIG.FETCH_STATUS.FINISHED;
-        })
-      );
-    }
   };
 
   setFilter = (key, value) => {
@@ -136,7 +113,13 @@ class Influencers extends Component {
         draft[key] = value;
         draft.page = 0;
       }),
-      this.debouncedGetInfluencerList
+      () => {
+        if (key === "keyword") {
+          this.debouncedRefreshList();
+        } else {
+          this.refreshList();
+        }
+      }
     );
   };
 
@@ -145,12 +128,13 @@ class Influencers extends Component {
       produce(draft => {
         draft.page = page;
       }),
-      this.getInfluencerList
+      this.refreshList
     );
   };
 
   render() {
-    const { influencers, count, limit, page, keyword, tags } = this.state;
+    const { influencers, count } = this.props;
+    const { limit, page, keyword, tags } = this.state;
     return (
       <Layout title="Top Influencers in Indonesia">
         <KeywordFilter keyword={keyword} setFilter={this.setFilter} />
