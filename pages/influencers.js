@@ -124,6 +124,7 @@ class Influencers extends Component {
     this.setState(
       produce(draft => {
         draft.keyword = keyword;
+        draft.page = 0;
       }),
       this.debouncedGetInfluencerList
     );
