@@ -53,6 +53,10 @@ injectGlobal`
     font-family: "Open Sans", sans-serif;
   }
 
+  *:focus:not(:focus-visible) {
+    outline: none;
+  }
+
   #nprogress {
     pointer-events: none;
 

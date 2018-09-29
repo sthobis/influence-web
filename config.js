@@ -12,6 +12,12 @@ export default {
     USER: "__influence_user",
     ACCESS_TOKEN: "__influence_access_token"
   },
+  GROUP: {
+    ADVERTISER: "advertiser",
+    INFLUENCER: "influencer",
+    SUPER_ADMIN: "super_admin",
+    STAFF_ADMIN: "staff_admin"
+  },
   TAGS_FILTER_OPTIONS: ["general", "food", "comedy"],
   SORT_FILTER_OPTIONS: [
     { label: "Followers high to low", value: { followersCount: -1 } },

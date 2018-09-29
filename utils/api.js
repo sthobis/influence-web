@@ -5,6 +5,10 @@ const api = axios.create({
   baseURL: CONFIG.API_BASE_URL[process.env.NODE_ENV]
 });
 
+export function authAdministrator(body) {
+  return api.post("/auth/administrator", body).then(res => res.data);
+}
+
 export function authAdvertiser(body) {
   return api.post("/auth/advertiser", body).then(res => res.data);
 }
@@ -27,4 +31,8 @@ export function getInfluencerByUsername(username) {
 
 export function updateInfluencer(body) {
   return api.post(`/influencer/${body.influencer._id}`).then(res => res.data);
+}
+
+export function crawlInstagramUser(username) {
+  return api.get(`/crawler/instagram/${username}`).then(res => res.data);
 }
