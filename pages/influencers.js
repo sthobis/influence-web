@@ -60,7 +60,7 @@ class Influencers extends Component {
       } else {
         // user is not logged in
         // redirect to login page
-        res.redirect("/login");
+        res.redirect("/login?redirect=/influencers");
       }
     } else {
       // client-rendered
@@ -79,7 +79,7 @@ class Influencers extends Component {
       } else {
         // user is not logged in
         // redirect to login page
-        Router.replace("/login");
+        Router.replace("/login?redirect=/influencers");
       }
     }
   }

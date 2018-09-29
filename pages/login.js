@@ -17,7 +17,9 @@ class Login extends Component {
         // user is logged in save user session for client rehydration
         // and redirect to home page
         store.dispatch(setUser(user, accessToken));
-        res.redirect("/login");
+        res.redirect("/");
+      } else {
+        return { query };
       }
     } else {
       // client-rendered
@@ -25,18 +27,24 @@ class Login extends Component {
       if (user) {
         // user is logged in, redirect to home page
         Router.replace("/");
+      } else {
+        return { query };
       }
     }
   }
 
   login = async data => {
-    const { setUser } = this.props;
+    const { setUser, query } = this.props;
 
     const token = data.tokenId;
     try {
       const { advertiser, accessToken } = await authAdvertiser({ token });
       setUser(advertiser, accessToken);
-      Router.push("/");
+      if (query.redirect) {
+        Router.push(query.redirect);
+      } else {
+        Router.push("/");
+      }
     } catch (err) {
       addNotification("Login failed, please try again.");
     }

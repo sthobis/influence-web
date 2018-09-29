@@ -67,10 +67,10 @@ export function removeUser() {
   // this might set server's axios or client's axios
   // based on request (server-side or client-side)
   delete axios.defaults.headers.common["Authorization"];
-  // redirect logged out user to home page
+  // redirect logged out user to login page
   // this only happen on client side so we can use
   // built-in client-side router
-  Router.push("/");
+  Router.push("/login");
   return {
     type: ACTION_TYPE.REMOVE_USER
   };
