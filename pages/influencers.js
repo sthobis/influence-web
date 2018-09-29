@@ -1,3 +1,4 @@
+import { css } from "emotion";
 import produce from "immer";
 import debounce from "lodash/debounce";
 import Router from "next/router";
@@ -8,34 +9,33 @@ import InfluencerList from "../components/InfluencerList";
 import KeywordFilter from "../components/KeywordFilter";
 import Layout from "../components/Layout";
 import Paginator from "../components/Paginator";
-import TagFilter from "../components/TagFilter";
+import SortFilter from "../components/SortFilter";
+import TagsFilter from "../components/TagsFilter";
 import { addNotification, setUser } from "../store";
 import { getInfluencerList } from "../utils/api";
 import parseUserFromCookie from "../utils/parseUserFromCookie";
 
 const initialState = {
-  limit: 9,
   page: 0,
+  limit: 9,
   keyword: "",
-  tags: []
+  tags: [],
+  sort: { followersCount: -1 }
 };
 
 const parseQuery = (query = {}) => {
-  const formatted = { ...query };
-  if (formatted.page) {
-    // page in url string is 1 based index
-    // set it to 0 based index
-    formatted.page = parseInt(formatted.page, 10) - 1;
-  }
-  if (formatted.limit) {
-    formatted.limit = parseInt(formatted.limit, 10);
-  }
-  if (formatted.tags) {
-    formatted.tags = formatted.tags.split(",");
-  } else {
-    formatted.tags = initialState.tags;
-  }
-  return formatted;
+  let parsed = {};
+  // page in url string is 1 based index
+  // set it to 0 based index
+  parsed.page = query.page ? parseInt(query.page, 10) - 1 : initialState.page;
+  parsed.limit = query.limit ? parseInt(query.limit, 10) : initialState.limit;
+  parsed.keyword = query.keyword || "";
+  parsed.tags = query.tags ? query.tags.split(",") : initialState.tags;
+  parsed.sort = query.sort
+    ? JSON.parse(decodeURI(query.sort))
+    : initialState.sort;
+
+  return parsed;
 };
 
 class Influencers extends Component {
@@ -93,17 +93,27 @@ class Influencers extends Component {
   }
 
   componentDidMount() {
-    const { filter } = this.props;
-    this.setState({ ...filter });
+    const {
+      filter: { page, limit, keyword, tags, sort }
+    } = this.props;
+    this.setState({
+      page,
+      limit,
+      keyword,
+      tags,
+      sort
+    });
     this.debouncedRefreshList = debounce(this.refreshList, 500);
   }
 
   refreshList = async () => {
-    const { page, limit, keyword, tags } = this.state;
+    const { page, limit, keyword, tags, sort } = this.state;
 
     Router.push(
       `/influencers?page=${page +
-        1}&limit=${limit}&keyword=${keyword}&tags=${tags.join(",")}`
+        1}&limit=${limit}&keyword=${keyword}&tags=${tags.join(
+        ","
+      )}&sort=${encodeURI(JSON.stringify(sort))}`
     );
   };
 
@@ -134,12 +144,13 @@ class Influencers extends Component {
 
   render() {
     const { influencers, count } = this.props;
-    const { limit, page, keyword, tags } = this.state;
+    const { limit, page, keyword, tags, sort } = this.state;
     return (
       <Layout title="Top Influencers in Indonesia">
         <KeywordFilter keyword={keyword} setFilter={this.setFilter} />
-        <div>
-          <TagFilter tags={tags} setFilter={this.setFilter} />
+        <div className={styles.filter}>
+          <TagsFilter tags={tags} setFilter={this.setFilter} />
+          <SortFilter sort={sort} setFilter={this.setFilter} />
         </div>
         {influencers && <InfluencerList influencers={influencers} />}
         <Paginator
@@ -152,6 +163,17 @@ class Influencers extends Component {
     );
   }
 }
+
+const styles = {
+  filter: css({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    "& > *": {
+      width: "calc((100% - 25px) / 2)"
+    }
+  })
+};
 
 const dispatchToProps = dispatch => ({
   addNotification: bindActionCreators(addNotification, dispatch)

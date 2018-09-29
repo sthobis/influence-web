@@ -2,18 +2,19 @@ import { css } from "emotion";
 import PropTypes from "prop-types";
 import React from "react";
 import Select from "react-select";
+import CONFIG from "../config";
 
-const TagFilter = ({ tags, setFilter }) => (
+const TagsFilter = ({ tags, setFilter }) => (
   <Select
     value={tags.map(tag => ({ label: tag, value: tag }))}
     isMulti
     instanceId="tags-filter"
     name="tags"
-    options={[
-      { label: "general", value: "general" },
-      { label: "food", value: "food" },
-      { label: "comedy", value: "comedy" }
-    ]}
+    placeholder="Filter by tags.."
+    options={CONFIG.TAGS_FILTER_OPTIONS.map(tag => ({
+      label: tag,
+      value: tag
+    }))}
     className={styles.select}
     styles={{
       control: base => ({ ...base, ...styles.control }),
@@ -52,14 +53,14 @@ const TagFilter = ({ tags, setFilter }) => (
       dropdownIndicator: base => ({ ...base, ...styles.indicators }),
       noOptionsMessage: base => ({ ...base, ...styles.option })
     }}
-    onChange={values => setFilter("tags", values.map(o => o.value))}
+    onChange={selections => setFilter("tags", selections.map(o => o.value))}
   />
 );
 
 const styles = {
   select: css({
     display: "block",
-    width: "50%"
+    width: "100%"
   }),
   control: {
     backgroundColor: "#fff",
@@ -114,9 +115,9 @@ const styles = {
   }
 };
 
-TagFilter.propTypes = {
+TagsFilter.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   setFilter: PropTypes.func.isRequired
 };
 
-export default TagFilter;
+export default TagsFilter;
