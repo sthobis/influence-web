@@ -25,7 +25,7 @@ const styles = {
     justifyContent: "flex-start",
     alignItems: "stretch",
     flexWrap: "wrap",
-    margin: "50px 0",
+    margin: "50px 0 0 0",
     padding: 0,
     listStyleType: "none"
   }),
@@ -38,9 +38,6 @@ const styles = {
     boxShadow: "0 0 30px rgba(35, 0, 95, 0.05)",
     "&:nth-child(3n+3)": {
       marginRight: 0
-    },
-    "&:nth-last-child(-n+3)": {
-      marginBottom: 0
     }
   }),
   empty: css({
