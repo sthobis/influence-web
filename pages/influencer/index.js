@@ -5,15 +5,15 @@ import Router from "next/router";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import InfluencerList from "../components/InfluencerList";
-import KeywordFilter from "../components/KeywordFilter";
-import Layout from "../components/Layout";
-import Paginator from "../components/Paginator";
-import SortFilter from "../components/SortFilter";
-import TagsFilter from "../components/TagsFilter";
-import { addNotification, setUser } from "../store";
-import { getInfluencerList } from "../utils/api";
-import parseUserFromCookie from "../utils/parseUserFromCookie";
+import InfluencerList from "../../components/InfluencerList";
+import KeywordFilter from "../../components/KeywordFilter";
+import Layout from "../../components/Layout";
+import Paginator from "../../components/Paginator";
+import SortFilter from "../../components/SortFilter";
+import TagsFilter from "../../components/TagsFilter";
+import { addNotification, setUser } from "../../store";
+import { getInfluencerList } from "../../utils/api";
+import parseUserFromCookie from "../../utils/parseUserFromCookie";
 
 const initialState = {
   page: 0,
@@ -38,7 +38,7 @@ const parseQuery = (query = {}) => {
   return parsed;
 };
 
-class Influencers extends Component {
+class InfluencerListPage extends Component {
   static async getInitialProps({ req, res, store, query }) {
     const filter = { ...initialState, ...parseQuery(query) };
     if (req) {
@@ -60,7 +60,7 @@ class Influencers extends Component {
       } else {
         // user is not logged in
         // redirect to login page
-        res.redirect("/login?redirect=/influencers");
+        res.redirect("/login?redirect=/influencer");
       }
     } else {
       // client-rendered
@@ -79,7 +79,7 @@ class Influencers extends Component {
       } else {
         // user is not logged in
         // redirect to login page
-        Router.replace("/login?redirect=/influencers");
+        Router.replace("/login?redirect=/influencer");
       }
     }
   }
@@ -110,7 +110,7 @@ class Influencers extends Component {
     const { page, limit, keyword, tags, sort } = this.state;
 
     Router.push(
-      `/influencers?page=${page +
+      `/influencer?page=${page +
         1}&limit=${limit}&keyword=${keyword}&tags=${tags.join(
         ","
       )}&sort=${encodeURI(JSON.stringify(sort))}`
@@ -182,4 +182,4 @@ const dispatchToProps = dispatch => ({
 export default connect(
   null,
   dispatchToProps
-)(Influencers);
+)(InfluencerListPage);

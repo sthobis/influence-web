@@ -13,6 +13,10 @@ export function authAdvertiser(body) {
   return api.post("/auth/advertiser", body).then(res => res.data);
 }
 
+export function getAdvertiserById(id) {
+  return api.get(`/advertiser/${id}`).then(res => res.data);
+}
+
 export function createInfluencer(body) {
   return api.post("/influencer", body).then(res => res.data);
 }

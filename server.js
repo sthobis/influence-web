@@ -10,10 +10,10 @@ app
   .then(() => {
     const server = express();
 
-    server.get("/influencer/:username", (req, res) => {
-      const actualPage = "/influencer";
-      const queryParams = { username: req.params.username };
-      app.render(req, res, actualPage, queryParams);
+    server.get("/influencer/detail/:username", (req, res) => {
+      return app.render(req, res, "/influencer/detail", {
+        username: req.params.username
+      });
     });
 
     server.get("*", (req, res) => {

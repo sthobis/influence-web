@@ -22,7 +22,7 @@ class Home extends Component {
     return (
       <Layout>
         <div className={styles.root}>
-          <Link href="/influencers">
+          <Link href="/influencer">
             <a>Influencer List</a>
           </Link>
         </div>

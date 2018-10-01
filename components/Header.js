@@ -3,15 +3,29 @@ import Link from "next/link";
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import CONFIG from "../config";
 import { removeUser } from "../store";
+import getUserGroup from "../utils/getUserGroup";
 
-const Header = ({ user, logout }) => (
+const Header = ({ user, accessToken, logout }) => (
   <header className={styles.root}>
     <Link href="/">
       <a className={styles.link}>insert-logo-here</a>
     </Link>
     <nav className={styles.nav}>
-      <Link href="/influencers">
+      {accessToken &&
+        getUserGroup(accessToken) === CONFIG.GROUP.INFLUENCER && (
+          <Link href="/influencer/edit">
+            <a className={styles.link}>my account</a>
+          </Link>
+        )}
+      {accessToken &&
+        getUserGroup(accessToken) === CONFIG.GROUP.ADVERTISER && (
+          <Link href="/advertiser/edit">
+            <a className={styles.link}>my account</a>
+          </Link>
+        )}
+      <Link href="/influencer">
         <a className={styles.link}>influencers</a>
       </Link>
       {user ? (
@@ -56,7 +70,7 @@ const styles = {
   })
 };
 
-const stateToProps = ({ user }) => ({ user });
+const stateToProps = ({ user, accessToken }) => ({ user, accessToken });
 
 const dispatchToProps = dispatch => ({
   logout: bindActionCreators(removeUser, dispatch)

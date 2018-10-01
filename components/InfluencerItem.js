@@ -33,13 +33,16 @@ const InfluencerItem = ({ influencer, viewType }) => (
       </div>
       <div className={styles.tagsContainer}>
         {influencer.tags.map((tag, i) => (
-          <Link key={i} href={`/influencers?tags=${tag}`}>
+          <Link key={i} href={`/influencer?tags=${tag}`}>
             <a className={styles.tags}>{tag}</a>
           </Link>
         ))}
       </div>
     </div>
-    <Link href={`/influencer/${influencer.instagramHandle}`}>
+    <Link
+      href={`/influencer/detail?username=${influencer.instagramHandle}`}
+      as={`/influencer/detail/${influencer.instagramHandle}`}
+    >
       <a className={styles.detail}>Detail</a>
     </Link>
   </div>
