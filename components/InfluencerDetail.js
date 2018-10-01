@@ -3,6 +3,7 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
 import {
+  FaCheckCircle,
   FaComment,
   FaEnvelope,
   FaHeart,
@@ -13,6 +14,11 @@ import {
   FaWhatsapp
 } from "react-icons/fa";
 import formatFollower from "../utils/formatFollower";
+
+const formatDate = dateStr => {
+  const date = new Date(dateStr);
+  return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+};
 
 const InfluencerDetail = ({ influencer }) => (
   <div className={styles.root}>
@@ -29,6 +35,11 @@ const InfluencerDetail = ({ influencer }) => (
             @{influencer.instagramHandle}
           </a>
           )
+          {influencer.isVerified && (
+            <span title="verified on instagram">
+              <FaCheckCircle style={{ color: "#00a8ff" }} />
+            </span>
+          )}
         </h1>
         <p className={styles.followersCount}>
           <strong>{formatFollower(influencer.followersCount)}</strong> followers
@@ -158,6 +169,9 @@ const InfluencerDetail = ({ influencer }) => (
         ))}
       </ul>
     </section>
+    <p className={styles.timestamp}>
+      data last updated at {formatDate(influencer.updatedAt)}
+    </p>
   </div>
 );
 
@@ -181,9 +195,17 @@ const styles = {
     margin: "0 50px 0 0 "
   }),
   displayName: css({
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
     margin: "10px 0 10px 0",
-    "& a": {
+    "& > a": {
       color: "inherit"
+    },
+    "& svg": {
+      width: 16,
+      height: 16,
+      margin: "5px 0 0 10px"
     }
   }),
   followersCount: css({
@@ -365,6 +387,12 @@ const styles = {
     "& svg": {
       marginRight: 7
     }
+  }),
+  timestamp: css({
+    textAlign: "right",
+    fontSize: 13,
+    fontStyle: "italic",
+    margin: "25px 0 0 0"
   })
 };
 
