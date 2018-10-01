@@ -1,7 +1,17 @@
-import { css } from "emotion";
+import { css, cx } from "emotion";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
+import {
+  FaComment,
+  FaEnvelope,
+  FaHeart,
+  FaInstagram,
+  FaLine,
+  FaMoneyCheckAlt,
+  FaPhone,
+  FaWhatsapp
+} from "react-icons/fa";
 import formatFollower from "../utils/formatFollower";
 
 const InfluencerDetail = ({ influencer }) => (
@@ -35,29 +45,113 @@ const InfluencerDetail = ({ influencer }) => (
     </section>
     <section>
       <h2>Endorse Info</h2>
-      <p>endorse pricing post: {influencer.endorsePricing.post}</p>
-      <p>endorse pricing story: {influencer.endorsePricing.story}</p>
-      <p>contact phone: {influencer.contact.phone}</p>
-      <p>contact whatsapp: {influencer.contact.whatsapp}</p>
-      <p>contact line: {influencer.contact.line}</p>
-      <p>contact instagram: {influencer.contact.instagram}</p>
-      <p>contact email: {influencer.contact.email}</p>
+      <div className={styles.endorse}>
+        <div>
+          <div className={styles.endorseDetail}>
+            <span className={styles.endorseDetailTitle}>
+              <FaMoneyCheckAlt /> Post Endorsement
+            </span>
+            <span className={styles.endorseDetailValue}>
+              starts from{" "}
+              <strong>
+                {influencer.endorsePricing.post.toLocaleString("id-ID", {
+                  style: "currency",
+                  currency: "IDR"
+                })}
+              </strong>
+            </span>
+          </div>
+          <div className={styles.endorseDetail}>
+            <span className={styles.endorseDetailTitle}>
+              <FaMoneyCheckAlt /> Story Endorsement
+            </span>
+            <span className={styles.endorseDetailValue}>
+              starts from{" "}
+              <strong>
+                {influencer.endorsePricing.story.toLocaleString("id-ID", {
+                  style: "currency",
+                  currency: "IDR"
+                })}
+              </strong>
+            </span>
+          </div>
+        </div>
+        <ul className={styles.contactList}>
+          <li className={styles.contactDetail}>
+            <span
+              style={{ background: "#5352ed" }}
+              className={cx(styles.icon, styles.smallIcon)}
+              title="email"
+            >
+              {" "}
+              <FaEnvelope />
+            </span>
+            {influencer.contact.email || "---"}
+          </li>
+          <li className={styles.contactDetail}>
+            <span
+              style={{
+                background: "linear-gradient(-315deg,#ffd521,#f30005,#b900b4)"
+              }}
+              className={styles.icon}
+              title="instagram"
+            >
+              <FaInstagram />
+            </span>{" "}
+            {influencer.contact.instagram || "---"}
+          </li>
+          <li className={styles.contactDetail}>
+            <span
+              style={{ background: "#24cc63" }}
+              className={styles.icon}
+              title="whatsapp"
+            >
+              <FaWhatsapp />
+            </span>{" "}
+            {influencer.contact.whatsapp || "---"}
+          </li>
+          <li className={styles.contactDetail}>
+            <span
+              style={{ background: "#00b300" }}
+              className={styles.icon}
+              title="line"
+            >
+              <FaLine />
+            </span>{" "}
+            {influencer.contact.line || "---"}
+          </li>
+          <li className={styles.contactDetail}>
+            <span
+              style={{ background: "#4b6584" }}
+              className={cx(styles.icon, styles.smallIcon)}
+              title="phone number"
+            >
+              <FaPhone />
+            </span>
+            {influencer.contact.phone || "---"}
+          </li>
+        </ul>
+      </div>
     </section>
     <section>
       <h2>Recent Photos</h2>
       <ul className={styles.list}>
         {influencer.recentPhotos.map((photo, i) => (
           <li key={i} className={styles.listItem}>
-            <a
-              href={photo.url}
-              style={{
-                backgroundImage: `url('${photo.thumbnail}')`
-              }}
-              className={styles.photo}
-            >
+            <a href={photo.url} className={styles.photo}>
+              <div
+                className={styles.photoImage}
+                style={{
+                  backgroundImage: `url('${photo.thumbnail}')`
+                }}
+              />
               <div className={styles.photoOverlay}>
-                <span>{photo.likesCount.toLocaleString("id")} likes</span>
-                <span>{photo.repliesCount.toLocaleString("id")} replies</span>
+                <span className={styles.overlayText}>
+                  <FaHeart /> {photo.likesCount.toLocaleString("id")}
+                </span>
+                <span className={styles.overlayText}>
+                  <FaComment /> {photo.repliesCount.toLocaleString("id")}
+                </span>
               </div>
             </a>
           </li>
@@ -117,6 +211,76 @@ const styles = {
       marginRight: 0
     }
   }),
+  endorse: css({
+    display: "flex",
+    justifyContent: "stretch",
+    alignItems: "flex-start",
+    "& > *": {
+      width: "calc((100% - 50px) / 2)"
+    }
+  }),
+  endorseDetail: css({
+    display: "flex",
+    flexDirection: "column",
+    "& + &": {
+      margin: "30px 0 0 0"
+    }
+  }),
+  endorseDetailTitle: css({
+    display: "flex",
+    alignItems: "center",
+    fontWeight: 600,
+    fontSize: 20,
+    "& > svg": {
+      width: 40,
+      height: 40,
+      margin: "0 15px 0 0"
+    }
+  }),
+  endorseDetailValue: css({
+    margin: "5px 0 0 0",
+    fontSize: 14,
+    "& > strong": {
+      fontSize: 20,
+      fontWeight: 600,
+      color: "#44bd32",
+      margin: "0 0 0 7px"
+    }
+  }),
+  contactList: css({
+    display: "block",
+    margin: 0,
+    padding: 0,
+    listStyleType: "none"
+  }),
+  contactDetail: css({
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    margin: "0 25px 10px 0"
+  }),
+  icon: css({
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 40,
+    height: 40,
+    borderRadius: "50%",
+    backgroundColor: "#111",
+    margin: "2px 10px 0 0",
+    "& > svg": {
+      width: 26,
+      height: 26,
+      color: "#fff"
+    }
+  }),
+  smallIcon: css({
+    margin: "6px 10px 4px 0",
+    "& > svg": {
+      width: 26,
+      height: 20
+    }
+  }),
   list: css({
     display: "flex",
     flexWrap: "wrap",
@@ -150,10 +314,26 @@ const styles = {
     display: "block",
     width: "100%",
     height: "100%",
+    textDecoration: "none",
+    overflow: "hidden",
+    "&:hover > *:first-child": {
+      top: "-5px",
+      left: "-5px",
+      width: "calc(100% + 10px)",
+      height: "calc(100% + 10px)"
+    }
+  }),
+  photoImage: css({
+    position: "absolute",
+    top: 0,
+    left: 0,
+    display: "block",
+    width: "100%",
+    height: "100%",
     backgroundColor: "#555",
     backgroundSize: "cover",
     backgroundPosition: "center",
-    textDecoration: "none"
+    transition: ".3s"
   }),
   photoOverlay: css({
     position: "absolute",
@@ -176,6 +356,14 @@ const styles = {
     },
     "&:hover": {
       opacity: 1
+    }
+  }),
+  overlayText: css({
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    "& svg": {
+      marginRight: 7
     }
   })
 };
