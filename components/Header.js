@@ -2,12 +2,11 @@ import { css } from "emotion";
 import Link from "next/link";
 import React from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import CONFIG from "../config";
 import { removeUser } from "../store";
 import getUserGroup from "../utils/getUserGroup";
 
-const Header = ({ user, accessToken, logout }) => (
+const Header = ({ user, accessToken, removeUser }) => (
   <header className={styles.root}>
     <Link href="/">
       <a className={styles.link}>insert-logo-here</a>
@@ -29,7 +28,7 @@ const Header = ({ user, accessToken, logout }) => (
         <a className={styles.link}>influencers</a>
       </Link>
       {user ? (
-        <button className={styles.link} onClick={logout}>
+        <button className={styles.link} onClick={removeUser}>
           logout
         </button>
       ) : (
@@ -72,11 +71,7 @@ const styles = {
 
 const stateToProps = ({ user, accessToken }) => ({ user, accessToken });
 
-const dispatchToProps = dispatch => ({
-  logout: bindActionCreators(removeUser, dispatch)
-});
-
 export default connect(
   stateToProps,
-  dispatchToProps
+  { removeUser }
 )(Header);

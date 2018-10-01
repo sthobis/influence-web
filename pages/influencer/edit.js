@@ -1,7 +1,6 @@
 import Router from "next/router";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import Layout from "../../components/Layout";
 import CONFIG from "../../config";
 import { addNotification, setUser } from "../../store";
@@ -82,11 +81,7 @@ class InfluencerEditPage extends Component {
   }
 }
 
-const dispatchToProps = dispatch => ({
-  addNotification: bindActionCreators(addNotification, dispatch)
-});
-
 export default connect(
   null,
-  dispatchToProps
+  { addNotification }
 )(InfluencerEditPage);

@@ -4,7 +4,6 @@ import debounce from "lodash/debounce";
 import Router from "next/router";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import InfluencerList from "../../components/InfluencerList";
 import KeywordFilter from "../../components/KeywordFilter";
 import Layout from "../../components/Layout";
@@ -175,11 +174,7 @@ const styles = {
   })
 };
 
-const dispatchToProps = dispatch => ({
-  addNotification: bindActionCreators(addNotification, dispatch)
-});
-
 export default connect(
   null,
-  dispatchToProps
+  { addNotification }
 )(InfluencerListPage);

@@ -4,7 +4,6 @@ import Router from "next/router";
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import Layout from "../components/Layout";
 import Textarea from "../components/Textarea";
 import CONFIG from "../config";
@@ -349,11 +348,7 @@ const styles = {
   })
 };
 
-const dispatchToProps = dispatch => ({
-  setUser: bindActionCreators(setUser, dispatch)
-});
-
 export default connect(
   null,
-  dispatchToProps
+  { setUser }
 )(Kitchen);

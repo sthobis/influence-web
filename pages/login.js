@@ -2,7 +2,6 @@ import Router from "next/router";
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import Layout from "../components/Layout";
 import { addNotification, setUser } from "../store";
 import { authAdvertiser } from "../utils/api";
@@ -64,11 +63,7 @@ class Login extends Component {
   }
 }
 
-const dispatchToProps = dispatch => ({
-  setUser: bindActionCreators(setUser, dispatch)
-});
-
 export default connect(
   null,
-  dispatchToProps
+  { setUser }
 )(Login);
