@@ -1,0 +1,8 @@
+{
+  "name": "influence",
+  "alias": "sts-influence",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "type": "npm"
+}
