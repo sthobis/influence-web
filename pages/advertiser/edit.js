@@ -1,6 +1,7 @@
 import Router from "next/router";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import AdvertiserEdit from "../../components/AdvertiserEdit";
 import Layout from "../../components/Layout";
 import CONFIG from "../../config";
 import { addNotification, setUser } from "../../store";
@@ -76,7 +77,7 @@ class AdvertiserEditPage extends Component {
     const { advertiser } = this.props;
     return (
       <Layout title="Edit my account">
-        <p>Edit Advertiser {advertiser.email}</p>
+        <AdvertiserEdit advertiser={advertiser} />
       </Layout>
     );
   }
