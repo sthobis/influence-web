@@ -19,7 +19,7 @@ class Login extends Component {
         store.dispatch(setUser(user, accessToken));
         res.redirect("/");
       } else {
-        return { query };
+        return { query, origin: req.headers.referer.split("?")[0] };
       }
     } else {
       // client-rendered
@@ -28,12 +28,12 @@ class Login extends Component {
         // user is logged in, redirect to home page
         Router.replace("/");
       } else {
-        return { query };
+        return { query, origin: window.location.origin };
       }
     }
   }
 
-  login = async data => {
+  loginAsAdvertiser = async data => {
     const { setUser, query } = this.props;
 
     const token = data.tokenId;
@@ -50,13 +50,17 @@ class Login extends Component {
     }
   };
 
-  instaLogin = async data => {
-    const { setUser, query } = this.props;
+  loginAsInfluencer = async code => {
+    const { setUser, query, origin } = this.props;
 
-    const token = data;
-    console.log(data);
     try {
-      const { influencer, accessToken } = await authInfluencer({ token });
+      // we're using current origin (/login) as redirection_uri parameter
+      // for getting instagram app code
+      // send it to authentication API for instagram access token request
+      const { influencer, accessToken } = await authInfluencer({
+        code,
+        redirectUri: origin
+      });
       setUser(influencer, accessToken);
       if (query.redirect) {
         Router.push(query.redirect);
@@ -69,21 +73,23 @@ class Login extends Component {
   };
 
   render() {
+    const { origin } = this.props;
     return (
       <Layout>
         <div>
           <GoogleLogin
             clientId="753672082179-m23j4kahvq4qpp3e586rrmkiftdsau6d.apps.googleusercontent.com"
-            buttonText="Login with Google"
-            onSuccess={this.login}
+            buttonText="Login as Advertiser"
+            onSuccess={this.loginAsAdvertiser}
             onFailure={console.log}
           />
         </div>
         <div>
           <InstagramLogin
             clientId="72137848bd42454189ac0417f88f6d70"
-            buttonText="Login with Instagram"
-            onSuccess={this.instaLogin}
+            buttonText="Login as Influencer"
+            redirectUri={origin}
+            onSuccess={this.loginAsInfluencer}
             onFailure={console.log}
           />
         </div>
