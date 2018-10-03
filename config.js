@@ -2,7 +2,7 @@ export default {
   API_BASE_URL: {
     development: "http://localhost:3101",
     test: "http://localhost:3101",
-    production: "http://influence-api.duajarimanis.com"
+    production: "https://influence-api.duajarimanis.com"
   },
   FETCH_STATUS: {
     FETCHING: "FETCHING",
