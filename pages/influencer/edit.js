@@ -1,10 +1,11 @@
 import Router from "next/router";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import InfluencerEdit from "../../components/InfluencerEdit";
 import Layout from "../../components/Layout";
 import CONFIG from "../../config";
 import { addNotification, setUser } from "../../store";
-import { getInfluencerByUsername } from "../../utils/api";
+import { getInfluencerByUsername, updateInfluencer } from "../../utils/api";
 import getUserGroup from "../../utils/getUserGroup";
 import parseUserFromCookie from "../../utils/parseUserFromCookie";
 
@@ -25,7 +26,9 @@ class InfluencerEditPage extends Component {
 
         // fetch influencer detail
         try {
-          const { influencer } = await getInfluencerByUsername(query.username);
+          const { influencer } = await getInfluencerByUsername(
+            user.instagramHandle
+          );
           return { influencer };
         } catch (err) {
           store.dispatch(
@@ -54,7 +57,9 @@ class InfluencerEditPage extends Component {
 
         //fetch influencer detail
         try {
-          const { influencer } = await getInfluencerByUsername(query.username);
+          const { influencer } = await getInfluencerByUsername(
+            user.instagramHandle
+          );
           return { influencer };
         } catch (err) {
           store.dispatch(
@@ -72,10 +77,27 @@ class InfluencerEditPage extends Component {
     }
   }
 
+  state = {
+    // set influencer props as state
+    // so we can mutate it for editing purpose
+    influencer: this.props.influencer
+  };
+
+  save = async influencer => {
+    const { addNotification } = this.props;
+    try {
+      await updateInfluencer({ influencer });
+      addNotification("Your profile has been updated.");
+    } catch (err) {
+      addNotification("Failed to update your profile, please try again.");
+    }
+  };
+
   render() {
+    const { influencer } = this.state;
     return (
       <Layout title="Edit my account">
-        <p>InfluencerEditPage</p>
+        <InfluencerEdit influencer={influencer} save={this.save} />
       </Layout>
     );
   }

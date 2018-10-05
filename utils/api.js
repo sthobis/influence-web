@@ -38,7 +38,9 @@ export function getInfluencerByUsername(username) {
 }
 
 export function updateInfluencer(body) {
-  return api.post(`/influencer/${body.influencer._id}`).then(res => res.data);
+  return api
+    .post(`/influencer/${body.influencer._id}`, body)
+    .then(res => res.data);
 }
 
 export function crawlInstagramUser(username) {
