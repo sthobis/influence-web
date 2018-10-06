@@ -16,16 +16,18 @@ class InfluencerDetailPage extends Component {
         // user is logged in, fetch influencer detail
         // and save user session for client rehydration
         store.dispatch(setUser(user, accessToken));
+        const isOwner =
+          user.instagramHandle && user.instagramHandle === query.username;
         try {
           const { influencer } = await getInfluencerByUsername(query.username);
-          return { influencer };
+          return { influencer, isOwner };
         } catch (err) {
           store.dispatch(
             addNotification(
               "Failed to load influencer detail, please try again."
             )
           );
-          return { influencer: null };
+          return { influencer: null, isOwner };
         }
       } else {
         // user is not logged in
@@ -37,16 +39,18 @@ class InfluencerDetailPage extends Component {
       const { user } = store.getState();
       if (user) {
         // user is logged in, fetch influencer detail
+        const isOwner =
+          user.instagramHandle && user.instagramHandle === query.username;
         try {
           const { influencer } = await getInfluencerByUsername(query.username);
-          return { influencer };
+          return { influencer, isOwner };
         } catch (err) {
           store.dispatch(
             addNotification(
               "Failed to load influencer detail, please try again."
             )
           );
-          return { influencer: null };
+          return { influencer: null, isOwner };
         }
       } else {
         // user is not logged in
@@ -57,12 +61,12 @@ class InfluencerDetailPage extends Component {
   }
 
   render() {
-    const { influencer } = this.props;
+    const { influencer, isOwner } = this.props;
     return (
       <Layout
         title={`${influencer.displayName} (${influencer.instagramHandle})`}
       >
-        <InfluencerDetail influencer={influencer} />
+        <InfluencerDetail influencer={influencer} isOwner={isOwner} />
       </Layout>
     );
   }

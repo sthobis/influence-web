@@ -11,6 +11,7 @@ import {
   FaLine,
   FaMoneyCheckAlt,
   FaPhone,
+  FaUserCog,
   FaWhatsapp
 } from "react-icons/fa";
 import formatFollower from "../utils/formatFollower";
@@ -20,9 +21,16 @@ const formatDate = dateStr => {
   return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
 };
 
-const InfluencerDetail = ({ influencer }) => (
+const InfluencerDetail = ({ influencer, isOwner }) => (
   <div className={styles.root}>
     <section className={styles.detail}>
+      {isOwner && (
+        <Link href="/influencer/edit">
+          <a className={styles.editButton}>
+            <FaUserCog /> Edit Profile
+          </a>
+        </Link>
+      )}
       <img
         src={influencer.profilePicture}
         alt={influencer.displayName}
@@ -186,7 +194,24 @@ const styles = {
   detail: css({
     display: "flex",
     justifyContent: "flex-start",
-    alignItems: "flex-start"
+    alignItems: "flex-start",
+    position: "relative"
+  }),
+  editButton: css({
+    position: "absolute",
+    top: 0,
+    right: 0,
+    display: "flex",
+    alignItems: "center",
+    textDecoration: "none",
+    borderRadius: 5,
+    backgroundColor: "turquoise",
+    padding: "10px 15px",
+    color: "#fff",
+    fontWeight: 600,
+    "& svg": {
+      marginRight: 10
+    }
   }),
   profilePicture: css({
     width: "100%",
@@ -425,7 +450,8 @@ InfluencerDetail.propTypes = {
         repliesCount: PropTypes.number.isRequired
       })
     )
-  }).isRequired
+  }).isRequired,
+  isOwner: PropTypes.bool.isRequired
 };
 
 export default InfluencerDetail;

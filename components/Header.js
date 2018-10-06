@@ -14,7 +14,10 @@ const Header = ({ user, accessToken, removeUser }) => (
     <nav className={styles.nav}>
       {accessToken &&
         getUserGroup(accessToken) === CONFIG.GROUP.INFLUENCER && (
-          <Link href="/influencer/edit">
+          <Link
+            href={`/influencer/detail?username=${user.instagramHandle}`}
+            as={`/influencer/detail/${user.instagramHandle}`}
+          >
             <a className={styles.link}>my account</a>
           </Link>
         )}
