@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
+import Notification from "./Notification";
 
 class Layout extends PureComponent {
   componentDidMount() {
@@ -19,6 +20,7 @@ class Layout extends PureComponent {
         <Header />
         <main>{children}</main>
         <Footer />
+        <Notification />
       </div>
     );
   }

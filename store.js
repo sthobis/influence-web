@@ -1,6 +1,7 @@
 import axios from "axios";
 import produce from "immer";
 import jsCookie from "js-cookie";
+import uniqueId from "lodash/uniqueId";
 import Router from "next/router";
 import { applyMiddleware, compose, createStore } from "redux";
 import CONFIG from "./config";
@@ -9,7 +10,7 @@ import CONFIG from "./config";
 const initialState = {
   user: null,
   accessToken: null,
-  notification: []
+  notifications: []
 };
 
 // action types
@@ -31,10 +32,13 @@ const reducer = produce((draft, action) => {
       draft.user = draft.accessToken = null;
       return;
     case ACTION_TYPE.ADD_NOTIFICATION:
-      draft.notification.push(action.notification);
+      draft.notifications.push({
+        id: uniqueId(),
+        text: action.notification
+      });
       return;
     case ACTION_TYPE.REMOVE_NOTIFICATION:
-      draft.notification.splice(action.index, 1);
+      draft.notifications.splice(action.index, 1);
       return;
     default:
       return;
