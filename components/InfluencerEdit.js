@@ -9,7 +9,8 @@ import TagsFilter from "./TagsFilter";
 
 class InfluencerEdit extends Component {
   state = {
-    influencer: this.props.influencer
+    influencer: this.props.influencer,
+    isHoveringPremium: false
   };
 
   handleChange = (key, value) => {
@@ -20,6 +21,14 @@ class InfluencerEdit extends Component {
     );
   };
 
+  handleMouseOver = () => {
+    this.setState({ isHoveringPremium: true });
+  };
+
+  handleMouseOut = () => {
+    this.setState({ isHoveringPremium: false });
+  };
+
   save = () => {
     const { save } = this.props;
     const { influencer } = this.state;
@@ -27,7 +36,7 @@ class InfluencerEdit extends Component {
   };
 
   render() {
-    const { influencer } = this.state;
+    const { influencer, isHoveringPremium } = this.state;
 
     return (
       <div className={styles.root}>
@@ -211,17 +220,30 @@ class InfluencerEdit extends Component {
                   </Link>{" "}
                   with limited features
                 </p>
-                <FaRegMeh className={styles.premiumIcon} />
+                {isHoveringPremium ? (
+                  <FaRegSmile className={styles.premiumIcon} />
+                ) : (
+                  <FaRegMeh className={styles.premiumIcon} />
+                )}
                 <p className={styles.premiumText}>
                   upgrade to{" "}
                   <Link href="/#pricing">
-                    <a>premium plan</a>
+                    <a
+                      onMouseOver={this.handleMouseOver}
+                      onMouseOut={this.handleMouseOut}
+                    >
+                      premium plan
+                    </a>
                   </Link>{" "}
                   to get full features
                   <br />
                   you will also make us smile by doing so!
                 </p>
-                <button className={styles.button}>
+                <button
+                  className={styles.button}
+                  onMouseOver={this.handleMouseOver}
+                  onMouseOut={this.handleMouseOut}
+                >
                   <FaCreditCard /> Upgrade
                 </button>
               </>

@@ -34,7 +34,7 @@ class Login extends Component {
   }
 
   loginAsAdvertiser = async data => {
-    const { setUser, query } = this.props;
+    const { setUser, query, addNotification } = this.props;
 
     const token = data.tokenId;
     try {
@@ -51,7 +51,7 @@ class Login extends Component {
   };
 
   loginAsInfluencer = async code => {
-    const { setUser, query, origin } = this.props;
+    const { setUser, query, origin, addNotification } = this.props;
 
     try {
       // we're using current origin (/login) as redirection_uri parameter
@@ -72,6 +72,12 @@ class Login extends Component {
     }
   };
 
+  handleError = (service, error) => {
+    const { addNotification } = this.props;
+    addNotification(`${service} login failed, please try again.`);
+    console.log(error);
+  };
+
   render() {
     const { origin } = this.props;
     return (
@@ -81,7 +87,7 @@ class Login extends Component {
             clientId="753672082179-m23j4kahvq4qpp3e586rrmkiftdsau6d.apps.googleusercontent.com"
             buttonText="Login as Advertiser"
             onSuccess={this.loginAsAdvertiser}
-            onFailure={console.log}
+            onFailure={err => this.handleError("Google", err)}
           />
         </div>
         <div>
@@ -90,7 +96,7 @@ class Login extends Component {
             buttonText="Login as Influencer"
             redirectUri={origin}
             onSuccess={this.loginAsInfluencer}
-            onFailure={console.log}
+            onFailure={err => this.handleError("Instagram", err)}
           />
         </div>
       </Layout>
@@ -100,5 +106,5 @@ class Login extends Component {
 
 export default connect(
   null,
-  { setUser }
+  { setUser, addNotification }
 )(Login);
