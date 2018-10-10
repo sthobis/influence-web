@@ -84,7 +84,7 @@ const styles = {
     padding: "10px 40px 10px 15px",
     backgroundColor: "#FC427B",
     fontSize: 15,
-    fontWeight: 600,
+    fontWeight: 700,
     color: "#fff",
     opacity: 0,
     transition: ".3s",

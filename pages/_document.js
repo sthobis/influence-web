@@ -27,7 +27,7 @@ class MyDocument extends Document {
             href="/static/images/icon-192x192.png"
           />
           <link
-            href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700"
+            href="https://fonts.googleapis.com/css?family=Nunito:400,600,700"
             rel="stylesheet"
           />
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />

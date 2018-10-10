@@ -87,7 +87,7 @@ const styles = {
   },
   multiValueLabel: {
     color: "rgb(0, 184, 217)",
-    fontWeight: 600,
+    fontWeight: 700,
     fontSize: 13,
     margin: "0 8px 0 0",
     padding: 0,

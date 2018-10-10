@@ -291,7 +291,7 @@ const styles = {
     color: "#fff",
     border: "none",
     borderRadius: 5,
-    fontWeight: 600,
+    fontWeight: 700,
     fontSize: 16,
     margin: "0 0 20px 0",
     padding: "10px 15px",
@@ -316,7 +316,7 @@ const styles = {
     borderRadius: 5,
     transition: ".3s",
     "& > *": {
-      fontWeight: 600
+      fontWeight: 700
     }
   }),
   status: {

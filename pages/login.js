@@ -1,14 +1,14 @@
 import Router from "next/router";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
-import GoogleLogin from "react-google-login";
-import InstagramLogin from "react-instagram-login";
 import { connect } from "react-redux";
 import Layout from "../components/Layout";
+import Login from "../components/Login";
 import { addNotification, setUser } from "../store";
 import { authAdvertiser, authInfluencer } from "../utils/api";
 import parseUserFromCookie from "../utils/parseUserFromCookie";
 
-class Login extends Component {
+class LoginPage extends Component {
   static async getInitialProps({ req, res, store, query }) {
     if (req) {
       // server-rendered
@@ -82,29 +82,25 @@ class Login extends Component {
     const { origin } = this.props;
     return (
       <Layout>
-        <div>
-          <GoogleLogin
-            clientId="753672082179-m23j4kahvq4qpp3e586rrmkiftdsau6d.apps.googleusercontent.com"
-            buttonText="Login as Advertiser"
-            onSuccess={this.loginAsAdvertiser}
-            onFailure={err => this.handleError("Google", err)}
-          />
-        </div>
-        <div>
-          <InstagramLogin
-            clientId="72137848bd42454189ac0417f88f6d70"
-            buttonText="Login as Influencer"
-            redirectUri={origin}
-            onSuccess={this.loginAsInfluencer}
-            onFailure={err => this.handleError("Instagram", err)}
-          />
-        </div>
+        <Login
+          origin={origin}
+          loginAsAdvertiser={this.loginAsAdvertiser}
+          loginAsInfluencer={this.loginAsInfluencer}
+          handleError={this.handleError}
+        />
       </Layout>
     );
   }
 }
 
+LoginPage.propTypes = {
+  query: PropTypes.object.isRequired,
+  origin: PropTypes.string.isRequired,
+  addNotification: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired
+};
+
 export default connect(
   null,
   { setUser, addNotification }
-)(Login);
+)(LoginPage);

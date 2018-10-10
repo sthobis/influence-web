@@ -299,7 +299,7 @@ const styles = {
     backgroundColor: "#f0f6f7",
     padding: "12px 20px",
     fontSize: 15,
-    fontWeight: 600,
+    fontWeight: 700,
     "&::placeholder": {
       color: "#aaa"
     }
@@ -314,7 +314,7 @@ const styles = {
     padding: "10px 20px",
     color: "#fff",
     cursor: "pointer",
-    fontWeight: 600,
+    fontWeight: 700,
     fontSize: 18,
     "& svg": {
       marginRight: 10
@@ -337,7 +337,7 @@ const styles = {
     lineHeight: "1.5",
     "& a": {
       color: "inherit",
-      fontWeight: 600
+      fontWeight: 700
     }
   }),
   premiumIcon: css({
@@ -356,7 +356,7 @@ const styles = {
     padding: "10px 20px",
     color: "#fff",
     cursor: "pointer",
-    fontWeight: 600,
+    fontWeight: 700,
     fontSize: 18,
     "& svg": {
       marginRight: 10
