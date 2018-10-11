@@ -102,6 +102,7 @@ const styles = {
     textDecoration: "none",
     fontSize: 16,
     textTransform: "uppercase",
+    cursor: "pointer",
     "& svg": {
       margin: "0 0 1px 3px",
       transition: ".3s"
