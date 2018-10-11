@@ -1,6 +1,11 @@
 import { extractCritical } from "emotion-server";
 import Document, { Head, Main, NextScript } from "next/document";
 
+const fa = `/*!
+* Font Awesome Free 5.3.1 by @fontawesome - https://fontawesome.com
+* License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+*/`;
+
 class MyDocument extends Document {
   static getInitialProps({ renderPage }) {
     const page = renderPage();
@@ -30,7 +35,11 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=Nunito:400,600,700"
             rel="stylesheet"
           />
-          <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
+          <style
+            dangerouslySetInnerHTML={{
+              __html: fa + this.props.css
+            }}
+          />
         </Head>
         <body>
           <Main />
