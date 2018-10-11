@@ -17,13 +17,13 @@ class MyApp extends App {
 
   componentDidMount() {
     const { store } = this.props;
-    const { user } = store.getState();
-    if (user) {
+    const { accessToken } = store.getState();
+    if (accessToken) {
       // user is logged in and is already saved to store
       // which means setUser was called on server (rehydrated on client)
       // we need to set client's axios header with authentication token
       // for next fetch calls
-      axios.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
     }
   }
 
