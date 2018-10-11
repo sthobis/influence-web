@@ -1,40 +1,46 @@
-import { css, cx } from "emotion";
+import { css } from "emotion";
 import Link from "next/link";
-import PropTypes from "prop-types";
 import React from "react";
 
-const Footer = ({ className }) => (
-  <footer className={className ? cx(styles.root, className) : styles.root}>
-    <nav className={styles.sitemap}>
-      <Link href="/">
-        <a>Home</a>
-      </Link>
-      <Link href="/influencer">
-        <a>Influencer</a>
-      </Link>
-      <Link href="/termsandconditions">
-        <a>Terms and Conditions</a>
-      </Link>
-      <Link href="/privacypolicy">
-        <a>Privacy Policy</a>
-      </Link>
-      <a href="mailto:igfluencer.id@gmail.com?Subject=Hi%20Igfluencer">
-        Contact
-      </a>
-    </nav>
-    <span className={styles.copyright}>
-      igluencer.id <span>'18</span>
-    </span>
+const Footer = () => (
+  <footer className={styles.root}>
+    <div className={styles.container}>
+      <nav className={styles.sitemap}>
+        <Link href="/">
+          <a>Home</a>
+        </Link>
+        <Link href="/influencer">
+          <a>Influencer</a>
+        </Link>
+        <Link href="/termsandconditions">
+          <a>Terms and Conditions</a>
+        </Link>
+        <Link href="/privacypolicy">
+          <a>Privacy Policy</a>
+        </Link>
+        <a href="mailto:igfluencer.id@gmail.com?Subject=Hi%20Igfluencer">
+          Contact
+        </a>
+      </nav>
+      <span className={styles.copyright}>
+        igluencer.id <span>'18</span>
+      </span>
+    </div>
   </footer>
 );
 
 const styles = {
   root: css({
+    backgroundColor: "#20223a"
+  }),
+  container: css({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "25px 0",
-    backgroundColor: "#20223a"
+    width: "100%",
+    maxWidth: 1200,
+    margin: "0 auto",
+    padding: "25px 50px"
   }),
   sitemap: css({
     display: "flex",
@@ -55,10 +61,6 @@ const styles = {
       margin: "0 0 0 5px"
     }
   })
-};
-
-Footer.propTypes = {
-  className: PropTypes.string
 };
 
 export default Footer;

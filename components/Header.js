@@ -1,4 +1,4 @@
-import { css, cx } from "emotion";
+import { css } from "emotion";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
@@ -9,8 +9,8 @@ import CONFIG from "../config";
 import { removeUser } from "../store";
 import getUserGroup from "../utils/getUserGroup";
 
-const Header = ({ user, accessToken, removeUser, className }) => (
-  <header className={className ? cx(styles.root, className) : styles.root}>
+const Header = ({ user, accessToken, removeUser }) => (
+  <header className={styles.root}>
     <Link href="/">
       <a className={styles.logo}>
         <FaCameraRetro /> igfluencer.id
@@ -61,7 +61,10 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    margin: "40px 0"
+    width: "100%",
+    maxWidth: 1200,
+    margin: "0 auto",
+    padding: "40px 50px"
   }),
   logo: css({
     display: "flex",
@@ -114,8 +117,7 @@ const styles = {
 Header.propTypes = {
   removeUser: PropTypes.func.isRequired,
   user: PropTypes.object,
-  accessToken: PropTypes.string,
-  className: PropTypes.string
+  accessToken: PropTypes.string
 };
 
 const stateToProps = ({ user, accessToken }) => ({ user, accessToken });

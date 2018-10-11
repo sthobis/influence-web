@@ -123,9 +123,8 @@ class Home extends Component {
             </div>
           </section>
         </main>
-        <div className={styles.footerContainer}>
-          <Footer className={styles.maxWidth} />
-        </div>
+        <Footer />
+        <div className={styles.footerContainer} />
         <Notification />
       </div>
     );
@@ -165,14 +164,7 @@ const blink = keyframes`
 
 const styles = {
   root: css({
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignContent: "center",
-    position: "relative",
-    minHeight: "100vh",
-    backgroundColor: "#f6faff",
-    overflow: "hidden"
+    backgroundColor: "#f6faff"
   }),
   maxWidth: css({
     width: "100%",

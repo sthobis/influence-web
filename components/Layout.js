@@ -18,7 +18,7 @@ class Layout extends PureComponent {
     return (
       <div className={styles.root}>
         <Header />
-        <main>{children}</main>
+        <main className={styles.container}>{children}</main>
         <Footer />
         <Notification />
       </div>
@@ -30,13 +30,17 @@ const styles = {
   root: css({
     display: "flex",
     flexDirection: "column",
+    justifyContent: "space-between",
+    height: "auto",
+    minHeight: "100vh"
+  }),
+  container: css({
+    display: "flex",
+    flexDirection: "column",
     justifyContent: "flex-start",
-    alignContent: "center",
     position: "relative",
     width: "100%",
     maxWidth: "1200",
-    height: "auto",
-    minHeight: "100vh",
     margin: "0 auto",
     padding: "0 50px"
   })
