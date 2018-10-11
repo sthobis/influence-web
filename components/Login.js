@@ -33,7 +33,7 @@ const Login = ({
       <p className={styles.description}>
         I am an <strong>Advertiser</strong> looking for influencer to
         <br />
-        promote/endorse my brand/product
+        promote/endorse my brand.
       </p>
       <GoogleLogin
         clientId="753672082179-m23j4kahvq4qpp3e586rrmkiftdsau6d.apps.googleusercontent.com"
@@ -70,7 +70,7 @@ const Login = ({
       <p className={styles.description}>
         I am an <strong>Influencer</strong> looking for opportunity to
         <br />
-        promote/endorse someone's brand/product
+        promote/endorse someone's brand.
       </p>
       <InstagramLogin
         clientId="f2ba3adae3564817b3421225dcc1f1bf"
