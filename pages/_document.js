@@ -17,6 +17,7 @@ class MyDocument extends Document {
     return (
       <html lang="en">
         <Head>
+          <title>Igfluencer.id</title>
           <meta
             name="description"
             content="Find the perfect influencer for your business"
