@@ -100,14 +100,14 @@ const styles = {
   }),
   tags: css({
     display: "inline-block",
-    backgroundColor: "rgba(0, 184, 217, 0.1)",
+    backgroundColor: "rgba(24, 26, 40, 0.1)",
     margin: "0 10px 10px 0",
-    padding: "5px 10px 7px 10px",
-    fontWeight: 600,
+    padding: "7px 10px",
+    fontWeight: 700,
     borderRadius: 5,
     fontSize: 13,
     textDecoration: "none",
-    color: "rgb(0, 184, 217)",
+    color: "rgb(24, 26, 40)",
     "&:last-child": {
       marginRight: 0
     }
@@ -115,12 +115,15 @@ const styles = {
   detail: css({
     display: "block",
     width: "100%",
-    backgroundColor: "turquoise",
+    backgroundColor: "#2e3040",
     padding: 10,
     textAlign: "center",
     color: "#fff",
     textDecoration: "none",
-    borderRadius: "0 0 5px 5px"
+    borderRadius: "0 0 5px 5px",
+    fontWeight: 600,
+    fontSize: 14,
+    textTransform: "uppercase"
   })
 };
 

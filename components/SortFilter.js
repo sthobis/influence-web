@@ -25,7 +25,7 @@ const SortFilter = ({ sort, setFilter }) => (
       option: (base, { isSelected, isFocused }) => ({
         ...base,
         ...styles.option,
-        color: isSelected ? "rgb(0, 184, 217)" : "#000",
+        fontWeight: isSelected ? 700 : 400,
         backgroundColor: isFocused ? "rgba(0, 184, 217, 0.1)" : "transparent"
       }),
       menu: base => ({
@@ -66,7 +66,8 @@ const styles = {
     margin: "0 0 0 5px"
   },
   option: {
-    fontSize: 14
+    fontSize: 14,
+    color: "#181a28"
   },
   menu: {
     boxShadow: "0 0 20px rgba(35, 0, 95, 0.15)"

@@ -32,7 +32,8 @@ const styles = {
     flexDirection: "column",
     justifyContent: "stretch",
     height: "auto",
-    minHeight: "100vh"
+    minHeight: "100vh",
+    backgroundColor: "#f6faff"
   }),
   container: css({
     display: "flex",

@@ -80,19 +80,19 @@ const styles = {
     margin: "0 0 0 5px"
   },
   multiValue: {
-    backgroundColor: "rgba(0, 184, 217, 0.1)",
-    color: "rgb(0, 184, 217)",
+    backgroundColor: "rgba(24, 26, 40, 0.1)",
+    color: "#181a28",
     padding: "0 0 0 12px",
     borderRadius: 5
   },
   multiValueLabel: {
-    color: "rgb(0, 184, 217)",
-    fontWeight: 600,
+    color: "#181a28",
+    fontWeight: 700,
     fontSize: 13,
     margin: "0 8px 0 0",
     padding: 0,
     paddingLeft: 0,
-    lineHeight: "28px"
+    lineHeight: "30px"
   },
   multiValueRemove: {
     margin: 0,
@@ -101,7 +101,13 @@ const styles = {
     borderRadius: "0 5px 5px 0"
   },
   option: {
-    fontSize: 14
+    fontSize: 14,
+    "&:first-child": {
+      borderRadius: "5px 5px 0 0"
+    },
+    "&:last-child": {
+      borderRadius: "0 0 5px 5px"
+    }
   },
   menu: {
     boxShadow: "0 0 20px rgba(35, 0, 95, 0.15)"

@@ -1,6 +1,12 @@
-import { css } from "emotion";
+import { css, cx } from "emotion";
 import PropTypes from "prop-types";
 import React from "react";
+import {
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
+  FaAngleLeft,
+  FaAngleRight
+} from "react-icons/fa";
 
 const Paginator = ({ page, limit, count, goToPage }) => {
   const firstPage = 0;
@@ -13,14 +19,14 @@ const Paginator = ({ page, limit, count, goToPage }) => {
         disabled={page === firstPage}
         onClick={() => goToPage(firstPage)}
       >
-        {"<<"}
+        <FaAngleDoubleLeft />
       </button>
       <button
         className={styles.button}
         disabled={page === firstPage}
         onClick={() => goToPage(page - 1)}
       >
-        {"<"}
+        <FaAngleLeft />
       </button>
       {Array(5)
         .fill(null)
@@ -29,7 +35,9 @@ const Paginator = ({ page, limit, count, goToPage }) => {
           if (pageIndex > lastPage) return null;
           return (
             <button
-              className={styles.button}
+              className={cx(styles.button, {
+                [styles.currentPage]: pageIndex === page
+              })}
               key={pageIndex}
               disabled={pageIndex === page}
               onClick={() => goToPage(pageIndex)}
@@ -43,14 +51,14 @@ const Paginator = ({ page, limit, count, goToPage }) => {
         disabled={page === lastPage}
         onClick={() => goToPage(page + 1)}
       >
-        {">"}
+        <FaAngleRight />
       </button>
       <button
         className={styles.button}
         disabled={page === lastPage}
         onClick={() => goToPage(lastPage)}
       >
-        {">>"}
+        <FaAngleDoubleRight />
       </button>
     </div>
   );
@@ -60,17 +68,39 @@ const styles = {
   root: css({
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    margin: "0 0 50px 0"
   }),
   button: css({
-    cursor: "pointer",
-    display: "block",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 42,
+    height: 36,
     margin: "0 5px",
-    padding: 5,
-    background: "transparent",
     border: "none",
-    fontWeight: 600,
-    fontSize: 16
+    borderRadius: 3,
+    fontWeight: 700,
+    fontSize: 13,
+    background: "#2e3040",
+    color: "#fff",
+    cursor: "pointer",
+    "&:disabled": {
+      cursor: "default"
+    }
+  }),
+  currentPage: css({
+    position: "relative",
+    "&::before": {
+      content: "''",
+      position: "absolute",
+      top: 1,
+      right: 1,
+      bottom: 1,
+      left: 1,
+      border: "1px dashed #fff",
+      borderRadius: 3
+    }
   })
 };
 
