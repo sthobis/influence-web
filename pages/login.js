@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Layout from "../components/Layout";
 import Login from "../components/Login";
+import CONFIG from "../config";
 import { addNotification, setUser } from "../store";
 import { authAdvertiser, authInfluencer } from "../utils/api";
 import parseUserFromCookie from "../utils/parseUserFromCookie";
@@ -19,7 +20,7 @@ class LoginPage extends Component {
         store.dispatch(setUser(user, accessToken));
         res.redirect("/");
       } else {
-        return { query, origin: req.headers.referer.split("?")[0] };
+        return { query };
       }
     } else {
       // client-rendered
@@ -28,14 +29,25 @@ class LoginPage extends Component {
         // user is logged in, redirect to home page
         Router.replace("/");
       } else {
-        return { query, origin: window.location.origin };
+        return {
+          query
+        };
       }
     }
   }
 
+  state = {
+    loggingInAs: "",
+    fetchStatus: CONFIG.FETCH_STATUS.FINISHED
+  };
+
   loginAsAdvertiser = async data => {
     const { setUser, query, addNotification } = this.props;
 
+    this.setState({
+      loggingInAs: CONFIG.GROUP.ADVERTISER,
+      fetchStatus: CONFIG.FETCH_STATUS.FETCHING
+    });
     const token = data.tokenId;
     try {
       const { advertiser, accessToken } = await authAdvertiser({ token });
@@ -47,19 +59,27 @@ class LoginPage extends Component {
       }
     } catch (err) {
       addNotification("Login failed, please try again.");
+      this.setState({
+        loggingInAs: "",
+        fetchStatus: CONFIG.FETCH_STATUS.FINISHED
+      });
     }
   };
 
   loginAsInfluencer = async code => {
-    const { setUser, query, origin, addNotification } = this.props;
+    const { setUser, query, addNotification } = this.props;
 
+    this.setState({
+      loggingInAs: CONFIG.GROUP.INFLUENCER,
+      fetchStatus: CONFIG.FETCH_STATUS.FETCHING
+    });
     try {
       // we're using current origin (/login) as redirection_uri parameter
       // for getting instagram app code
       // send it to authentication API for instagram access token request
       const { influencer, accessToken } = await authInfluencer({
         code,
-        redirectUri: origin
+        redirectUri: `${CONFIG.BASE_URL[process.env.NODE_ENV]}/login`
       });
       setUser(influencer, accessToken);
       if (query.redirect) {
@@ -69,6 +89,10 @@ class LoginPage extends Component {
       }
     } catch (err) {
       addNotification("Login failed, please try again.");
+      this.setState({
+        loggingInAs: "",
+        fetchStatus: CONFIG.FETCH_STATUS.FINISHED
+      });
     }
   };
 
@@ -79,11 +103,12 @@ class LoginPage extends Component {
   };
 
   render() {
-    const { origin } = this.props;
+    const { loggingInAs, fetchStatus } = this.state;
     return (
       <Layout>
         <Login
-          origin={origin}
+          loggingInAs={loggingInAs}
+          fetchStatus={fetchStatus}
           loginAsAdvertiser={this.loginAsAdvertiser}
           loginAsInfluencer={this.loginAsInfluencer}
           handleError={this.handleError}
@@ -95,7 +120,6 @@ class LoginPage extends Component {
 
 LoginPage.propTypes = {
   query: PropTypes.object.isRequired,
-  origin: PropTypes.string.isRequired,
   addNotification: PropTypes.func.isRequired,
   setUser: PropTypes.func.isRequired
 };

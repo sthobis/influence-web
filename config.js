@@ -1,4 +1,9 @@
 export default {
+  BASE_URL: {
+    development: "http://localhost:3100",
+    test: "http://localhost:3100",
+    production: "https://influence.duajarimanis.com"
+  },
   API_BASE_URL: {
     development: "http://localhost:3101",
     test: "http://localhost:3101",

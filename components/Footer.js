@@ -10,7 +10,7 @@ const Footer = () => (
           <a>Home</a>
         </Link>
         <Link href="/influencer">
-          <a>Influencer</a>
+          <a>Influencers</a>
         </Link>
         <Link href="/termsandconditions">
           <a>Terms and Conditions</a>
@@ -23,7 +23,7 @@ const Footer = () => (
         </a>
       </nav>
       <span className={styles.copyright}>
-        igluencer.id <span>'18</span>
+        igfluencer.id <span>'18</span>
       </span>
     </div>
   </footer>

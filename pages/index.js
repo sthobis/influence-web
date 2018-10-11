@@ -1,14 +1,11 @@
 import { css, cx, keyframes } from "emotion";
 import React, { Component } from "react";
-import {
-  FaCommentDots,
-  FaEnvelope,
-  FaHeart,
-  FaMapMarkerAlt
-} from "react-icons/fa";
+import { FaCommentDots, FaHeart } from "react-icons/fa";
 import { connect } from "react-redux";
+import AdvertiserIllustration from "../components/AdvertiserIllustration";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import InfluencerIllustration from "../components/InfluencerIllustration";
 import Notification from "../components/Notification";
 import { setUser } from "../store";
 import parseUserFromCookie from "../utils/parseUserFromCookie";
@@ -26,16 +23,16 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    document.title = "Igfluencer";
+    document.title = "Igfluencer.id";
   }
 
   render() {
     return (
       <div className={styles.root}>
-        <Header className={styles.maxWidth} />
+        <Header />
         <main>
-          <section className={cx(styles.coverSection, styles.maxWidth)}>
-            <div className={styles.coverLeft}>
+          <section className={cx(styles.introductionSection, styles.container)}>
+            <div className={styles.introductionLeft}>
               <h1>Find top instagram influencers in Indonesia</h1>
               <p>
                 <strong>igfluencer.id</strong> will help you find the right
@@ -44,8 +41,8 @@ class Home extends Component {
                 promote your brand and reach more audience.
               </p>
             </div>
-            <div className={styles.coverRight}>
-              <div className={styles.coverIllustration}>
+            <div className={styles.introductionRight}>
+              <div className={styles.introductionIllustration}>
                 <FaHeart />
                 <FaHeart />
                 <FaHeart />
@@ -61,19 +58,11 @@ class Home extends Component {
           </section>
           <section className={styles.roleSection}>
             <h2>How it Works</h2>
-            <div className={cx(styles.role, styles.maxWidth)}>
-              <div
-                className={cx(styles.roleImage, styles.advertiserIllustration)}
-              >
-                <FaMapMarkerAlt />
-                <FaMapMarkerAlt />
-                <FaMapMarkerAlt />
-                <img
-                  src="/static/images/section-2-advertiser.svg"
-                  alt="advertiser"
-                />
+            <div className={cx(styles.role, styles.container)}>
+              <div className={styles.roleThumbnail}>
+                <AdvertiserIllustration />
               </div>
-              <div className={styles.roleDescription}>
+              <div className={styles.roleText}>
                 <h3>As an Advertiser</h3>
                 <ol>
                   <li>
@@ -91,8 +80,8 @@ class Home extends Component {
                 </ol>
               </div>
             </div>
-            <div className={cx(styles.role, styles.maxWidth)}>
-              <div className={styles.roleDescription}>
+            <div className={cx(styles.role, styles.container)}>
+              <div className={styles.roleText}>
                 <h3>As an Influencer</h3>
                 <ol>
                   <li>
@@ -110,21 +99,13 @@ class Home extends Component {
                   </li>
                 </ol>
               </div>
-              <div
-                className={cx(styles.roleImage, styles.influencerIllustration)}
-              >
-                <FaEnvelope />
-                <FaEnvelope />
-                <img
-                  src="/static/images/section-2-influencer.svg"
-                  alt="influencer"
-                />
+              <div className={styles.roleThumbnail}>
+                <InfluencerIllustration />
               </div>
             </div>
           </section>
         </main>
         <Footer />
-        <div className={styles.footerContainer} />
         <Notification />
       </div>
     );
@@ -148,25 +129,11 @@ const pop = keyframes`
   }
 `;
 
-const blink = keyframes`
-  0% {
-    opacity: 0;
-  }
-
-  50% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-`;
-
 const styles = {
   root: css({
     backgroundColor: "#f6faff"
   }),
-  maxWidth: css({
+  container: css({
     width: "100%",
     maxWidth: 1200,
     marginLeft: "auto",
@@ -174,7 +141,7 @@ const styles = {
     paddingLeft: 50,
     paddingRight: 50
   }),
-  coverSection: css({
+  introductionSection: css({
     position: "relative",
     display: "flex",
     alignItems: "stretch",
@@ -184,7 +151,7 @@ const styles = {
       zIndex: 2
     }
   }),
-  coverLeft: css({
+  introductionLeft: css({
     display: "flex",
     flexDirection: "column",
     width: "55%",
@@ -200,7 +167,7 @@ const styles = {
       margin: 0
     }
   }),
-  coverRight: css({
+  introductionRight: css({
     width: "45%",
     padding: "50px 0",
     textAlign: "right",
@@ -208,7 +175,7 @@ const styles = {
       width: "100%"
     }
   }),
-  coverIllustration: css({
+  introductionIllustration: css({
     position: "relative",
     "& svg": {
       width: "3.3%",
@@ -273,60 +240,13 @@ const styles = {
       marginTop: 75
     }
   }),
-  roleImage: css({
+  roleThumbnail: css({
     width: "40%",
     "& img": {
       width: "100%"
     }
   }),
-  advertiserIllustration: css({
-    position: "relative",
-    "& svg": {
-      position: "absolute",
-      width: "2.5%",
-      color: "#efd8a3",
-      "&:nth-child(1)": {
-        top: "47%",
-        left: "74%",
-        animation: `${blink} 1s ease infinite`
-      },
-      "&:nth-child(2)": {
-        top: "37%",
-        left: "34%",
-        animation: `${blink} 2.3s ease infinite`
-      },
-      "&:nth-child(3)": {
-        top: "32%",
-        left: "64%",
-        animation: `${blink} 1.4s ease infinite`
-      }
-    }
-  }),
-  influencerIllustration: css({
-    position: "relative",
-    "& img": {
-      position: "relative",
-      zIndex: 1,
-      opacity: ".9"
-    },
-    "& svg": {
-      position: "absolute",
-      zIndex: 2,
-      width: "3%",
-      color: "#fff",
-      "&:nth-child(1)": {
-        top: "61%",
-        left: "41%",
-        animation: `${pop} 1s ease infinite`
-      },
-      "&:nth-child(2)": {
-        top: "60%",
-        left: "53%",
-        animation: `${pop} 1.4s ease infinite`
-      }
-    }
-  }),
-  roleDescription: css({
+  roleText: css({
     "&:first-child": {
       paddingRight: 100
     },
@@ -345,9 +265,6 @@ const styles = {
       fontSize: 18,
       margin: "0 0 5px 0"
     }
-  }),
-  footerContainer: css({
-    background: "#20223a"
   })
 };
 

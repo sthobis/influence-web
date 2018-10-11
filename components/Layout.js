@@ -30,7 +30,7 @@ const styles = {
   root: css({
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "stretch",
     height: "auto",
     minHeight: "100vh"
   }),
@@ -38,9 +38,11 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
+    flexGrow: 1,
     position: "relative",
     width: "100%",
     maxWidth: "1200",
+    height: "100%",
     margin: "0 auto",
     padding: "0 50px"
   })
@@ -51,7 +53,7 @@ Router.onRouteChangeComplete = () => NProgress.done();
 Router.onRouteChangeError = () => NProgress.done();
 
 Layout.defaultProps = {
-  title: "Igfluencer"
+  title: "Igfluencer.id"
 };
 
 Layout.propTypes = {
