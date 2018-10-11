@@ -108,6 +108,7 @@ const styles = {
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center",
+    margin: "0 0 75px 0",
     padding: 50,
     backgroundColor: "#fff",
     borderRadius: 5,
@@ -138,11 +139,11 @@ const styles = {
     lineHeight: "1.5",
     "& a": {
       color: "inherit",
-      fontWeight: 600
+      fontWeight: 700
     }
   }),
   premiumIcon: css({
-    color: "turquoise",
+    color: "#39bdcc",
     width: 50,
     height: 50,
     margin: "10px 0"
@@ -150,9 +151,9 @@ const styles = {
   upgradeButton: css({
     display: "flex",
     alignItems: "center",
-    backgroundColor: "turquoise",
+    backgroundColor: "#2e3040",
     border: "none",
-    borderRadius: 5,
+    borderRadius: 3,
     margin: "25px 0 0 0",
     padding: "10px 20px",
     color: "#fff",
