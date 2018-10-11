@@ -42,8 +42,9 @@ class InfluencerEdit extends Component {
       <div className={styles.root}>
         <section className={styles.section}>
           <h2 className={styles.title}>Tags</h2>
-          <div className={styles.field}>
+          <div className={cx(styles.field, styles.fullWidth)}>
             <TagsFilter
+              alternateStyle
               tags={influencer.tags}
               setFilter={(key, value) =>
                 this.handleChange("influencer.tags", value)
@@ -259,6 +260,7 @@ const styles = {
   root: css({
     display: "flex",
     flexDirection: "column",
+    margin: "0 0 75px 0",
     padding: 50,
     backgroundColor: "#fff",
     borderRadius: 5,
@@ -283,12 +285,15 @@ const styles = {
     width: "calc((100% - 25px) / 2)",
     margin: "0 0 20px 0"
   }),
+  fullWidth: css({
+    width: "100%"
+  }),
   label: css({
     display: "block",
     textTransform: "uppercase",
     fontSize: 14,
-    color: "#00cec9",
-    fontWeight: 600,
+    color: "#181a28",
+    fontWeight: 700,
     margin: "0 0 5px 0"
   }),
   input: css({
@@ -296,10 +301,10 @@ const styles = {
     width: "100%",
     border: "none",
     borderRadius: 5,
-    backgroundColor: "#f0f6f7",
+    backgroundColor: "#f6faff",
     padding: "12px 20px",
     fontSize: 15,
-    fontWeight: 600,
+    fontWeight: 400,
     "&::placeholder": {
       color: "#aaa"
     }
@@ -307,9 +312,9 @@ const styles = {
   button: css({
     display: "flex",
     alignItems: "center",
-    backgroundColor: "turquoise",
+    backgroundColor: "#2e3040",
     border: "none",
-    borderRadius: 5,
+    borderRadius: 3,
     margin: "25px 0 0 0",
     padding: "10px 20px",
     color: "#fff",
@@ -336,31 +341,15 @@ const styles = {
     margin: 0,
     lineHeight: "1.5",
     "& a": {
-      color: "inherit",
-      fontWeight: 600
+      color: "#181a28",
+      fontWeight: 700
     }
   }),
   premiumIcon: css({
-    color: "turquoise",
+    color: "#39bdcc",
     width: 50,
     height: 50,
     margin: "10px 0"
-  }),
-  button: css({
-    display: "flex",
-    alignItems: "center",
-    backgroundColor: "turquoise",
-    border: "none",
-    borderRadius: 5,
-    margin: "25px 0 0 0",
-    padding: "10px 20px",
-    color: "#fff",
-    cursor: "pointer",
-    fontWeight: 600,
-    fontSize: 18,
-    "& svg": {
-      marginRight: 10
-    }
   }),
   expiration: css({
     margin: "10px 0 0 0",

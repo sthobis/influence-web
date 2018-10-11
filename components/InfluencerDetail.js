@@ -205,8 +205,8 @@ const styles = {
     display: "flex",
     alignItems: "center",
     textDecoration: "none",
-    borderRadius: 5,
-    backgroundColor: "turquoise",
+    borderRadius: 3,
+    backgroundColor: "#2e3040",
     padding: "10px 15px",
     color: "#fff",
     fontWeight: 600,
@@ -291,7 +291,7 @@ const styles = {
     "& > strong": {
       fontSize: 20,
       fontWeight: 600,
-      color: "#44bd32",
+      color: "#39bdcc",
       margin: "0 0 0 7px"
     }
   }),

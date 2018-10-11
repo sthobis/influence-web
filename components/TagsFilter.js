@@ -4,7 +4,7 @@ import React from "react";
 import Select from "react-select";
 import CONFIG from "../config";
 
-const TagsFilter = ({ tags, setFilter }) => (
+const TagsFilter = ({ tags, setFilter, alternateStyle }) => (
   <Select
     value={tags.map(tag => ({ label: tag, value: tag }))}
     isMulti
@@ -17,7 +17,16 @@ const TagsFilter = ({ tags, setFilter }) => (
     }))}
     className={styles.select}
     styles={{
-      control: base => ({ ...base, ...styles.control }),
+      control: base => {
+        let controlStyles = { ...base, ...styles.control };
+        if (alternateStyle) {
+          controlStyles = {
+            ...controlStyles,
+            ...styles.alternateStyle
+          };
+        }
+        return controlStyles;
+      },
       valueContainer: base => ({
         ...base,
         ...styles.valueContainer
@@ -70,6 +79,10 @@ const styles = {
     padding: "7px 10px 7px 15px",
     boxShadow: "0 0 30px rgba(35, 0, 95, 0.05)"
   },
+  alternateStyle: {
+    backgroundColor: "#f6faff",
+    boxShadow: "none"
+  },
   valueContainer: {
     padding: 0
   },
@@ -121,9 +134,14 @@ const styles = {
   }
 };
 
+TagsFilter.defaultProps = {
+  alternateStyle: false
+};
+
 TagsFilter.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setFilter: PropTypes.func.isRequired
+  setFilter: PropTypes.func.isRequired,
+  alternateStyle: PropTypes.bool
 };
 
 export default TagsFilter;
