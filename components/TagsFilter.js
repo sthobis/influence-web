@@ -83,7 +83,7 @@ const styles = {
     backgroundColor: "rgba(24, 26, 40, 0.1)",
     color: "#181a28",
     padding: "0 0 0 12px",
-    borderRadius: 5
+    borderRadius: 3
   },
   multiValueLabel: {
     color: "#181a28",

@@ -104,7 +104,7 @@ const styles = {
     margin: "0 10px 10px 0",
     padding: "7px 10px",
     fontWeight: 700,
-    borderRadius: 5,
+    borderRadius: 3,
     fontSize: 13,
     textDecoration: "none",
     color: "rgb(24, 26, 40)",

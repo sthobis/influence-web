@@ -189,7 +189,8 @@ const styles = {
     padding: 50,
     backgroundColor: "#fff",
     borderRadius: 5,
-    boxShadow: "0 0 30px rgba(35, 0, 95, 0.05)"
+    boxShadow: "0 0 30px rgba(35, 0, 95, 0.05)",
+    margin: "0 0 75px 0"
   }),
   detail: css({
     display: "flex",
@@ -246,14 +247,14 @@ const styles = {
   }),
   tags: css({
     display: "inline-block",
-    backgroundColor: "#111",
+    backgroundColor: "rgba(24, 26, 40, 0.1)",
     margin: "0 10px 10px 0",
-    padding: "5px 10px 7px 10px",
-    fontWeight: 600,
-    borderRadius: 5,
+    padding: "7px 10px",
+    fontWeight: 700,
+    borderRadius: 3,
     fontSize: 13,
     textDecoration: "none",
-    color: "#fff",
+    color: "#181a28",
     "&:last-child": {
       marginRight: 0
     }
