@@ -2,6 +2,7 @@ import { css } from "emotion";
 import produce from "immer";
 import debounce from "lodash/debounce";
 import Router from "next/router";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import InfluencerList from "../../components/InfluencerList";
@@ -172,6 +173,18 @@ const styles = {
       width: "calc((100% - 25px) / 2)"
     }
   })
+};
+
+InfluencerListPage.propTypes = {
+  influencers: PropTypes.array,
+  count: PropTypes.number.isRequired,
+  filter: PropTypes.shape({
+    page: PropTypes.number.isRequired,
+    limit: PropTypes.number.isRequired,
+    keyword: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    sort: PropTypes.object.isRequired
+  }).isRequired
 };
 
 export default connect(

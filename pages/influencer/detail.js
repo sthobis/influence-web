@@ -1,4 +1,5 @@
 import Router from "next/router";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import InfluencerDetail from "../../components/InfluencerDetail";
@@ -16,8 +17,9 @@ class InfluencerDetailPage extends Component {
         // user is logged in, fetch influencer detail
         // and save user session for client rehydration
         store.dispatch(setUser(user, accessToken));
-        const isOwner =
-          user.instagramHandle && user.instagramHandle === query.username;
+        const isOwner = user.instagramHandle
+          ? user.instagramHandle === query.username
+          : false;
         try {
           const { influencer } = await getInfluencerByUsername(query.username);
           return { influencer, isOwner };
@@ -39,8 +41,9 @@ class InfluencerDetailPage extends Component {
       const { user } = store.getState();
       if (user) {
         // user is logged in, fetch influencer detail
-        const isOwner =
-          user.instagramHandle && user.instagramHandle === query.username;
+        const isOwner = user.instagramHandle
+          ? user.instagramHandle === query.username
+          : false;
         try {
           const { influencer } = await getInfluencerByUsername(query.username);
           return { influencer, isOwner };
@@ -71,6 +74,39 @@ class InfluencerDetailPage extends Component {
     );
   }
 }
+
+InfluencerDetailPage.propTypes = {
+  influencer: PropTypes.shape({
+    displayName: PropTypes.string.isRequired,
+    instagramHandle: PropTypes.string.isRequired,
+    profilePicture: PropTypes.string.isRequired,
+    followersCount: PropTypes.number.isRequired,
+    endorsePricing: PropTypes.shape({
+      post: PropTypes.number.isRequired,
+      story: PropTypes.number.isRequired
+    }).isRequired,
+    contact: PropTypes.shape({
+      phone: PropTypes.string.isRequired,
+      whatsapp: PropTypes.string.isRequired,
+      line: PropTypes.string.isRequired,
+      instagram: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired
+    }).isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    biography: PropTypes.string.isRequired,
+    isVerified: PropTypes.bool.isRequired,
+    isPrivate: PropTypes.bool.isRequired,
+    recentPhotos: PropTypes.arrayOf(
+      PropTypes.shape({
+        thumbnail: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        likesCount: PropTypes.number.isRequired,
+        repliesCount: PropTypes.number.isRequired
+      })
+    )
+  }),
+  isOwner: PropTypes.bool.isRequired
+};
 
 export default connect(
   null,

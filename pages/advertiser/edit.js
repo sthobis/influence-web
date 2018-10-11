@@ -1,4 +1,5 @@
 import Router from "next/router";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import AdvertiserEdit from "../../components/AdvertiserEdit";
@@ -10,7 +11,7 @@ import getUserGroup from "../../utils/getUserGroup";
 import parseUserFromCookie from "../../utils/parseUserFromCookie";
 
 class AdvertiserEditPage extends Component {
-  static async getInitialProps({ req, res, store, query }) {
+  static async getInitialProps({ req, res, store }) {
     if (req) {
       // server-rendered
       const { user, accessToken } = parseUserFromCookie(req.headers.cookie);
@@ -82,6 +83,15 @@ class AdvertiserEditPage extends Component {
     );
   }
 }
+
+AdvertiserEditPage.propTypes = {
+  advertiser: PropTypes.shape({
+    googleId: PropTypes.string,
+    name: PropTypes.string,
+    email: PropTypes.string,
+    premiumExpiredAt: PropTypes.string
+  })
+};
 
 export default connect(
   null,
