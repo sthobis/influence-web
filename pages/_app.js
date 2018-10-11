@@ -58,6 +58,7 @@ injectGlobal`
 
   h1, h2, h3, h4, h5 {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 700;
   }
 
   *:focus:not(:focus-visible) {

@@ -69,7 +69,7 @@ const styles = {
     padding: 5,
     background: "transparent",
     border: "none",
-    fontWeight: 700,
+    fontWeight: 600,
     fontSize: 16
   })
 };

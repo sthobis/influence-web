@@ -25,6 +25,10 @@ class Home extends Component {
     }
   }
 
+  componentDidMount() {
+    document.title = "Igfluencer";
+  }
+
   render() {
     return (
       <div className={styles.root}>
@@ -197,11 +201,10 @@ const styles = {
       fontSize: 36,
       lineHeight: "1.1",
       margin: "0 0 15px 0",
-      color: "#181a28",
-      fontWeight: 700
+      color: "#181a28"
     },
     "& p": {
-      fontSize: 19,
+      fontSize: 18,
       margin: 0
     }
   }),
@@ -344,7 +347,7 @@ const styles = {
     },
     "& ol": {
       margin: "0",
-      padding: "0 0 0 15px"
+      padding: "0 0 0 17px"
     },
     "& li": {
       fontSize: 18,

@@ -138,7 +138,7 @@ const styles = {
     lineHeight: "1.5",
     "& a": {
       color: "inherit",
-      fontWeight: 700
+      fontWeight: 600
     }
   }),
   premiumIcon: css({
@@ -157,7 +157,7 @@ const styles = {
     padding: "10px 20px",
     color: "#fff",
     cursor: "pointer",
-    fontWeight: 700,
+    fontWeight: 600,
     fontSize: 18,
     "& svg": {
       marginRight: 10

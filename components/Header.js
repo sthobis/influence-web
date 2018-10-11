@@ -3,6 +3,7 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
 import { FaCameraRetro } from "react-icons/fa";
+import { FiArrowRight } from "react-icons/fi";
 import { connect } from "react-redux";
 import CONFIG from "../config";
 import { removeUser } from "../store";
@@ -22,25 +23,33 @@ const Header = ({ user, accessToken, removeUser, className }) => (
             href={`/influencer/detail?username=${user.instagramHandle}`}
             as={`/influencer/detail/${user.instagramHandle}`}
           >
-            <a className={styles.link}>my account</a>
+            <a className={styles.link}>
+              my account <FiArrowRight />
+            </a>
           </Link>
         )}
       {accessToken &&
         getUserGroup(accessToken) === CONFIG.GROUP.ADVERTISER && (
           <Link href="/advertiser/edit">
-            <a className={styles.link}>my account</a>
+            <a className={styles.link}>
+              my account <FiArrowRight />
+            </a>
           </Link>
         )}
       <Link href="/influencer">
-        <a className={styles.link}>influencers</a>
+        <a className={styles.link}>
+          influencers <FiArrowRight />
+        </a>
       </Link>
       {user ? (
         <button className={styles.link} onClick={removeUser}>
-          logout
+          logout <FiArrowRight />
         </button>
       ) : (
         <Link href="/login">
-          <a className={styles.link}>login</a>
+          <a className={styles.link}>
+            login <FiArrowRight />
+          </a>
         </Link>
       )}
     </nav>
@@ -62,7 +71,7 @@ const styles = {
     color: "#fff",
     textDecoration: "none",
     borderRadius: 3,
-    fontWeight: 700,
+    fontWeight: 600,
     "& svg": {
       marginRight: 10
     }
@@ -72,7 +81,7 @@ const styles = {
     justifyContent: "flex-end",
     alignItems: "center",
     "& > *": {
-      marginRight: 20,
+      marginRight: 30,
       "&:last-child": {
         marginRight: 0
       }
@@ -80,14 +89,24 @@ const styles = {
   }),
   link: css({
     display: "flex",
+    justifyContent: "center",
     alignItems: "center",
-    padding: "10px 15px",
-    backgroundColor: "#181a28",
-    color: "#fff",
+    height: 40,
+    backgroundColor: "transparent",
+    border: "none",
+    color: "#181a28",
+    fontWeight: 700,
     textDecoration: "none",
-    borderRadius: 3,
+    fontSize: 16,
+    textTransform: "uppercase",
     "& svg": {
-      marginLeft: 10
+      margin: "0 0 1px 3px",
+      transition: ".3s"
+    },
+    "&:hover": {
+      "& svg": {
+        transform: "translateX(3px)"
+      }
     }
   })
 };

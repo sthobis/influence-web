@@ -103,7 +103,7 @@ const styles = {
     backgroundColor: "rgba(0, 184, 217, 0.1)",
     margin: "0 10px 10px 0",
     padding: "5px 10px 7px 10px",
-    fontWeight: 700,
+    fontWeight: 600,
     borderRadius: 5,
     fontSize: 13,
     textDecoration: "none",

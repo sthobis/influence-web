@@ -47,7 +47,7 @@ Router.onRouteChangeComplete = () => NProgress.done();
 Router.onRouteChangeError = () => NProgress.done();
 
 Layout.defaultProps = {
-  title: "Influence"
+  title: "Igfluencer"
 };
 
 Layout.propTypes = {

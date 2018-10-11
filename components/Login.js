@@ -63,7 +63,7 @@ const styles = {
     border: "none",
     borderRadius: 5,
     color: "#fff",
-    fontWeight: 700,
+    fontWeight: 600,
     fontSize: 16,
     cursor: "pointer"
   })

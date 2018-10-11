@@ -18,11 +18,13 @@ const Footer = ({ className }) => (
       <Link href="/privacypolicy">
         <a>Privacy Policy</a>
       </Link>
+      <a href="mailto:igfluencer.id@gmail.com?Subject=Hi%20Igfluencer">
+        Contact
+      </a>
     </nav>
-    <a href="https://twitter.com/iBoht" className={styles.copyright}>
-      <span>contact us</span>
-      👍🏻
-    </a>
+    <span className={styles.copyright}>
+      igluencer.id <span>'18</span>
+    </span>
   </footer>
 );
 
@@ -31,24 +33,26 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    margin: "35px 0 30px 0"
+    padding: "25px 0",
+    backgroundColor: "#20223a"
   }),
   sitemap: css({
     display: "flex",
     "& a": {
-      margin: "0 30px 0 0",
+      margin: "0 25px 0 0",
       textDecoration: "none",
-      color: "#fff"
+      color: "#fff",
+      fontSize: 15
     }
   }),
   copyright: css({
     display: "flex",
-    alignItems: "center",
+    alignItems: "baseline",
     color: "#fff",
-    margin: "0 0 0 10px",
-    textDecoration: "none",
+    fontWeight: 600,
     "& span": {
-      margin: "2px 5px 0 0"
+      fontSize: 13,
+      margin: "0 0 0 5px"
     }
   })
 };

@@ -208,7 +208,7 @@ const styles = {
     backgroundColor: "turquoise",
     padding: "10px 15px",
     color: "#fff",
-    fontWeight: 700,
+    fontWeight: 600,
     "& svg": {
       marginRight: 10
     }
@@ -249,7 +249,7 @@ const styles = {
     backgroundColor: "#111",
     margin: "0 10px 10px 0",
     padding: "5px 10px 7px 10px",
-    fontWeight: 700,
+    fontWeight: 600,
     borderRadius: 5,
     fontSize: 13,
     textDecoration: "none",
@@ -276,7 +276,7 @@ const styles = {
   endorseDetailTitle: css({
     display: "flex",
     alignItems: "center",
-    fontWeight: 700,
+    fontWeight: 600,
     fontSize: 20,
     "& > svg": {
       width: 40,
@@ -289,7 +289,7 @@ const styles = {
     fontSize: 14,
     "& > strong": {
       fontSize: 20,
-      fontWeight: 700,
+      fontWeight: 600,
       color: "#44bd32",
       margin: "0 0 0 7px"
     }
@@ -390,7 +390,7 @@ const styles = {
     height: "100%",
     backgroundColor: "rgba(0,0,0,0.5)",
     color: "#fff",
-    fontWeight: 700,
+    fontWeight: 600,
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
