@@ -3,8 +3,12 @@ import cookie from "cookie";
 import CONFIG from "../config";
 
 export default cookies => {
+  let language = CONFIG.LANGUAGE.ID;
   if (typeof cookies === "string") {
     const cookiesJson = cookie.parse(cookies);
+    if (cookiesJson[CONFIG.COOKIE.LANGUAGE]) {
+      language = cookiesJson[CONFIG.COOKIE.LANGUAGE];
+    }
     if (cookiesJson[CONFIG.COOKIE.USER]) {
       // user was previously logged in
       const user = JSON.parse(cookiesJson[CONFIG.COOKIE.USER]);
@@ -17,9 +21,9 @@ export default cookies => {
       const now = new Date().getTime();
       if (now > payload.exp) {
         // accessToken has not expired and is still valid
-        return { user, accessToken };
+        return { user, accessToken, language };
       }
     }
   }
-  return { user: null, accessToken: null };
+  return { user: null, accessToken: null, language };
 };

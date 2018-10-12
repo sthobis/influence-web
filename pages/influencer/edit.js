@@ -1,20 +1,22 @@
 import Router from "next/router";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import InfluencerEdit from "../../components/InfluencerEdit";
 import Layout from "../../components/Layout";
+import Localize from "../../components/Localize";
 import CONFIG from "../../config";
-import { addNotification, setUser } from "../../store";
+import { addNotification, setLanguage, setUser } from "../../store";
 import { getInfluencerByUsername, updateInfluencer } from "../../utils/api";
 import getUserGroup from "../../utils/getUserGroup";
-import parseUserFromCookie from "../../utils/parseUserFromCookie";
-import PropTypes from "prop-types";
+import parseCookie from "../../utils/parseCookie";
 
 class InfluencerEditPage extends Component {
   static async getInitialProps({ req, res, store }) {
     if (req) {
       // server-rendered
-      const { user, accessToken } = parseUserFromCookie(req.headers.cookie);
+      const { user, accessToken, language } = parseCookie(req.headers.cookie);
+      store.dispatch(setLanguage(language));
       if (user) {
         // user is logged in save user session for client rehydration
         store.dispatch(setUser(user, accessToken));
@@ -97,9 +99,13 @@ class InfluencerEditPage extends Component {
   render() {
     const { influencer } = this.state;
     return (
-      <Layout title="Edit my account">
-        <InfluencerEdit influencer={influencer} save={this.save} />
-      </Layout>
+      <Localize selector="pages.influencerEdit">
+        {localized => (
+          <Layout title={localized[0]}>
+            <InfluencerEdit influencer={influencer} save={this.save} />
+          </Layout>
+        )}
+      </Localize>
     );
   }
 }

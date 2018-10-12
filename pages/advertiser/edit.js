@@ -4,17 +4,19 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import AdvertiserEdit from "../../components/AdvertiserEdit";
 import Layout from "../../components/Layout";
+import Localize from "../../components/Localize";
 import CONFIG from "../../config";
-import { addNotification, setUser } from "../../store";
+import { addNotification, setLanguage, setUser } from "../../store";
 import { getAdvertiserById } from "../../utils/api";
 import getUserGroup from "../../utils/getUserGroup";
-import parseUserFromCookie from "../../utils/parseUserFromCookie";
+import parseCookie from "../../utils/parseCookie";
 
 class AdvertiserEditPage extends Component {
   static async getInitialProps({ req, res, store }) {
     if (req) {
       // server-rendered
-      const { user, accessToken } = parseUserFromCookie(req.headers.cookie);
+      const { user, accessToken, language } = parseCookie(req.headers.cookie);
+      store.dispatch(setLanguage(language));
       if (user) {
         // user is logged in save user session for client rehydration
         store.dispatch(setUser(user, accessToken));
@@ -77,9 +79,13 @@ class AdvertiserEditPage extends Component {
   render() {
     const { advertiser } = this.props;
     return (
-      <Layout title="Edit my account">
-        <AdvertiserEdit advertiser={advertiser} />
-      </Layout>
+      <Localize selector="pages.advertiserEdit">
+        {localized => (
+          <Layout title={localized[0]}>
+            <AdvertiserEdit advertiser={advertiser} />
+          </Layout>
+        )}
+      </Localize>
     );
   }
 }

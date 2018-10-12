@@ -1,16 +1,16 @@
 import { css, cx } from "emotion";
 import produce from "immer";
 import set from "lodash/set";
-import Link from "next/link";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { FaCreditCard, FaRegMeh, FaRegSmile, FaSave } from "react-icons/fa";
+import { FaSave } from "react-icons/fa";
+import Localize from "./Localize";
+import PremiumNotice from "./PremiumNotice";
 import TagsFilter from "./TagsFilter";
 
 class InfluencerEdit extends Component {
   state = {
-    influencer: this.props.influencer,
-    isHoveringPremium: false
+    influencer: this.props.influencer
   };
 
   handleChange = (key, value) => {
@@ -21,14 +21,6 @@ class InfluencerEdit extends Component {
     );
   };
 
-  handleMouseOver = () => {
-    this.setState({ isHoveringPremium: true });
-  };
-
-  handleMouseOut = () => {
-    this.setState({ isHoveringPremium: false });
-  };
-
   save = () => {
     const { save } = this.props;
     const { influencer } = this.state;
@@ -36,222 +28,178 @@ class InfluencerEdit extends Component {
   };
 
   render() {
-    const { influencer, isHoveringPremium } = this.state;
-
+    const { influencer } = this.state;
     return (
-      <div className={styles.root}>
-        <section className={styles.section}>
-          <h2 className={styles.title}>Tags</h2>
-          <div className={cx(styles.field, styles.fullWidth)}>
-            <TagsFilter
-              alternateStyle
-              tags={influencer.tags}
-              setFilter={(key, value) =>
-                this.handleChange("influencer.tags", value)
-              }
-            />
+      <Localize selector="components.influencerEdit">
+        {localized => (
+          <div className={styles.root}>
+            <section className={styles.section}>
+              <h2 className={styles.title}>Tags</h2>
+              <div className={cx(styles.field, styles.fullWidth)}>
+                <TagsFilter
+                  alternateStyle
+                  tags={influencer.tags}
+                  setFilter={(key, value) =>
+                    this.handleChange("influencer.tags", value)
+                  }
+                />
+              </div>
+            </section>
+            <section className={styles.section}>
+              <h2 className={styles.title}>{localized[0]}</h2>
+              <div className={styles.row}>
+                <div className={styles.field}>
+                  <label className={styles.label} htmlFor="pricing-post">
+                    {localized[1]}
+                  </label>
+                  <input
+                    type="number"
+                    id="pricing-post"
+                    className={styles.input}
+                    placeholder={localized[2]}
+                    value={influencer.endorsePricing.post}
+                    onChange={e =>
+                      this.handleChange(
+                        "influencer.endorsePricing.post",
+                        e.target.value
+                          ? parseInt(e.target.value)
+                          : e.target.value
+                      )
+                    }
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.label} htmlFor="pricing-story">
+                    {localized[3]}
+                  </label>
+                  <input
+                    type="number"
+                    id="pricing-story"
+                    className={styles.input}
+                    placeholder={localized[2]}
+                    value={influencer.endorsePricing.story}
+                    onChange={e =>
+                      this.handleChange(
+                        "influencer.endorsePricing.story",
+                        e.target.value
+                          ? parseInt(e.target.value)
+                          : e.target.value
+                      )
+                    }
+                  />
+                </div>
+              </div>
+            </section>
+            <section className={styles.section}>
+              <h2 className={styles.title}>Contact</h2>
+              <div className={styles.row}>
+                <div className={styles.field}>
+                  <label className={styles.label} htmlFor="contact-email">
+                    email
+                  </label>
+                  <input
+                    type="text"
+                    id="contact-email"
+                    className={styles.input}
+                    placeholder="Email"
+                    value={influencer.contact.email}
+                    onChange={e =>
+                      this.handleChange(
+                        "influencer.contact.email",
+                        e.target.value
+                      )
+                    }
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.label} htmlFor="contact-instagram">
+                    instagram
+                  </label>
+                  <input
+                    type="text"
+                    id="contact-instagram"
+                    className={styles.input}
+                    placeholder="Instagram"
+                    value={influencer.contact.instagram}
+                    onChange={e =>
+                      this.handleChange(
+                        "influencer.contact.instagram",
+                        e.target.value
+                      )
+                    }
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.label} htmlFor="contact-whatsapp">
+                    whatsapp
+                  </label>
+                  <input
+                    type="text"
+                    id="contact-whatsapp"
+                    className={styles.input}
+                    placeholder="Whatsapp"
+                    value={influencer.contact.whatsapp}
+                    onChange={e =>
+                      this.handleChange(
+                        "influencer.contact.whatsapp",
+                        e.target.value
+                      )
+                    }
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.label} htmlFor="contact-line">
+                    line
+                  </label>
+                  <input
+                    type="text"
+                    id="contact-line"
+                    className={styles.input}
+                    placeholder="Line"
+                    value={influencer.contact.line}
+                    onChange={e =>
+                      this.handleChange(
+                        "influencer.contact.line",
+                        e.target.value
+                      )
+                    }
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.label} htmlFor="contact-phone">
+                    phone
+                  </label>
+                  <input
+                    type="text"
+                    id="contact-phone"
+                    className={styles.input}
+                    placeholder="Phone"
+                    value={influencer.contact.phone}
+                    onChange={e =>
+                      this.handleChange(
+                        "influencer.contact.phone",
+                        e.target.value
+                      )
+                    }
+                  />
+                </div>
+              </div>
+            </section>
+            <section className={styles.section}>
+              <button
+                type="button"
+                onClick={this.save}
+                className={cx(styles.button, styles.saveButton)}
+              >
+                <FaSave /> {localized[4]}
+              </button>
+            </section>
+            <section className={styles.section}>
+              <PremiumNotice premiumExpiredAt={influencer.premiumExpiredAt} />
+            </section>
           </div>
-        </section>
-        <section className={styles.section}>
-          <h2 className={styles.title}>Endorse Pricing</h2>
-          <div className={styles.row}>
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="pricing-post">
-                post endorsement price
-              </label>
-              <input
-                type="number"
-                id="pricing-post"
-                className={styles.input}
-                placeholder="post endorsement price"
-                value={influencer.endorsePricing.post}
-                onChange={e =>
-                  this.handleChange(
-                    "influencer.endorsePricing.post",
-                    e.target.value ? parseInt(e.target.value) : e.target.value
-                  )
-                }
-              />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="pricing-story">
-                story endorsement price
-              </label>
-              <input
-                type="number"
-                id="pricing-story"
-                className={styles.input}
-                placeholder="story endorsement price"
-                value={influencer.endorsePricing.story}
-                onChange={e =>
-                  this.handleChange(
-                    "influencer.endorsePricing.story",
-                    e.target.value ? parseInt(e.target.value) : e.target.value
-                  )
-                }
-              />
-            </div>
-          </div>
-        </section>
-        <section className={styles.section}>
-          <h2 className={styles.title}>Contact</h2>
-          <div className={styles.row}>
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="contact-email">
-                email
-              </label>
-              <input
-                type="text"
-                id="contact-email"
-                className={styles.input}
-                placeholder="Email"
-                value={influencer.contact.email}
-                onChange={e =>
-                  this.handleChange("influencer.contact.email", e.target.value)
-                }
-              />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="contact-instagram">
-                instagram
-              </label>
-              <input
-                type="text"
-                id="contact-instagram"
-                className={styles.input}
-                placeholder="Instagram"
-                value={influencer.contact.instagram}
-                onChange={e =>
-                  this.handleChange(
-                    "influencer.contact.instagram",
-                    e.target.value
-                  )
-                }
-              />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="contact-whatsapp">
-                whatsapp
-              </label>
-              <input
-                type="text"
-                id="contact-whatsapp"
-                className={styles.input}
-                placeholder="Whatsapp"
-                value={influencer.contact.whatsapp}
-                onChange={e =>
-                  this.handleChange(
-                    "influencer.contact.whatsapp",
-                    e.target.value
-                  )
-                }
-              />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="contact-line">
-                line
-              </label>
-              <input
-                type="text"
-                id="contact-line"
-                className={styles.input}
-                placeholder="Line"
-                value={influencer.contact.line}
-                onChange={e =>
-                  this.handleChange("influencer.contact.line", e.target.value)
-                }
-              />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="contact-phone">
-                phone
-              </label>
-              <input
-                type="text"
-                id="contact-phone"
-                className={styles.input}
-                placeholder="Phone"
-                value={influencer.contact.phone}
-                onChange={e =>
-                  this.handleChange("influencer.contact.phone", e.target.value)
-                }
-              />
-            </div>
-          </div>
-        </section>
-        <section className={styles.section}>
-          <button
-            type="button"
-            onClick={this.save}
-            className={cx(styles.button, styles.saveButton)}
-          >
-            <FaSave /> Save
-          </button>
-        </section>
-        <section className={styles.section}>
-          <div className={styles.premium}>
-            {new Date(influencer.premiumExpiredAt) > new Date() ? (
-              <>
-                <p className={styles.premiumText}>
-                  you are currently on{" "}
-                  <Link href="/#pricing">
-                    <a>premium plan</a>
-                  </Link>{" "}
-                  with full features activated
-                </p>
-                <FaRegSmile className={styles.premiumIcon} />
-                <p className={styles.premiumText}>
-                  thanks for making us smile!
-                  <br />
-                  have any suggestion or feature you would like to see?{" "}
-                  <Link href="/#contact">
-                    <a>let us know</a>
-                  </Link>
-                </p>
-                <span className={styles.expiration}>
-                  expires on {formatDate(influencer.premiumExpiredAt)}
-                </span>
-              </>
-            ) : (
-              <>
-                <p className={styles.premiumText}>
-                  you are currently on{" "}
-                  <Link href="/#pricing">
-                    <a>free plan</a>
-                  </Link>{" "}
-                  with limited features
-                </p>
-                {isHoveringPremium ? (
-                  <FaRegSmile className={styles.premiumIcon} />
-                ) : (
-                  <FaRegMeh className={styles.premiumIcon} />
-                )}
-                <p className={styles.premiumText}>
-                  upgrade to{" "}
-                  <Link href="/#pricing">
-                    <a
-                      onMouseOver={this.handleMouseOver}
-                      onMouseOut={this.handleMouseOut}
-                    >
-                      premium plan
-                    </a>
-                  </Link>{" "}
-                  to get full features
-                  <br />
-                  you will also make us smile by doing so!
-                </p>
-                <button
-                  className={styles.button}
-                  onMouseOver={this.handleMouseOver}
-                  onMouseOut={this.handleMouseOut}
-                >
-                  <FaCreditCard /> Upgrade
-                </button>
-              </>
-            )}
-          </div>
-        </section>
-      </div>
+        )}
+      </Localize>
     );
   }
 }
@@ -327,33 +275,6 @@ const styles = {
   }),
   saveButton: css({
     margin: "0 auto"
-  }),
-  premium: css({
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    fontSize: 16,
-    margin: "20px 0 0 0",
-    textAlign: "center"
-  }),
-  premiumText: css({
-    margin: 0,
-    lineHeight: "1.5",
-    "& a": {
-      color: "#181a28",
-      fontWeight: 700
-    }
-  }),
-  premiumIcon: css({
-    color: "#39bdcc",
-    width: 50,
-    height: 50,
-    margin: "10px 0"
-  }),
-  expiration: css({
-    margin: "10px 0 0 0",
-    fontSize: 14
   })
 };
 

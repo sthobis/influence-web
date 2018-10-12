@@ -15,13 +15,19 @@ export default {
   },
   COOKIE: {
     USER: "__influence_user",
-    ACCESS_TOKEN: "__influence_access_token"
+    ACCESS_TOKEN: "__influence_access_token",
+    LANGUAGE: "__influence_language"
   },
   GROUP: {
     ADVERTISER: "advertiser",
     INFLUENCER: "influencer",
     SUPER_ADMIN: "super_admin",
     STAFF_ADMIN: "staff_admin"
+  },
+  LANGUAGE: {
+    // IETF language tag
+    US: "EN",
+    ID: "ID"
   },
   TAGS_FILTER_OPTIONS: ["general", "food", "comedy"],
   SORT_FILTER_OPTIONS: [

@@ -15,6 +15,7 @@ import {
   FaWhatsapp
 } from "react-icons/fa";
 import formatFollower from "../utils/formatFollower";
+import Localize from "./Localize";
 
 const formatDate = dateStr => {
   const date = new Date(dateStr);
@@ -22,165 +23,173 @@ const formatDate = dateStr => {
 };
 
 const InfluencerDetail = ({ influencer, isOwner }) => (
-  <div className={styles.root}>
-    <section className={styles.detail}>
-      {isOwner && (
-        <Link href="/influencer/edit">
-          <a className={styles.editButton}>
-            <FaUserCog /> Edit Profile
-          </a>
-        </Link>
-      )}
-      <img
-        src={influencer.profilePicture}
-        alt={influencer.displayName}
-        className={styles.profilePicture}
-      />
-      <div>
-        <h1 className={styles.displayName}>
-          {influencer.displayName} (
-          <a href={`https://www.instagram.com/${influencer.instagramHandle}`}>
-            @{influencer.instagramHandle}
-          </a>
-          )
-          {influencer.isVerified && (
-            <span title="verified on instagram">
-              <FaCheckCircle style={{ color: "#00a8ff" }} />
-            </span>
-          )}
-        </h1>
-        <p className={styles.followersCount}>
-          <strong>{formatFollower(influencer.followersCount)}</strong> followers
-        </p>
-        <p className={styles.biography}>{influencer.biography}</p>
-        <div className={styles.tagsContainer}>
-          {influencer.tags.map((tag, i) => (
-            <Link key={i} href={`/influencer?tags=${tag}`}>
-              <a className={styles.tags}>{tag}</a>
+  <Localize selector="components.influencerDetail">
+    {localized => (
+      <div className={styles.root}>
+        <section className={styles.detail}>
+          {isOwner && (
+            <Link href="/influencer/edit">
+              <a className={styles.editButton}>
+                <FaUserCog /> {localized[0]}
+              </a>
             </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-    <section>
-      <h2>Endorse Info</h2>
-      <div className={styles.endorse}>
-        <div>
-          <div className={styles.endorseDetail}>
-            <span className={styles.endorseDetailTitle}>
-              <FaMoneyCheckAlt /> Post Endorsement
-            </span>
-            <span className={styles.endorseDetailValue}>
-              starts from{" "}
-              <strong>
-                {influencer.endorsePricing.post.toLocaleString("id-ID", {
-                  style: "currency",
-                  currency: "IDR"
-                })}
-              </strong>
-            </span>
-          </div>
-          <div className={styles.endorseDetail}>
-            <span className={styles.endorseDetailTitle}>
-              <FaMoneyCheckAlt /> Story Endorsement
-            </span>
-            <span className={styles.endorseDetailValue}>
-              starts from{" "}
-              <strong>
-                {influencer.endorsePricing.story.toLocaleString("id-ID", {
-                  style: "currency",
-                  currency: "IDR"
-                })}
-              </strong>
-            </span>
-          </div>
-        </div>
-        <ul className={styles.contactList}>
-          <li className={styles.contactDetail}>
-            <span
-              style={{ background: "#5352ed" }}
-              className={cx(styles.icon, styles.smallIcon)}
-              title="email"
-            >
-              {" "}
-              <FaEnvelope />
-            </span>
-            {influencer.contact.email || "---"}
-          </li>
-          <li className={styles.contactDetail}>
-            <span
-              style={{
-                background: "linear-gradient(-315deg,#ffd521,#f30005,#b900b4)"
-              }}
-              className={styles.icon}
-              title="instagram"
-            >
-              <FaInstagram />
-            </span>{" "}
-            {influencer.contact.instagram || "---"}
-          </li>
-          <li className={styles.contactDetail}>
-            <span
-              style={{ background: "#24cc63" }}
-              className={styles.icon}
-              title="whatsapp"
-            >
-              <FaWhatsapp />
-            </span>{" "}
-            {influencer.contact.whatsapp || "---"}
-          </li>
-          <li className={styles.contactDetail}>
-            <span
-              style={{ background: "#00b300" }}
-              className={styles.icon}
-              title="line"
-            >
-              <FaLine />
-            </span>{" "}
-            {influencer.contact.line || "---"}
-          </li>
-          <li className={styles.contactDetail}>
-            <span
-              style={{ background: "#4b6584" }}
-              className={cx(styles.icon, styles.smallIcon)}
-              title="phone number"
-            >
-              <FaPhone />
-            </span>
-            {influencer.contact.phone || "---"}
-          </li>
-        </ul>
-      </div>
-    </section>
-    <section>
-      <h2>Recent Photos</h2>
-      <ul className={styles.list}>
-        {influencer.recentPhotos.map((photo, i) => (
-          <li key={i} className={styles.listItem}>
-            <a href={photo.url} className={styles.photo}>
-              <div
-                className={styles.photoImage}
-                style={{
-                  backgroundImage: `url('${photo.thumbnail}')`
-                }}
-              />
-              <div className={styles.photoOverlay}>
-                <span className={styles.overlayText}>
-                  <FaHeart /> {photo.likesCount.toLocaleString("id")}
+          )}
+          <img
+            src={influencer.profilePicture}
+            alt={influencer.displayName}
+            className={styles.profilePicture}
+          />
+          <div>
+            <h1 className={styles.displayName}>
+              {influencer.displayName} (
+              <a
+                href={`https://www.instagram.com/${influencer.instagramHandle}`}
+              >
+                @{influencer.instagramHandle}
+              </a>
+              )
+              {influencer.isVerified && (
+                <span title={localized[1]}>
+                  <FaCheckCircle style={{ color: "#00a8ff" }} />
                 </span>
-                <span className={styles.overlayText}>
-                  <FaComment /> {photo.repliesCount.toLocaleString("id")}
+              )}
+            </h1>
+            <p className={styles.followersCount}>
+              <strong>{formatFollower(influencer.followersCount)}</strong>{" "}
+              {localized[2]}
+            </p>
+            <p className={styles.biography}>{influencer.biography}</p>
+            <div className={styles.tagsContainer}>
+              {influencer.tags.map((tag, i) => (
+                <Link key={i} href={`/influencer?tags=${tag}`}>
+                  <a className={styles.tags}>{tag}</a>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+        <section>
+          <h2>{localized[3]}</h2>
+          <div className={styles.endorse}>
+            <div>
+              <div className={styles.endorseDetail}>
+                <span className={styles.endorseDetailTitle}>
+                  <FaMoneyCheckAlt /> {localized[4]}
+                </span>
+                <span className={styles.endorseDetailValue}>
+                  {localized[5]}{" "}
+                  <strong>
+                    {influencer.endorsePricing.post.toLocaleString("id-ID", {
+                      style: "currency",
+                      currency: "IDR"
+                    })}
+                  </strong>
                 </span>
               </div>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
-    <p className={styles.timestamp}>
-      data last updated at {formatDate(influencer.updatedAt)}
-    </p>
-  </div>
+              <div className={styles.endorseDetail}>
+                <span className={styles.endorseDetailTitle}>
+                  <FaMoneyCheckAlt /> {localized[6]}
+                </span>
+                <span className={styles.endorseDetailValue}>
+                  {localized[5]}{" "}
+                  <strong>
+                    {influencer.endorsePricing.story.toLocaleString("id-ID", {
+                      style: "currency",
+                      currency: "IDR"
+                    })}
+                  </strong>
+                </span>
+              </div>
+            </div>
+            <ul className={styles.contactList}>
+              <li className={styles.contactDetail}>
+                <span
+                  style={{ background: "#5352ed" }}
+                  className={cx(styles.icon, styles.smallIcon)}
+                  title="email"
+                >
+                  {" "}
+                  <FaEnvelope />
+                </span>
+                {influencer.contact.email || "---"}
+              </li>
+              <li className={styles.contactDetail}>
+                <span
+                  style={{
+                    background:
+                      "linear-gradient(-315deg,#ffd521,#f30005,#b900b4)"
+                  }}
+                  className={styles.icon}
+                  title="instagram"
+                >
+                  <FaInstagram />
+                </span>{" "}
+                {influencer.contact.instagram || "---"}
+              </li>
+              <li className={styles.contactDetail}>
+                <span
+                  style={{ background: "#24cc63" }}
+                  className={styles.icon}
+                  title="whatsapp"
+                >
+                  <FaWhatsapp />
+                </span>{" "}
+                {influencer.contact.whatsapp || "---"}
+              </li>
+              <li className={styles.contactDetail}>
+                <span
+                  style={{ background: "#00b300" }}
+                  className={styles.icon}
+                  title="line"
+                >
+                  <FaLine />
+                </span>{" "}
+                {influencer.contact.line || "---"}
+              </li>
+              <li className={styles.contactDetail}>
+                <span
+                  style={{ background: "#4b6584" }}
+                  className={cx(styles.icon, styles.smallIcon)}
+                  title="phone number"
+                >
+                  <FaPhone />
+                </span>
+                {influencer.contact.phone || "---"}
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section>
+          <h2>{localized[7]}</h2>
+          <ul className={styles.list}>
+            {influencer.recentPhotos.map((photo, i) => (
+              <li key={i} className={styles.listItem}>
+                <a href={photo.url} className={styles.photo}>
+                  <div
+                    className={styles.photoImage}
+                    style={{
+                      backgroundImage: `url('${photo.thumbnail}')`
+                    }}
+                  />
+                  <div className={styles.photoOverlay}>
+                    <span className={styles.overlayText}>
+                      <FaHeart /> {photo.likesCount.toLocaleString("id")}
+                    </span>
+                    <span className={styles.overlayText}>
+                      <FaComment /> {photo.repliesCount.toLocaleString("id")}
+                    </span>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+        <p className={styles.timestamp}>
+          {localized[8]} {formatDate(influencer.updatedAt)}
+        </p>
+      </div>
+    )}
+  </Localize>
 );
 
 const styles = {

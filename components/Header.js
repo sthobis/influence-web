@@ -8,52 +8,57 @@ import { connect } from "react-redux";
 import CONFIG from "../config";
 import { removeUser } from "../store";
 import getUserGroup from "../utils/getUserGroup";
+import Localize from "./Localize";
 
 const Header = ({ user, accessToken, removeUser }) => (
-  <header className={styles.root}>
-    <Link href="/">
-      <a className={styles.logo}>
-        <FaCameraRetro /> igfluencer.id
-      </a>
-    </Link>
-    <nav className={styles.nav}>
-      {accessToken &&
-        getUserGroup(accessToken) === CONFIG.GROUP.INFLUENCER && (
-          <Link
-            href={`/influencer/detail?username=${user.instagramHandle}`}
-            as={`/influencer/detail/${user.instagramHandle}`}
-          >
-            <a className={styles.link}>
-              my account <FiArrowRight />
-            </a>
-          </Link>
-        )}
-      {accessToken &&
-        getUserGroup(accessToken) === CONFIG.GROUP.ADVERTISER && (
-          <Link href="/advertiser/edit">
-            <a className={styles.link}>
-              my account <FiArrowRight />
-            </a>
-          </Link>
-        )}
-      <Link href="/influencer">
-        <a className={styles.link}>
-          influencers <FiArrowRight />
-        </a>
-      </Link>
-      {user ? (
-        <button className={styles.link} onClick={removeUser}>
-          logout <FiArrowRight />
-        </button>
-      ) : (
-        <Link href="/login">
-          <a className={styles.link}>
-            login <FiArrowRight />
+  <Localize selector="components.header">
+    {localized => (
+      <header className={styles.root}>
+        <Link href="/">
+          <a className={styles.logo}>
+            <FaCameraRetro /> igfluencer.id
           </a>
         </Link>
-      )}
-    </nav>
-  </header>
+        <nav className={styles.nav}>
+          {accessToken &&
+            getUserGroup(accessToken) === CONFIG.GROUP.INFLUENCER && (
+              <Link
+                href={`/influencer/detail?username=${user.instagramHandle}`}
+                as={`/influencer/detail/${user.instagramHandle}`}
+              >
+                <a className={styles.link}>
+                  {localized[0]} <FiArrowRight />
+                </a>
+              </Link>
+            )}
+          {accessToken &&
+            getUserGroup(accessToken) === CONFIG.GROUP.ADVERTISER && (
+              <Link href="/advertiser/edit">
+                <a className={styles.link}>
+                  {localized[0]} <FiArrowRight />
+                </a>
+              </Link>
+            )}
+          <Link href="/influencer">
+            <a className={styles.link}>
+              influencer <FiArrowRight />
+            </a>
+          </Link>
+          {user ? (
+            <button className={styles.link} onClick={removeUser}>
+              {localized[1]} <FiArrowRight />
+            </button>
+          ) : (
+            <Link href="/login">
+              <a className={styles.link}>
+                {localized[2]} <FiArrowRight />
+              </a>
+            </Link>
+          )}
+        </nav>
+      </header>
+    )}
+  </Localize>
 );
 
 const styles = {
@@ -97,6 +102,7 @@ const styles = {
     height: 40,
     backgroundColor: "transparent",
     border: "none",
+    padding: 0,
     color: "#181a28",
     fontWeight: 700,
     textDecoration: "none",

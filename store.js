@@ -10,7 +10,8 @@ import CONFIG from "./config";
 const initialState = {
   user: null,
   accessToken: null,
-  notifications: []
+  notifications: [],
+  language: jsCookie.get(CONFIG.COOKIE.LANGUAGE) || CONFIG.LANGUAGE.ID
 };
 
 // action types
@@ -18,7 +19,8 @@ const ACTION_TYPE = {
   SET_USER: "SET_USER",
   REMOVE_USER: "REMOVE_USER",
   ADD_NOTIFICATION: "ADD_NOTIFICATION",
-  REMOVE_NOTIFICATION: "REMOVE_NOTIFICATION"
+  REMOVE_NOTIFICATION: "REMOVE_NOTIFICATION",
+  SET_LANGUAGE: "SET_LANGUAGE"
 };
 
 // redux reducer
@@ -40,6 +42,8 @@ const reducer = produce((draft, action) => {
     case ACTION_TYPE.REMOVE_NOTIFICATION:
       draft.notifications.splice(action.index, 1);
       return;
+    case ACTION_TYPE.SET_LANGUAGE:
+      draft.language = action.language;
     default:
       return;
   }
@@ -91,6 +95,14 @@ export function removeNotification(index) {
   return {
     type: ACTION_TYPE.REMOVE_NOTIFICATION,
     index
+  };
+}
+
+export function setLanguage(language) {
+  jsCookie.set(CONFIG.COOKIE.LANGUAGE, language);
+  return {
+    type: ACTION_TYPE.SET_LANGUAGE,
+    language
   };
 }
 // redux actions end

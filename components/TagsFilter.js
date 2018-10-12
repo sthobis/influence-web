@@ -3,67 +3,74 @@ import PropTypes from "prop-types";
 import React from "react";
 import Select from "react-select";
 import CONFIG from "../config";
+import Localize from "./Localize";
 
 const TagsFilter = ({ tags, setFilter, alternateStyle }) => (
-  <Select
-    value={tags.map(tag => ({ label: tag, value: tag }))}
-    isMulti
-    instanceId="tags-filter"
-    name="tags"
-    placeholder="Filter by tags.."
-    options={CONFIG.TAGS_FILTER_OPTIONS.map(tag => ({
-      label: tag,
-      value: tag
-    }))}
-    className={styles.select}
-    styles={{
-      control: base => {
-        let controlStyles = { ...base, ...styles.control };
-        if (alternateStyle) {
-          controlStyles = {
-            ...controlStyles,
-            ...styles.alternateStyle
-          };
-        }
-        return controlStyles;
-      },
-      valueContainer: base => ({
-        ...base,
-        ...styles.valueContainer
-      }),
-      placeholder: base => ({
-        ...base,
-        ...styles.placeholder
-      }),
-      input: base => ({ ...base, ...styles.input }),
-      multiValue: base => ({ ...base, ...styles.multiValue }),
-      multiValueLabel: base => ({
-        ...base,
-        ...styles.multiValueLabel
-      }),
-      multiValueRemove: base => ({
-        ...base,
-        ...styles.multiValueRemove
-      }),
-      option: (base, { isFocused }) => ({
-        ...base,
-        ...styles.option,
-        backgroundColor: isFocused ? "rgba(0, 184, 217, 0.1)" : "transparent"
-      }),
-      menu: base => ({
-        ...base,
-        ...styles.menu
-      }),
-      menuList: base => ({
-        ...base,
-        ...styles.menuList
-      }),
-      clearIndicator: base => ({ ...base, ...styles.indicators }),
-      dropdownIndicator: base => ({ ...base, ...styles.indicators }),
-      noOptionsMessage: base => ({ ...base, ...styles.option })
-    }}
-    onChange={selections => setFilter("tags", selections.map(o => o.value))}
-  />
+  <Localize selector="components.tagsFilter">
+    {localized => (
+      <Select
+        value={tags.map(tag => ({ label: tag, value: tag }))}
+        isMulti
+        instanceId="tags-filter"
+        name="tags"
+        placeholder={localized[0]}
+        options={CONFIG.TAGS_FILTER_OPTIONS.map(tag => ({
+          label: tag,
+          value: tag
+        }))}
+        className={styles.select}
+        styles={{
+          control: base => {
+            let controlStyles = { ...base, ...styles.control };
+            if (alternateStyle) {
+              controlStyles = {
+                ...controlStyles,
+                ...styles.alternateStyle
+              };
+            }
+            return controlStyles;
+          },
+          valueContainer: base => ({
+            ...base,
+            ...styles.valueContainer
+          }),
+          placeholder: base => ({
+            ...base,
+            ...styles.placeholder
+          }),
+          input: base => ({ ...base, ...styles.input }),
+          multiValue: base => ({ ...base, ...styles.multiValue }),
+          multiValueLabel: base => ({
+            ...base,
+            ...styles.multiValueLabel
+          }),
+          multiValueRemove: base => ({
+            ...base,
+            ...styles.multiValueRemove
+          }),
+          option: (base, { isFocused }) => ({
+            ...base,
+            ...styles.option,
+            backgroundColor: isFocused
+              ? "rgba(0, 184, 217, 0.1)"
+              : "transparent"
+          }),
+          menu: base => ({
+            ...base,
+            ...styles.menu
+          }),
+          menuList: base => ({
+            ...base,
+            ...styles.menuList
+          }),
+          clearIndicator: base => ({ ...base, ...styles.indicators }),
+          dropdownIndicator: base => ({ ...base, ...styles.indicators }),
+          noOptionsMessage: base => ({ ...base, ...styles.option })
+        }}
+        onChange={selections => setFilter("tags", selections.map(o => o.value))}
+      />
+    )}
+  </Localize>
 );
 
 const styles = {

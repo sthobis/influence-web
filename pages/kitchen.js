@@ -7,10 +7,10 @@ import { connect } from "react-redux";
 import Layout from "../components/Layout";
 import Textarea from "../components/Textarea";
 import CONFIG from "../config";
-import { addNotification, setUser } from "../store";
+import { addNotification, setLanguage, setUser } from "../store";
 import { authAdministrator, crawlInstagramUser } from "../utils/api";
 import getUserGroup from "../utils/getUserGroup";
-import parseUserFromCookie from "../utils/parseUserFromCookie";
+import parseCookie from "../utils/parseCookie";
 
 /*
  * 🔥 WARNING 🔥
@@ -40,7 +40,8 @@ class Kitchen extends Component {
   static async getInitialProps({ req, res, store, query }) {
     if (req) {
       // server-rendered
-      const { user, accessToken } = parseUserFromCookie(req.headers.cookie);
+      const { user, accessToken, language } = parseCookie(req.headers.cookie);
+      store.dispatch(setLanguage(language));
       if (user) {
         store.dispatch(setUser(user, accessToken));
         return {

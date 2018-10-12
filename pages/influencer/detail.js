@@ -4,15 +4,16 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import InfluencerDetail from "../../components/InfluencerDetail";
 import Layout from "../../components/Layout";
-import { addNotification, setUser } from "../../store";
+import { addNotification, setLanguage, setUser } from "../../store";
 import { getInfluencerByUsername } from "../../utils/api";
-import parseUserFromCookie from "../../utils/parseUserFromCookie";
+import parseCookie from "../../utils/parseCookie";
 
 class InfluencerDetailPage extends Component {
   static async getInitialProps({ req, res, store, query }) {
     if (req) {
       // server-rendered
-      const { user, accessToken } = parseUserFromCookie(req.headers.cookie);
+      const { user, accessToken, language } = parseCookie(req.headers.cookie);
+      store.dispatch(setLanguage(language));
       if (user) {
         // user is logged in, fetch influencer detail
         // and save user session for client rehydration

@@ -8,12 +8,13 @@ import { connect } from "react-redux";
 import InfluencerList from "../../components/InfluencerList";
 import KeywordFilter from "../../components/KeywordFilter";
 import Layout from "../../components/Layout";
+import Localize from "../../components/Localize";
 import Paginator from "../../components/Paginator";
 import SortFilter from "../../components/SortFilter";
 import TagsFilter from "../../components/TagsFilter";
-import { addNotification, setUser } from "../../store";
+import { addNotification, setLanguage, setUser } from "../../store";
 import { getInfluencerList } from "../../utils/api";
-import parseUserFromCookie from "../../utils/parseUserFromCookie";
+import parseCookie from "../../utils/parseCookie";
 
 const initialState = {
   page: 0,
@@ -43,7 +44,8 @@ class InfluencerListPage extends Component {
     const filter = { ...initialState, ...parseQuery(query) };
     if (req) {
       // server-rendered
-      const { user, accessToken } = parseUserFromCookie(req.headers.cookie);
+      const { user, accessToken, language } = parseCookie(req.headers.cookie);
+      store.dispatch(setLanguage(language));
       if (user) {
         // user is logged in, fetch influencer list
         // and save user session for client rehydration
@@ -146,20 +148,24 @@ class InfluencerListPage extends Component {
     const { influencers, count } = this.props;
     const { limit, page, keyword, tags, sort } = this.state;
     return (
-      <Layout title="Top Influencers in Indonesia">
-        <KeywordFilter keyword={keyword} setFilter={this.setFilter} />
-        <div className={styles.filter}>
-          <TagsFilter tags={tags} setFilter={this.setFilter} />
-          <SortFilter sort={sort} setFilter={this.setFilter} />
-        </div>
-        {influencers && <InfluencerList influencers={influencers} />}
-        <Paginator
-          page={page}
-          limit={limit}
-          count={count}
-          goToPage={this.goToPage}
-        />
-      </Layout>
+      <Localize selector="pages.influencerIndex">
+        {localized => (
+          <Layout title={localized[0]}>
+            <KeywordFilter keyword={keyword} setFilter={this.setFilter} />
+            <div className={styles.filter}>
+              <TagsFilter tags={tags} setFilter={this.setFilter} />
+              <SortFilter sort={sort} setFilter={this.setFilter} />
+            </div>
+            {influencers && <InfluencerList influencers={influencers} />}
+            <Paginator
+              page={page}
+              limit={limit}
+              count={count}
+              goToPage={this.goToPage}
+            />
+          </Layout>
+        )}
+      </Localize>
     );
   }
 }

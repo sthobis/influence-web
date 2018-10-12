@@ -2,14 +2,15 @@ import { css } from "emotion";
 import Link from "next/link";
 import React, { Component } from "react";
 import { FaCameraRetro } from "react-icons/fa";
-import { setUser } from "../store";
-import parseUserFromCookie from "../utils/parseUserFromCookie";
+import { setLanguage, setUser } from "../store";
+import parseCookie from "../utils/parseCookie";
 
 class TermsAndConditions extends Component {
   static getInitialProps({ req, store }) {
     if (req) {
       // server-rendered
-      const { user, accessToken } = parseUserFromCookie(req.headers.cookie);
+      const { user, accessToken, language } = parseCookie(req.headers.cookie);
+      store.dispatch(setLanguage(language));
       if (user) {
         // user is logged in,  save user session for client rehydration
         store.dispatch(setUser(user, accessToken));

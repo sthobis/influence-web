@@ -2,21 +2,24 @@ import { css } from "emotion";
 import PropTypes from "prop-types";
 import React from "react";
 import InfluencerItem from "./InfluencerItem";
+import Localize from "./Localize";
 
 const InfluencerList = ({ influencers, viewType }) => (
-  <>
-    {influencers.length > 0 ? (
-      <ul className={styles.list}>
-        {influencers.map(influencer => (
-          <li key={influencer._id} className={styles.listItem}>
-            <InfluencerItem influencer={influencer} viewType={viewType} />
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p className={styles.empty}>No influencers found.</p>
-    )}
-  </>
+  <Localize selector="components.influencerList">
+    {localized =>
+      influencers.length > 0 ? (
+        <ul className={styles.list}>
+          {influencers.map(influencer => (
+            <li key={influencer._id} className={styles.listItem}>
+              <InfluencerItem influencer={influencer} viewType={viewType} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className={styles.empty}>{localized[0]}.</p>
+      )
+    }
+  </Localize>
 );
 
 const styles = {

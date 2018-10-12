@@ -1,15 +1,20 @@
 import { css } from "emotion";
 import PropTypes from "prop-types";
 import React from "react";
+import Localize from "./Localize";
 
 const KeywordFilter = ({ keyword, setFilter }) => (
-  <input
-    type="text"
-    value={keyword}
-    placeholder="Search influencer.."
-    className={styles.textInput}
-    onChange={e => setFilter("keyword", e.target.value)}
-  />
+  <Localize selector="components.keywordFilter">
+    {localized => (
+      <input
+        type="text"
+        value={keyword}
+        placeholder={localized[0]}
+        className={styles.textInput}
+        onChange={e => setFilter("keyword", e.target.value)}
+      />
+    )}
+  </Localize>
 );
 
 const styles = {

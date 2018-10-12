@@ -7,6 +7,7 @@ import InstagramLogin from "react-instagram-login";
 import CONFIG from "../config";
 import AdvertiserIllustration from "./AdvertiserIllustration";
 import InfluencerIllustration from "./InfluencerIllustration";
+import Localize from "./Localize";
 
 const Login = ({
   loggingInAs,
@@ -15,83 +16,83 @@ const Login = ({
   loginAsInfluencer,
   handleError
 }) => (
-  <div className={styles.root}>
-    <section
-      className={cx(
-        styles.section,
-        {
-          [styles.minimize]: loggingInAs === CONFIG.GROUP.INFLUENCER
-        },
-        {
-          [styles.maximize]: loggingInAs === CONFIG.GROUP.ADVERTISER
-        }
-      )}
-    >
-      <div className={styles.illustration}>
-        <AdvertiserIllustration />
+  <Localize selector="components.login">
+    {localized => (
+      <div className={styles.root}>
+        <section
+          className={cx(
+            styles.section,
+            {
+              [styles.minimize]: loggingInAs === CONFIG.GROUP.INFLUENCER
+            },
+            {
+              [styles.maximize]: loggingInAs === CONFIG.GROUP.ADVERTISER
+            }
+          )}
+        >
+          <div className={styles.illustration}>
+            <AdvertiserIllustration />
+          </div>
+          <p className={styles.description}>
+            {localized[0]} <strong>Advertiser</strong> {localized[1]}.
+          </p>
+          <GoogleLogin
+            clientId="753672082179-m23j4kahvq4qpp3e586rrmkiftdsau6d.apps.googleusercontent.com"
+            onSuccess={loginAsAdvertiser}
+            onFailure={err => handleError("Google", err)}
+            className={cx(styles.button, styles.google, {
+              [styles.loading]: fetchStatus === CONFIG.FETCH_STATUS.FETCHING
+            })}
+            disabled={fetchStatus === CONFIG.FETCH_STATUS.FETCHING}
+          >
+            {fetchStatus === CONFIG.FETCH_STATUS.FETCHING ? (
+              <FaSpinner />
+            ) : (
+              <>
+                <FaGoogle /> {localized[2]}
+              </>
+            )}
+          </GoogleLogin>
+        </section>
+        <section
+          className={cx(
+            styles.section,
+            {
+              [styles.minimize]: loggingInAs === CONFIG.GROUP.ADVERTISER
+            },
+            {
+              [styles.maximize]: loggingInAs === CONFIG.GROUP.INFLUENCER
+            }
+          )}
+        >
+          <div className={styles.illustration}>
+            <InfluencerIllustration />
+          </div>
+          <p className={styles.description}>
+            {localized[0]} <strong>Influencer</strong> {localized[3]}.
+          </p>
+          <InstagramLogin
+            clientId="f2ba3adae3564817b3421225dcc1f1bf"
+            redirectUri={`${CONFIG.BASE_URL[process.env.NODE_ENV]}/login`}
+            onSuccess={loginAsInfluencer}
+            onFailure={err => handleError("Instagram", err)}
+            cssClass={cx(styles.button, styles.instagram, {
+              [styles.loading]: fetchStatus === CONFIG.FETCH_STATUS.FETCHING
+            })}
+            disabled={fetchStatus === CONFIG.FETCH_STATUS.FETCHING}
+          >
+            {fetchStatus === CONFIG.FETCH_STATUS.FETCHING ? (
+              <FaSpinner />
+            ) : (
+              <>
+                <FaInstagram /> {localized[4]}
+              </>
+            )}
+          </InstagramLogin>
+        </section>
       </div>
-      <p className={styles.description}>
-        I am an <strong>Advertiser</strong> looking for influencer to
-        <br />
-        promote/endorse my brand.
-      </p>
-      <GoogleLogin
-        clientId="753672082179-m23j4kahvq4qpp3e586rrmkiftdsau6d.apps.googleusercontent.com"
-        onSuccess={loginAsAdvertiser}
-        onFailure={err => handleError("Google", err)}
-        className={cx(styles.button, styles.google, {
-          [styles.loading]: fetchStatus === CONFIG.FETCH_STATUS.FETCHING
-        })}
-        disabled={fetchStatus === CONFIG.FETCH_STATUS.FETCHING}
-      >
-        {fetchStatus === CONFIG.FETCH_STATUS.FETCHING ? (
-          <FaSpinner />
-        ) : (
-          <>
-            <FaGoogle /> Login with Google
-          </>
-        )}
-      </GoogleLogin>
-    </section>
-    <section
-      className={cx(
-        styles.section,
-        {
-          [styles.minimize]: loggingInAs === CONFIG.GROUP.ADVERTISER
-        },
-        {
-          [styles.maximize]: loggingInAs === CONFIG.GROUP.INFLUENCER
-        }
-      )}
-    >
-      <div className={styles.illustration}>
-        <InfluencerIllustration />
-      </div>
-      <p className={styles.description}>
-        I am an <strong>Influencer</strong> looking for opportunity to
-        <br />
-        promote/endorse someone's brand.
-      </p>
-      <InstagramLogin
-        clientId="f2ba3adae3564817b3421225dcc1f1bf"
-        redirectUri={`${CONFIG.BASE_URL[process.env.NODE_ENV]}/login`}
-        onSuccess={loginAsInfluencer}
-        onFailure={err => handleError("Instagram", err)}
-        cssClass={cx(styles.button, styles.instagram, {
-          [styles.loading]: fetchStatus === CONFIG.FETCH_STATUS.FETCHING
-        })}
-        disabled={fetchStatus === CONFIG.FETCH_STATUS.FETCHING}
-      >
-        {fetchStatus === CONFIG.FETCH_STATUS.FETCHING ? (
-          <FaSpinner />
-        ) : (
-          <>
-            <FaInstagram /> Login with Instagram
-          </>
-        )}
-      </InstagramLogin>
-    </section>
-  </div>
+    )}
+  </Localize>
 );
 
 const spin = keyframes`

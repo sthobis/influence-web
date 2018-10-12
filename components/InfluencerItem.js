@@ -3,49 +3,55 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
 import formatFollower from "../utils/formatFollower";
+import Localize from "./Localize";
 
 const InfluencerItem = ({ influencer, viewType }) => (
-  <div className={styles.root}>
-    <div className={styles.info}>
-      <img
-        src={influencer.profilePicture}
-        alt={influencer.displayName}
-        className={styles.thumbnail}
-      />
-      <div className={styles.nameContainer}>
-        <h2 className={styles.displayName}>
-          {influencer.displayName
-            .trim()
-            .toLowerCase()
-            .replace(/[^a-z ]/gi, "")}
-        </h2>
-        <a
-          href={`https://instagram.com/${influencer.instagramHandle}`}
-          className={styles.link}
+  <Localize selector="components.influencerItem">
+    {localized => (
+      <div className={styles.root}>
+        <div className={styles.info}>
+          <img
+            src={influencer.profilePicture}
+            alt={influencer.displayName}
+            className={styles.thumbnail}
+          />
+          <div className={styles.nameContainer}>
+            <h2 className={styles.displayName}>
+              {influencer.displayName
+                .trim()
+                .toLowerCase()
+                .replace(/[^a-z ]/gi, "")}
+            </h2>
+            <a
+              href={`https://instagram.com/${influencer.instagramHandle}`}
+              className={styles.link}
+            >
+              <p className={styles.instagramHandle}>
+                @{influencer.instagramHandle}
+              </p>
+            </a>
+          </div>
+          <div>
+            <strong>{formatFollower(influencer.followersCount)}</strong>{" "}
+            {localized[0]}
+          </div>
+          <div className={styles.tagsContainer}>
+            {influencer.tags.map((tag, i) => (
+              <Link key={i} href={`/influencer?tags=${tag}`}>
+                <a className={styles.tags}>{tag}</a>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <Link
+          href={`/influencer/detail?username=${influencer.instagramHandle}`}
+          as={`/influencer/detail/${influencer.instagramHandle}`}
         >
-          <p className={styles.instagramHandle}>
-            @{influencer.instagramHandle}
-          </p>
-        </a>
+          <a className={styles.detail}>{localized[1]}</a>
+        </Link>
       </div>
-      <div>
-        <strong>{formatFollower(influencer.followersCount)}</strong> followers
-      </div>
-      <div className={styles.tagsContainer}>
-        {influencer.tags.map((tag, i) => (
-          <Link key={i} href={`/influencer?tags=${tag}`}>
-            <a className={styles.tags}>{tag}</a>
-          </Link>
-        ))}
-      </div>
-    </div>
-    <Link
-      href={`/influencer/detail?username=${influencer.instagramHandle}`}
-      as={`/influencer/detail/${influencer.instagramHandle}`}
-    >
-      <a className={styles.detail}>Detail</a>
-    </Link>
-  </div>
+    )}
+  </Localize>
 );
 
 const styles = {

@@ -1,32 +1,61 @@
 import { css } from "emotion";
 import Link from "next/link";
+import PropTypes from "prop-types";
 import React from "react";
+import { connect } from "react-redux";
+import CONFIG from "../config";
+import { setLanguage } from "../store";
+import Localize from "./Localize";
 
-const Footer = () => (
-  <footer className={styles.root}>
-    <div className={styles.container}>
-      <nav className={styles.sitemap}>
-        <Link href="/">
-          <a>Home</a>
-        </Link>
-        <Link href="/influencer">
-          <a>Influencers</a>
-        </Link>
-        <Link href="/termsandconditions">
-          <a>Terms and Conditions</a>
-        </Link>
-        <Link href="/privacypolicy">
-          <a>Privacy Policy</a>
-        </Link>
-        <a href="mailto:igfluencer.id@gmail.com?Subject=Hi%20Igfluencer">
-          Contact
-        </a>
-      </nav>
-      <span className={styles.copyright}>
-        igfluencer.id <span>'18</span>
-      </span>
-    </div>
-  </footer>
+const Footer = ({ language, toggleLanguage }) => (
+  <Localize selector="components.footer">
+    {localized => (
+      <footer className={styles.root}>
+        <div className={styles.container}>
+          <nav className={styles.sitemap}>
+            <Link href="/">
+              <a>{localized[0]}</a>
+            </Link>
+            <Link href="/influencer">
+              <a>Influencer</a>
+            </Link>
+            <Link href="/termsandconditions">
+              <a>{localized[1]}</a>
+            </Link>
+            <Link href="/privacypolicy">
+              <a>{localized[2]}</a>
+            </Link>
+            <a href="mailto:igfluencer.id@gmail.com?Subject=Hi%20Igfluencer">
+              {localized[3]}
+            </a>
+          </nav>
+          <div className={styles.rightSection}>
+            <div className={styles.language}>
+              <span>{language}</span>
+              <button type="button" onClick={toggleLanguage}>
+                {language === CONFIG.LANGUAGE.ID ? (
+                  <img
+                    src="/static/images/flag-id.svg"
+                    alt="Bahasa Indonesia"
+                    title="Bahasa Indonesia"
+                  />
+                ) : (
+                  <img
+                    src="/static/images/flag-us.svg"
+                    alt="English - United States"
+                    title="English - United States"
+                  />
+                )}
+              </button>
+            </div>
+            <span className={styles.copyright}>
+              igfluencer.id <span>'18</span>
+            </span>
+          </div>
+        </div>
+      </footer>
+    )}
+  </Localize>
 );
 
 const styles = {
@@ -51,6 +80,35 @@ const styles = {
       fontSize: 15
     }
   }),
+  rightSection: css({
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center"
+  }),
+  language: css({
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "0 20px 0 0",
+    "& span": {
+      color: "#fff",
+      fontSize: 13,
+      fontWeight: 600,
+      margin: "3px 0 0 0"
+    },
+    "& button": {
+      display: "flex",
+      padding: 0,
+      background: "transparent",
+      border: "none",
+      cursor: "pointer",
+      margin: "0 0 0 10px"
+    },
+    "& img": {
+      width: 30,
+      borderRadius: 3
+    }
+  }),
   copyright: css({
     display: "flex",
     alignItems: "baseline",
@@ -63,4 +121,28 @@ const styles = {
   })
 };
 
-export default Footer;
+Footer.propTypes = {
+  language: PropTypes.oneOf([CONFIG.LANGUAGE.ID, CONFIG.LANGUAGE.US])
+    .isRequired,
+  toggleLanguage: PropTypes.func.isRequired
+};
+
+const stateToProps = ({ language }) => ({ language });
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  ...ownProps,
+  ...stateProps,
+  toggleLanguage: () => {
+    if (stateProps.language === CONFIG.LANGUAGE.ID) {
+      dispatchProps.setLanguage(CONFIG.LANGUAGE.US);
+    } else {
+      dispatchProps.setLanguage(CONFIG.LANGUAGE.ID);
+    }
+  }
+});
+
+export default connect(
+  stateToProps,
+  { setLanguage },
+  mergeProps
+)(Footer);

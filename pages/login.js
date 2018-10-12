@@ -3,17 +3,19 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Layout from "../components/Layout";
+import Localize from "../components/Localize";
 import Login from "../components/Login";
 import CONFIG from "../config";
-import { addNotification, setUser } from "../store";
+import { addNotification, setLanguage, setUser } from "../store";
 import { authAdvertiser, authInfluencer } from "../utils/api";
-import parseUserFromCookie from "../utils/parseUserFromCookie";
+import parseCookie from "../utils/parseCookie";
 
 class LoginPage extends Component {
   static async getInitialProps({ req, res, store, query }) {
     if (req) {
       // server-rendered
-      const { user, accessToken } = parseUserFromCookie(req.headers.cookie);
+      const { user, accessToken, language } = parseCookie(req.headers.cookie);
+      store.dispatch(setLanguage(language));
       if (user) {
         // user is logged in save user session for client rehydration
         // and redirect to home page
@@ -105,15 +107,19 @@ class LoginPage extends Component {
   render() {
     const { loggingInAs, fetchStatus } = this.state;
     return (
-      <Layout>
-        <Login
-          loggingInAs={loggingInAs}
-          fetchStatus={fetchStatus}
-          loginAsAdvertiser={this.loginAsAdvertiser}
-          loginAsInfluencer={this.loginAsInfluencer}
-          handleError={this.handleError}
-        />
-      </Layout>
+      <Localize selector="pages.login">
+        {localized => (
+          <Layout title={localized[0]}>
+            <Login
+              loggingInAs={loggingInAs}
+              fetchStatus={fetchStatus}
+              loginAsAdvertiser={this.loginAsAdvertiser}
+              loginAsInfluencer={this.loginAsInfluencer}
+              handleError={this.handleError}
+            />
+          </Layout>
+        )}
+      </Localize>
     );
   }
 }

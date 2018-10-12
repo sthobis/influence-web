@@ -6,15 +6,17 @@ import AdvertiserIllustration from "../components/AdvertiserIllustration";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import InfluencerIllustration from "../components/InfluencerIllustration";
+import Localize from "../components/Localize";
 import Notification from "../components/Notification";
-import { setUser } from "../store";
-import parseUserFromCookie from "../utils/parseUserFromCookie";
+import { setLanguage, setUser } from "../store";
+import parseCookie from "../utils/parseCookie";
 
 class Home extends Component {
   static getInitialProps({ req, store }) {
     if (req) {
       // server-rendered
-      const { user, accessToken } = parseUserFromCookie(req.headers.cookie);
+      const { user, accessToken, language } = parseCookie(req.headers.cookie);
+      store.dispatch(setLanguage(language));
       if (user) {
         // user is logged in,  save user session for client rehydration
         store.dispatch(setUser(user, accessToken));
@@ -28,86 +30,70 @@ class Home extends Component {
 
   render() {
     return (
-      <div className={styles.root}>
-        <Header />
-        <main>
-          <section className={cx(styles.introductionSection, styles.container)}>
-            <div className={styles.introductionLeft}>
-              <h1>Find top instagram influencers in Indonesia</h1>
-              <p>
-                <strong>igfluencer.id</strong> will help you find the right
-                influencer to
-                <br />
-                promote your brand and reach more audience.
-              </p>
-            </div>
-            <div className={styles.introductionRight}>
-              <div className={styles.introductionIllustration}>
-                <FaHeart />
-                <FaHeart />
-                <FaHeart />
-                <FaCommentDots />
-                <FaCommentDots />
-                <FaCommentDots />
-                <img
-                  src="/static/images/section-1.svg"
-                  alt="Find top instagram influencers in Indonesia"
-                />
-              </div>
-            </div>
-          </section>
-          <section className={styles.roleSection}>
-            <h2>How it Works</h2>
-            <div className={cx(styles.role, styles.container)}>
-              <div className={styles.roleThumbnail}>
-                <AdvertiserIllustration />
-              </div>
-              <div className={styles.roleText}>
-                <h3>As an Advertiser</h3>
-                <ol>
-                  <li>
-                    Authenticate yourself as Advertiser using your google
-                    account.
-                  </li>
-                  <li>
-                    Check influencer list to find suitable candidate for your
-                    marketing campaign.
-                  </li>
-                  <li>
-                    Contact your favorite influencers through their contact info
-                    to discuss potential endorsement contract.
-                  </li>
-                </ol>
-              </div>
-            </div>
-            <div className={cx(styles.role, styles.container)}>
-              <div className={styles.roleText}>
-                <h3>As an Influencer</h3>
-                <ol>
-                  <li>
-                    Authenticate yourself as Influencer using your instagram
-                    account.
-                  </li>
-                  <li>
-                    Update your profile details so potential advertiser will
-                    know you better.
-                  </li>
-                  <li>
-                    Congratulations, you're now included in igfluencer.id's
-                    influencer list and are exposed to future endorsement
-                    contract from advertiser.
-                  </li>
-                </ol>
-              </div>
-              <div className={styles.roleThumbnail}>
-                <InfluencerIllustration />
-              </div>
-            </div>
-          </section>
-        </main>
-        <Footer />
-        <Notification />
-      </div>
+      <Localize selector="pages.index">
+        {localized => (
+          <div className={styles.root}>
+            <Header />
+            <main>
+              <section
+                className={cx(styles.introductionSection, styles.container)}
+              >
+                <div className={styles.introductionLeft}>
+                  <h1>{localized[0]}</h1>
+                  <p>
+                    <strong>igfluencer.id</strong> {localized[1]}.
+                  </p>
+                </div>
+                <div className={styles.introductionRight}>
+                  <div className={styles.introductionIllustration}>
+                    <FaHeart />
+                    <FaHeart />
+                    <FaHeart />
+                    <FaCommentDots />
+                    <FaCommentDots />
+                    <FaCommentDots />
+                    <img
+                      src="/static/images/section-1.svg"
+                      alt="Find top instagram influencers in Indonesia"
+                    />
+                  </div>
+                </div>
+              </section>
+              <section className={styles.roleSection}>
+                <h2>{localized[2]}</h2>
+                <div className={cx(styles.role, styles.container)}>
+                  <div className={styles.roleThumbnail}>
+                    <AdvertiserIllustration />
+                  </div>
+                  <div className={styles.roleText}>
+                    <h3>{localized[3]}</h3>
+                    <ol>
+                      <li>{localized[4]}.</li>
+                      <li>{localized[5]}.</li>
+                      <li>{localized[6]}.</li>
+                    </ol>
+                  </div>
+                </div>
+                <div className={cx(styles.role, styles.container)}>
+                  <div className={styles.roleText}>
+                    <h3>{localized[7]}</h3>
+                    <ol>
+                      <li>{localized[8]}.</li>
+                      <li>{localized[9]}.</li>
+                      <li>{localized[10]}.</li>
+                    </ol>
+                  </div>
+                  <div className={styles.roleThumbnail}>
+                    <InfluencerIllustration />
+                  </div>
+                </div>
+              </section>
+            </main>
+            <Footer />
+            <Notification />
+          </div>
+        )}
+      </Localize>
     );
   }
 }
