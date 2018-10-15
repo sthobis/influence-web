@@ -30,7 +30,12 @@ const styles = {
     backgroundColor: "#fff",
     borderRadius: 5,
     boxShadow: "0 0 30px rgba(35, 0, 95, 0.05)",
-    textAlign: "center"
+    textAlign: "center",
+    "@media (max-width: 767px)": {
+      paddingLeft: 30,
+      paddingRight: 30,
+      marginBottom: 50
+    }
   }),
   icon: css({
     width: 70,
@@ -39,10 +44,20 @@ const styles = {
     margin: "0 0 20px 0"
   }),
   name: css({
-    margin: "0 0 2px 0"
+    margin: "0 0 2px 0",
+    "@media (max-width: 767px)": {
+      marginBottom: 5
+    }
   }),
   email: css({
-    margin: "0 0 40px 0"
+    maxWidth: "100%",
+    margin: "0 0 40px 0",
+    overflowWrap: "break-word",
+    wordWrap: "break-word",
+    hyphens: "auto",
+    "@media (max-width: 767px)": {
+      marginBottom: 30
+    }
   })
 };
 
