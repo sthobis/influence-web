@@ -45,7 +45,11 @@ const styles = {
     maxWidth: "1200",
     height: "100%",
     margin: "0 auto",
-    padding: "0 50px"
+    padding: "0 50px",
+    "@media (max-width: 767px)": {
+      paddingLeft: 30,
+      paddingRight: 30
+    }
   })
 };
 

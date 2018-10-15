@@ -110,7 +110,10 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    margin: "0 0 75px 0"
+    margin: "0 0 75px 0",
+    "@media (max-width: 767px)": {
+      flexDirection: "column"
+    }
   }),
   section: css({
     display: "flex",
@@ -120,7 +123,13 @@ const styles = {
     textAlign: "center",
     width: "calc((100% - 50px) / 2)",
     overflow: "hidden",
-    transition: ".3s"
+    transition: ".3s",
+    "@media (max-width: 767px)": {
+      width: "100%",
+      "& + &": {
+        marginTop: 75
+      }
+    }
   }),
   minimize: css({
     width: 0
@@ -142,11 +151,23 @@ const styles = {
       bottom: 0,
       left: 0,
       width: "100%"
+    },
+    "@media (max-width: 767px)": {
+      "&::before": {
+        display: "none"
+      },
+      "& > *": {
+        position: "relative"
+      }
     }
   }),
   description: css({
     margin: "40px 0 30px 0",
-    fontSize: 18
+    fontSize: 18,
+    "@media (max-width: 767px)": {
+      marginTop: 20,
+      marginBottom: 20
+    }
   }),
   button: css({
     display: "flex",
