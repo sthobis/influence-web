@@ -1,8 +1,8 @@
-import { css } from "emotion";
+import { css, cx } from "emotion";
 import Link from "next/link";
 import PropTypes from "prop-types";
-import React from "react";
-import { FaCameraRetro } from "react-icons/fa";
+import React, { Component } from "react";
+import { FaBars, FaCameraRetro, FaTimes } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
 import { connect } from "react-redux";
 import CONFIG from "../config";
@@ -10,69 +10,120 @@ import { removeUser } from "../store";
 import getUserGroup from "../utils/getUserGroup";
 import Localize from "./Localize";
 
-const Header = ({ user, accessToken, removeUser }) => (
-  <Localize selector="components.header">
-    {localized => (
-      <header className={styles.root}>
-        <Link href="/">
-          <a className={styles.logo}>
-            <FaCameraRetro /> igfluencer.id
-          </a>
-        </Link>
-        <nav className={styles.nav}>
-          {accessToken &&
-            getUserGroup(accessToken) === CONFIG.GROUP.INFLUENCER && (
-              <Link
-                href={`/influencer/detail?username=${user.instagramHandle}`}
-                as={`/influencer/detail/${user.instagramHandle}`}
-              >
-                <a className={styles.link}>
-                  {localized[0]} <FiArrowRight />
-                </a>
-              </Link>
-            )}
-          {accessToken &&
-            getUserGroup(accessToken) === CONFIG.GROUP.ADVERTISER && (
-              <Link href="/advertiser/edit">
-                <a className={styles.link}>
-                  {localized[0]} <FiArrowRight />
-                </a>
-              </Link>
-            )}
-          <Link href="/influencer">
-            <a className={styles.link}>
-              influencer <FiArrowRight />
-            </a>
-          </Link>
-          {user ? (
-            <button className={styles.link} onClick={removeUser}>
-              {localized[1]} <FiArrowRight />
-            </button>
-          ) : (
-            <Link href="/login">
-              <a className={styles.link}>
-                {localized[2]} <FiArrowRight />
+class Header extends Component {
+  state = {
+    isMobileNavOpened: false
+  };
+
+  toggleMobileNav = () => {
+    this.setState(prevState => ({
+      isMobileNavOpened: !prevState.isMobileNavOpened
+    }));
+  };
+
+  render() {
+    const { user, accessToken, removeUser } = this.props;
+    const { isMobileNavOpened } = this.state;
+    return (
+      <Localize selector="components.header">
+        {localized => (
+          <header
+            className={cx(styles.header, {
+              [styles.fullScreenHeader]: isMobileNavOpened
+            })}
+          >
+            <Link href="/">
+              <a className={styles.logo}>
+                <FaCameraRetro /> igfluencer.id
               </a>
             </Link>
-          )}
-        </nav>
-      </header>
-    )}
-  </Localize>
-);
+            <nav
+              className={cx(styles.nav, {
+                [styles.fullScreenNav]: isMobileNavOpened
+              })}
+            >
+              {accessToken &&
+                getUserGroup(accessToken) === CONFIG.GROUP.INFLUENCER && (
+                  <Link
+                    href={`/influencer/detail?username=${user.instagramHandle}`}
+                    as={`/influencer/detail/${user.instagramHandle}`}
+                  >
+                    <a className={styles.link}>
+                      {localized[0]} <FiArrowRight />
+                    </a>
+                  </Link>
+                )}
+              {accessToken &&
+                getUserGroup(accessToken) === CONFIG.GROUP.ADVERTISER && (
+                  <Link href="/advertiser/edit">
+                    <a className={styles.link}>
+                      {localized[0]} <FiArrowRight />
+                    </a>
+                  </Link>
+                )}
+              <Link href="/influencer">
+                <a className={styles.link}>
+                  influencer <FiArrowRight />
+                </a>
+              </Link>
+              {user ? (
+                <button className={styles.link} onClick={removeUser}>
+                  {localized[1]} <FiArrowRight />
+                </button>
+              ) : (
+                <Link href="/login">
+                  <a className={styles.link}>
+                    {localized[2]} <FiArrowRight />
+                  </a>
+                </Link>
+              )}
+            </nav>
+            <button
+              onClick={this.toggleMobileNav}
+              className={cx(styles.menuButton, {
+                [styles.fullScreenMenuButton]: isMobileNavOpened
+              })}
+            >
+              {isMobileNavOpened ? <FaTimes /> : <FaBars />}
+            </button>
+          </header>
+        )}
+      </Localize>
+    );
+  }
+}
 
 const styles = {
-  root: css({
+  header: css({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
     maxWidth: 1200,
     margin: "0 auto",
-    padding: "40px 50px"
+    padding: "40px 50px",
+    "@media (max-width: 767px)": {
+      paddingLeft: 30,
+      paddingRight: 30
+    }
+  }),
+  fullScreenHeader: css({
+    "@media (max-width: 767px)": {
+      position: "fixed",
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      flexDirection: "column",
+      justifyContent: "flex-start",
+      alignItems: "flex-start",
+      zIndex: 10000,
+      backgroundColor: "#fff"
+    }
   }),
   logo: css({
     display: "flex",
+    justifyContent: "center",
     alignItems: "center",
     padding: "10px 15px",
     backgroundColor: "#181a28",
@@ -92,6 +143,27 @@ const styles = {
       marginRight: 30,
       "&:last-child": {
         marginRight: 0
+      }
+    },
+    "@media (max-width: 767px)": {
+      display: "none"
+    }
+  }),
+  fullScreenNav: css({
+    "@media (max-width: 767px)": {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "stretch",
+      width: "100%",
+      "& > *": {
+        marginRight: 0,
+        justifyContent: "flex-start",
+        "&:first-child": {
+          marginTop: 15
+        },
+        "&:last-child": {
+          marginBottom: 15
+        }
       }
     }
   }),
@@ -118,6 +190,25 @@ const styles = {
         transform: "translateX(3px)"
       }
     }
+  }),
+  menuButton: css({
+    display: "none",
+    "@media (max-width: 767px)": {
+      display: "flex",
+      justifyContent: "flex-end",
+      alignItems: "center",
+      width: 40,
+      height: 40,
+      padding: 0,
+      fontSize: 20,
+      background: "transparent",
+      border: "none"
+    }
+  }),
+  fullScreenMenuButton: css({
+    position: "absolute",
+    top: 40,
+    right: 30
   })
 };
 

@@ -125,7 +125,11 @@ const styles = {
     marginLeft: "auto",
     marginRight: "auto",
     paddingLeft: 50,
-    paddingRight: 50
+    paddingRight: 50,
+    "@media (max-width: 767px)": {
+      paddingLeft: 30,
+      paddingRight: 30
+    }
   }),
   introductionSection: css({
     position: "relative",
@@ -135,6 +139,10 @@ const styles = {
     "& > *": {
       position: "relative",
       zIndex: 2
+    },
+    "@media (max-width: 767px)": {
+      flexDirection: "column",
+      alignItems: "center"
     }
   }),
   introductionLeft: css({
@@ -151,6 +159,18 @@ const styles = {
     "& p": {
       fontSize: 18,
       margin: 0
+    },
+    "@media (max-width: 959px)": {
+      paddingTop: 50
+    },
+    "@media (max-width: 767px)": {
+      width: "100%",
+      paddingTop: 0,
+      paddingRight: 0,
+      "& h1": {
+        fontSize: 32,
+        marginBottom: 25
+      }
     }
   }),
   introductionRight: css({
@@ -159,6 +179,10 @@ const styles = {
     textAlign: "right",
     "& img": {
       width: "100%"
+    },
+    "@media (max-width: 767px)": {
+      width: "100%",
+      padding: "0 0 25px 0"
     }
   }),
   introductionIllustration: css({
@@ -216,6 +240,9 @@ const styles = {
       padding: "0 5px 8px 5px",
       fontSize: 32,
       borderBottom: "6px solid #e4e3ea"
+    },
+    "@media (max-width: 767px)": {
+      paddingTop: 50
     }
   }),
   role: css({
@@ -224,11 +251,24 @@ const styles = {
     alignItems: "center",
     "& + &": {
       marginTop: 75
+    },
+    "@media (max-width: 767px)": {
+      flexDirection: "column",
+      "& + &": {
+        marginTop: 50
+      },
+      "&:nth-of-type(2)": {
+        flexDirection: "column-reverse"
+      }
     }
   }),
   roleThumbnail: css({
+    flex: "none",
     width: "40%",
     "& img": {
+      width: "100%"
+    },
+    "@media (max-width: 767px)": {
       width: "100%"
     }
   }),
@@ -250,6 +290,22 @@ const styles = {
     "& li": {
       fontSize: 18,
       margin: "0 0 5px 0"
+    },
+    "@media (max-width: 767px)": {
+      paddingTop: 25,
+      "&:first-child": {
+        paddingRight: 0
+      },
+      "&:last-child": {
+        paddingLeft: 0
+      },
+      "& h3": {
+        textAlign: "center",
+        marginBottom: 20
+      },
+      "& li": {
+        fontSize: 17
+      }
     }
   })
 };

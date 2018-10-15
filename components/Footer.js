@@ -30,20 +30,25 @@ const Footer = ({ language, toggleLanguage }) => (
             </a>
           </nav>
           <div className={styles.rightSection}>
-            <div className={styles.language}>
+            <div
+              className={styles.language}
+              title={
+                language === CONFIG.LANGUAGE.ID
+                  ? "Bahasa Indonesia"
+                  : "English - United States"
+              }
+            >
               <span>{language}</span>
               <button type="button" onClick={toggleLanguage}>
                 {language === CONFIG.LANGUAGE.ID ? (
                   <img
                     src="/static/images/flag-id.svg"
                     alt="Bahasa Indonesia"
-                    title="Bahasa Indonesia"
                   />
                 ) : (
                   <img
                     src="/static/images/flag-us.svg"
                     alt="English - United States"
-                    title="English - United States"
                   />
                 )}
               </button>
@@ -69,7 +74,12 @@ const styles = {
     width: "100%",
     maxWidth: 1200,
     margin: "0 auto",
-    padding: "25px 50px"
+    padding: "25px 50px",
+    "@media (max-width: 959px)": {
+      flexDirection: "column",
+      paddingLeft: 30,
+      paddingRight: 30
+    }
   }),
   sitemap: css({
     display: "flex",
@@ -78,12 +88,27 @@ const styles = {
       textDecoration: "none",
       color: "#fff",
       fontSize: 15
+    },
+    "@media (max-width: 959px)": {
+      marginBottom: 25
+    },
+    "@media (max-width: 767px)": {
+      marginBottom: 15,
+      flexDirection: "column",
+      alignItems: "center",
+      "& a": {
+        margin: "0 0 10px 0"
+      }
     }
   }),
   rightSection: css({
     display: "flex",
     justifyContent: "flex-end",
-    alignItems: "center"
+    alignItems: "center",
+    "@media (max-width: 767px)": {
+      flexDirection: "column",
+      alignItems: "center"
+    }
   }),
   language: css({
     display: "flex",
@@ -107,6 +132,9 @@ const styles = {
     "& img": {
       width: 30,
       borderRadius: 3
+    },
+    "@media (max-width: 767px)": {
+      margin: "0 0 15px 0"
     }
   }),
   copyright: css({
@@ -114,6 +142,7 @@ const styles = {
     alignItems: "baseline",
     color: "#fff",
     fontWeight: 600,
+    fontSize: 15,
     "& span": {
       fontSize: 13,
       margin: "0 0 0 5px"
