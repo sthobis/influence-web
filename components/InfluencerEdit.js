@@ -194,7 +194,7 @@ class InfluencerEdit extends Component {
                 <FaSave /> {localized[4]}
               </button>
             </section>
-            <section className={styles.section}>
+            <section className={cx(styles.section, styles.spacingTop)}>
               <PremiumNotice premiumExpiredAt={influencer.premiumExpiredAt} />
             </section>
           </div>
@@ -212,11 +212,23 @@ const styles = {
     padding: 50,
     backgroundColor: "#fff",
     borderRadius: 5,
-    boxShadow: "0 0 30px rgba(35, 0, 95, 0.05)"
+    boxShadow: "0 0 30px rgba(35, 0, 95, 0.05)",
+    "@media (max-width: 767px)": {
+      paddingTop: 30,
+      paddingLeft: 30,
+      paddingRight: 30,
+      marginBottom: 50
+    }
   }),
   section: css({
     width: "100%",
-    margin: "0 0 20px 0"
+    margin: "0 0 20px 0",
+    "&:last-of-type": {
+      marginBottom: 0
+    },
+    "@media (max-width: 767px)": {
+      marginBottom: 10
+    }
   }),
   title: css({
     margin: "0 0 15px 0"
@@ -225,13 +237,20 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "stretch",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    "@media (max-width: 767px)": {
+      flexDirection: "column",
+      justifyContent: "flex-start"
+    }
   }),
   field: css({
     position: "relative",
     display: "block",
     width: "calc((100% - 25px) / 2)",
-    margin: "0 0 20px 0"
+    margin: "0 0 20px 0",
+    "@media (max-width: 767px)": {
+      width: "100%"
+    }
   }),
   fullWidth: css({
     width: "100%"
@@ -275,6 +294,9 @@ const styles = {
   }),
   saveButton: css({
     margin: "0 auto"
+  }),
+  spacingTop: css({
+    marginTop: 25
   })
 };
 

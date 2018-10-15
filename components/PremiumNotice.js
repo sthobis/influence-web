@@ -96,7 +96,8 @@ const styles = {
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center",
-    fontSize: 16
+    fontSize: 16,
+    textAlign: "center"
   }),
   premiumText: css({
     margin: 0,
