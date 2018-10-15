@@ -132,7 +132,11 @@ const styles = {
     }
   }),
   minimize: css({
-    width: 0
+    width: 0,
+    "@media (max-width: 767px)": {
+      width: "100%",
+      height: 0
+    }
   }),
   maximize: css({
     width: "100%"
