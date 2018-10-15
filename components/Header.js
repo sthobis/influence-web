@@ -21,6 +21,16 @@ class Header extends Component {
     }));
   };
 
+  closeMobileNav = () => {
+    this.setState({ isMobileNavOpened: false });
+  };
+
+  logout = () => {
+    const { removeUser } = this.props;
+    this.closeMobileNav();
+    removeUser();
+  };
+
   render() {
     const { user, accessToken, removeUser } = this.props;
     const { isMobileNavOpened } = this.state;
@@ -33,7 +43,7 @@ class Header extends Component {
             })}
           >
             <Link href="/">
-              <a className={styles.logo}>
+              <a className={styles.logo} onClick={this.closeMobileNav}>
                 <FaCameraRetro /> igfluencer.id
               </a>
             </Link>
@@ -48,7 +58,7 @@ class Header extends Component {
                     href={`/influencer/detail?username=${user.instagramHandle}`}
                     as={`/influencer/detail/${user.instagramHandle}`}
                   >
-                    <a className={styles.link}>
+                    <a className={styles.link} onClick={this.closeMobileNav}>
                       {localized[0]} <FiArrowRight />
                     </a>
                   </Link>
@@ -56,23 +66,23 @@ class Header extends Component {
               {accessToken &&
                 getUserGroup(accessToken) === CONFIG.GROUP.ADVERTISER && (
                   <Link href="/advertiser/edit">
-                    <a className={styles.link}>
+                    <a className={styles.link} onClick={this.closeMobileNav}>
                       {localized[0]} <FiArrowRight />
                     </a>
                   </Link>
                 )}
               <Link href="/influencer">
-                <a className={styles.link}>
+                <a className={styles.link} onClick={this.closeMobileNav}>
                   influencer <FiArrowRight />
                 </a>
               </Link>
               {user ? (
-                <button className={styles.link} onClick={removeUser}>
+                <button className={styles.link} onClick={this.logout}>
                   {localized[1]} <FiArrowRight />
                 </button>
               ) : (
                 <Link href="/login">
-                  <a className={styles.link}>
+                  <a className={styles.link} onClick={this.closeMobileNav}>
                     {localized[2]} <FiArrowRight />
                   </a>
                 </Link>
