@@ -30,7 +30,13 @@ const styles = {
     flexWrap: "wrap",
     margin: "50px 0 0 0",
     padding: 0,
-    listStyleType: "none"
+    listStyleType: "none",
+    "@media (max-width: 767px)": {
+      flexDirection: "column"
+    },
+    "@media (max-width: 767px)": {
+      marginTop: 40
+    }
   }),
   listItem: css({
     display: "block",
@@ -39,8 +45,25 @@ const styles = {
     backgroundColor: "#fff",
     borderRadius: 5,
     boxShadow: "0 0 30px rgba(35, 0, 95, 0.05)",
-    "&:nth-child(3n+3)": {
+    "&:nth-child(3n)": {
       marginRight: 0
+    },
+    "@media (max-width: 959px)": {
+      width: "calc((100% - 50px) / 2)",
+      "&:nth-child(3n)": {
+        marginRight: 50
+      },
+      "&:nth-child(2n)": {
+        marginRight: 0
+      }
+    },
+    "@media (max-width: 767px)": {
+      width: "100%",
+      marginRight: 0,
+      marginBottom: 40,
+      "&:nth-child(3n)": {
+        marginRight: 0
+      }
     }
   }),
   empty: css({

@@ -18,7 +18,7 @@ import parseCookie from "../../utils/parseCookie";
 
 const initialState = {
   page: 0,
-  limit: 9,
+  limit: 12,
   keyword: "",
   tags: [],
   sort: { followersCount: -1 }
@@ -177,6 +177,16 @@ const styles = {
     justifyContent: "space-between",
     "& > *": {
       width: "calc((100% - 25px) / 2)"
+    },
+    "@media (max-width: 767px)": {
+      flexDirection: "column",
+      "& > *": {
+        width: "100%",
+        marginBottom: 25,
+        "&:last-child": {
+          marginBottom: 0
+        }
+      }
     }
   })
 };
