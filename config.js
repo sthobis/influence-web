@@ -2,12 +2,12 @@ export default {
   BASE_URL: {
     development: "http://localhost:3100",
     test: "http://localhost:3100",
-    production: "https://influence.duajarimanis.com"
+    production: "https://igfluencer.id"
   },
   API_BASE_URL: {
     development: "http://localhost:3101",
     test: "http://localhost:3101",
-    production: "https://influence-api.duajarimanis.com"
+    production: "https://api.igfluencer.id"
   },
   FETCH_STATUS: {
     FETCHING: "FETCHING",
