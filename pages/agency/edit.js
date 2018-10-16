@@ -42,7 +42,7 @@ class AdvertiserEditPage extends Component {
       } else {
         // user is not logged in
         // redirect to login page
-        res.redirect("/login?redirect=/advertiser/edit");
+        res.redirect("/login?redirect=/agency/edit");
       }
     } else {
       // client-rendered
@@ -71,7 +71,7 @@ class AdvertiserEditPage extends Component {
       } else {
         // user is not logged in
         // redirect to login page
-        Router.replace("/login?redirect=/advertiser/edit");
+        Router.replace("/login?redirect=/agency/edit");
       }
     }
   }

@@ -65,7 +65,7 @@ class Header extends Component {
                 )}
               {accessToken &&
                 getUserGroup(accessToken) === CONFIG.GROUP.ADVERTISER && (
-                  <Link href="/advertiser/edit">
+                  <Link href="/agency/edit">
                     <a className={styles.link} onClick={this.closeMobileNav}>
                       {localized[0]} <FiArrowRight />
                     </a>
