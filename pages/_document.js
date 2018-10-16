@@ -19,13 +19,19 @@ class MyDocument extends Document {
         <Head>
           <meta
             name="description"
-            content="Find the perfect influencer for your business"
+            content="Find Top Instagram Influencers in Indonesia"
           />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta property="og:url" content="https://www.duajarimanis.com" />
-          <meta property="og:site_name" content="Duajarimanis" />
-          <meta property="og:title" content="Create Wedding Website" />
-          <meta property="og:description" content="Create Wedding Website" />
+          <meta property="og:url" content="https://igfluencer.id" />
+          <meta property="og:site_name" content="igfluencer.id" />
+          <meta
+            property="og:title"
+            content="Find Top Instagram Influencers in Indonesia"
+          />
+          <meta
+            property="og:description"
+            content="Find Top Instagram Influencers in Indonesia"
+          />
           <link
             rel="icon"
             type="image/png"
