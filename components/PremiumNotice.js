@@ -5,6 +5,12 @@ import React, { Component } from "react";
 import { FaCreditCard, FaRegMeh, FaRegSmile } from "react-icons/fa";
 import Localize from "./Localize";
 
+const formatDate = dateStr => {
+  const date = new Date(dateStr);
+  return `${date.getDate()}/${date.getMonth() +
+    1}/${date.getFullYear()} ${date.getHours()}.${date.getMinutes()}`;
+};
+
 class PremiumNotice extends Component {
   state = {
     isHoveringPremium: false

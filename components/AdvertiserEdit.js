@@ -4,12 +4,6 @@ import React from "react";
 import { FaUserCircle } from "react-icons/fa";
 import PremiumNotice from "./PremiumNotice";
 
-const formatDate = dateStr => {
-  const date = new Date(dateStr);
-  return `${date.getDate()}/${date.getMonth() +
-    1}/${date.getFullYear()} ${date.getHours()}.${date.getMinutes()}`;
-};
-
 const AdvertiserEdit = ({ advertiser }) => (
   <div className={styles.root}>
     <FaUserCircle className={styles.icon} />
