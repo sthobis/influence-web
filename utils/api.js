@@ -10,7 +10,7 @@ export function authAdministrator(body) {
 }
 
 export function authAdvertiser(body) {
-  return api.post("/auth/advertiser", body).then(res => res.data);
+  return api.post("/auth/agency", body).then(res => res.data);
 }
 
 export function authInfluencer(body) {
@@ -18,7 +18,7 @@ export function authInfluencer(body) {
 }
 
 export function getAdvertiserById(id) {
-  return api.get(`/advertiser/${id}`).then(res => res.data);
+  return api.get(`/agency/${id}`).then(res => res.data);
 }
 
 export function createInfluencer(body) {
