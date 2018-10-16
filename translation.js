@@ -70,7 +70,7 @@ export default {
   id: {
     pages: {
       advertiserEdit: ["Edit Akun"],
-      influencerEdit: ["Edit Akun"],
+      influencerEdit: ["Edit Profil"],
       influencerIndex: ["Influencer Populer di Indonesia"],
       index: [
         "Temukan influencer instagram terbaik di Indonesia",

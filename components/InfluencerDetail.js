@@ -22,6 +22,29 @@ const formatDate = dateStr => {
   return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
 };
 
+const contactStyles = {
+  email: {
+    background: "#5352ed",
+    icon: <FaEnvelope />
+  },
+  instagram: {
+    background: "linear-gradient(-315deg,#ffd521,#f30005,#b900b4)",
+    icon: <FaInstagram />
+  },
+  whatsapp: {
+    background: "#24cc63",
+    icon: <FaWhatsapp />
+  },
+  line: {
+    background: "#00b300",
+    icon: <FaLine />
+  },
+  phone: {
+    background: "#4b6584",
+    icon: <FaPhone />
+  }
+};
+
 const InfluencerDetail = ({ influencer, isOwner }) => (
   <Localize selector="components.influencerDetail">
     {localized => (
@@ -41,13 +64,18 @@ const InfluencerDetail = ({ influencer, isOwner }) => (
           />
           <div>
             <h1 className={styles.displayName}>
-              {influencer.displayName} (
-              <a
-                href={`https://www.instagram.com/${influencer.instagramHandle}`}
-              >
-                @{influencer.instagramHandle}
-              </a>
-              )
+              {influencer.displayName}{" "}
+              <span>
+                (
+                <a
+                  href={`https://www.instagram.com/${
+                    influencer.instagramHandle
+                  }`}
+                >
+                  @{influencer.instagramHandle}
+                </a>
+                )
+              </span>
               {influencer.isVerified && (
                 <span title={localized[1]}>
                   <FaCheckCircle style={{ color: "#00a8ff" }} />
@@ -69,7 +97,7 @@ const InfluencerDetail = ({ influencer, isOwner }) => (
           </div>
         </section>
         <section>
-          <h2>{localized[3]}</h2>
+          <h2 className={styles.sectionTitle}>{localized[3]}</h2>
           <div className={styles.endorse}>
             <div>
               <div className={styles.endorseDetail}>
@@ -77,7 +105,7 @@ const InfluencerDetail = ({ influencer, isOwner }) => (
                   <FaMoneyCheckAlt /> {localized[4]}
                 </span>
                 <span className={styles.endorseDetailValue}>
-                  {localized[5]}{" "}
+                  <span>{localized[5]}</span>
                   <strong>
                     {influencer.endorsePricing.post.toLocaleString("id-ID", {
                       style: "currency",
@@ -91,7 +119,7 @@ const InfluencerDetail = ({ influencer, isOwner }) => (
                   <FaMoneyCheckAlt /> {localized[6]}
                 </span>
                 <span className={styles.endorseDetailValue}>
-                  {localized[5]}{" "}
+                  <span>{localized[5]}</span>
                   <strong>
                     {influencer.endorsePricing.story.toLocaleString("id-ID", {
                       style: "currency",
@@ -102,65 +130,25 @@ const InfluencerDetail = ({ influencer, isOwner }) => (
               </div>
             </div>
             <ul className={styles.contactList}>
-              <li className={styles.contactDetail}>
-                <span
-                  style={{ background: "#5352ed" }}
-                  className={cx(styles.icon, styles.smallIcon)}
-                  title="email"
-                >
-                  {" "}
-                  <FaEnvelope />
-                </span>
-                {influencer.contact.email || "---"}
-              </li>
-              <li className={styles.contactDetail}>
-                <span
-                  style={{
-                    background:
-                      "linear-gradient(-315deg,#ffd521,#f30005,#b900b4)"
-                  }}
-                  className={styles.icon}
-                  title="instagram"
-                >
-                  <FaInstagram />
-                </span>{" "}
-                {influencer.contact.instagram || "---"}
-              </li>
-              <li className={styles.contactDetail}>
-                <span
-                  style={{ background: "#24cc63" }}
-                  className={styles.icon}
-                  title="whatsapp"
-                >
-                  <FaWhatsapp />
-                </span>{" "}
-                {influencer.contact.whatsapp || "---"}
-              </li>
-              <li className={styles.contactDetail}>
-                <span
-                  style={{ background: "#00b300" }}
-                  className={styles.icon}
-                  title="line"
-                >
-                  <FaLine />
-                </span>{" "}
-                {influencer.contact.line || "---"}
-              </li>
-              <li className={styles.contactDetail}>
-                <span
-                  style={{ background: "#4b6584" }}
-                  className={cx(styles.icon, styles.smallIcon)}
-                  title="phone number"
-                >
-                  <FaPhone />
-                </span>
-                {influencer.contact.phone || "---"}
-              </li>
+              {Object.keys(contactStyles).map(key => (
+                <li className={styles.contactDetail} key={key}>
+                  <span
+                    style={{ background: contactStyles[key].background }}
+                    className={cx(styles.icon, styles.smallIcon)}
+                    title={key}
+                  >
+                    {contactStyles[key].icon}
+                  </span>
+                  <span className={styles.contactText}>
+                    {influencer.contact[key] || "---"}
+                  </span>
+                </li>
+              ))}
             </ul>
           </div>
         </section>
         <section>
-          <h2>{localized[7]}</h2>
+          <h2 className={styles.sectionTitle}>{localized[7]}</h2>
           <ul className={styles.list}>
             {influencer.recentPhotos.map((photo, i) => (
               <li key={i} className={styles.listItem}>
@@ -199,13 +187,22 @@ const styles = {
     backgroundColor: "#fff",
     borderRadius: 5,
     boxShadow: "0 0 30px rgba(35, 0, 95, 0.05)",
-    margin: "0 0 75px 0"
+    margin: "0 0 75px 0",
+    "@media (max-width: 767px)": {
+      paddingLeft: 30,
+      paddingRight: 30
+    }
   }),
   detail: css({
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    position: "relative"
+    position: "relative",
+    "@media (max-width: 767px)": {
+      flexDirection: "column",
+      alignItems: "center",
+      textAlign: "center"
+    }
   }),
   editButton: css({
     position: "absolute",
@@ -221,38 +218,64 @@ const styles = {
     fontWeight: 600,
     "& svg": {
       marginRight: 10
+    },
+    "@media (max-width: 767px)": {
+      top: -60,
+      right: "auto",
+      left: "auto"
     }
   }),
   profilePicture: css({
     width: "100%",
     maxWidth: "200px",
     borderRadius: "50%",
-    margin: "0 50px 0 0 "
+    margin: "0 50px 0 0 ",
+    "@media (max-width: 767px)": {
+      marginRight: 0
+    }
   }),
   displayName: css({
     display: "flex",
     flexWrap: "wrap",
     alignItems: "center",
     margin: "10px 0 10px 0",
-    "& > a": {
+    "& > span": {
+      margin: "0 0 0 10px"
+    },
+    "& a": {
       color: "inherit"
     },
     "& svg": {
       width: 16,
       height: 16,
-      margin: "5px 0 0 10px"
+      margin: "5px 0 0 0"
+    },
+    "@media (max-width: 767px)": {
+      flexDirection: "column",
+      "& > span": {
+        marginLeft: 0
+      }
     }
   }),
   followersCount: css({
-    margin: "0 0 15px 0"
+    margin: "0 0 15px 0",
+    "@media (max-width: 767px)": {
+      marginBottom: 10
+    }
   }),
   biography: css({
     margin: "0 0 23px 0",
     lineHeight: "1.5",
-    fontSize: 15
+    fontSize: 15,
+    "@media (max-width: 767px)": {
+      marginBottom: 15
+    }
   }),
   tagsContainer: css({
-    margin: "0 0 20px 0"
+    margin: "0 0 20px 0",
+    "@media (max-width: 767px)": {
+      marginBottom: 10
+    }
   }),
   tags: css({
     display: "inline-block",
@@ -268,12 +291,23 @@ const styles = {
       marginRight: 0
     }
   }),
+  sectionTitle: css({
+    "@media (max-width: 767px)": {
+      textAlign: "center"
+    }
+  }),
   endorse: css({
     display: "flex",
     justifyContent: "stretch",
     alignItems: "flex-start",
     "& > *": {
       width: "calc((100% - 50px) / 2)"
+    },
+    "@media (max-width: 767px)": {
+      flexDirection: "column",
+      "& > *": {
+        width: "100%"
+      }
     }
   }),
   endorseDetail: css({
@@ -281,6 +315,11 @@ const styles = {
     flexDirection: "column",
     "& + &": {
       margin: "30px 0 0 0"
+    },
+    "@media (max-width: 767px)": {
+      "& + &": {
+        marginTop: 20
+      }
     }
   }),
   endorseDetailTitle: css({
@@ -295,28 +334,54 @@ const styles = {
     }
   }),
   endorseDetailValue: css({
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
     margin: "5px 0 0 0",
     fontSize: 14,
+    "& > span": {
+      margin: "0 7px 0 0"
+    },
     "& > strong": {
       fontSize: 20,
       fontWeight: 600,
-      color: "#39bdcc",
-      margin: "0 0 0 7px"
+      color: "#39bdcc"
+    },
+    "@media (max-width: 767px)": {
+      flexDirection: "column",
+      alignItems: "flex-start",
+      marginLeft: 50,
+      "& > span": {
+        marginBottom: 5
+      }
     }
   }),
   contactList: css({
     display: "block",
     margin: 0,
     padding: 0,
-    listStyleType: "none"
+    listStyleType: "none",
+    "@media (max-width: 767px)": {
+      marginTop: 25
+    }
   }),
   contactDetail: css({
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center",
-    margin: "0 25px 10px 0"
+    margin: "0 0 10px 0",
+    "@media (max-width: 767px)": {
+      marginRight: 0
+    }
+  }),
+  contactText: css({
+    width: "calc(100% - 50px)",
+    overflowWrap: "break-word",
+    wordWrap: "break-word",
+    hyphens: "auto"
   }),
   icon: css({
+    flex: "none",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -345,7 +410,10 @@ const styles = {
     alignItems: "stretch",
     margin: 0,
     padding: 0,
-    listStyleType: "none"
+    listStyleType: "none",
+    "@media (max-width: 767px)": {
+      marginTop: 20
+    }
   }),
   listItem: css({
     position: "relative",
@@ -362,6 +430,13 @@ const styles = {
     },
     "&:nth-last-child(-n+3)": {
       marginBottom: 0
+    },
+    "@media (max-width: 767px)": {
+      width: "100%",
+      marginRight: 0,
+      "&:nth-last-child(-n+3)": {
+        marginBottom: 25
+      }
     }
   }),
   photo: css({
@@ -390,7 +465,10 @@ const styles = {
     backgroundColor: "#555",
     backgroundSize: "cover",
     backgroundPosition: "center",
-    transition: ".3s"
+    transition: ".3s",
+    "@media (max-width: 767px)": {
+      borderRadius: 3
+    }
   }),
   photoOverlay: css({
     position: "absolute",
@@ -413,6 +491,13 @@ const styles = {
     },
     "&:hover": {
       opacity: 1
+    },
+    "@media (max-width: 767px)": {
+      opacity: 1,
+      top: "auto",
+      bottom: 0,
+      height: "auto",
+      borderRadius: "0 0 3px 3px"
     }
   }),
   overlayText: css({
@@ -427,7 +512,11 @@ const styles = {
     textAlign: "right",
     fontSize: 13,
     fontStyle: "italic",
-    margin: "25px 0 0 0"
+    margin: "25px 0 0 0",
+    "@media (max-width: 767px)": {
+      textAlign: "center",
+      marginTop: 0
+    }
   })
 };
 

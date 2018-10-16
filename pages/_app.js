@@ -5,6 +5,7 @@ import App, { Container } from "next/app";
 import React from "react";
 import { Provider } from "react-redux";
 import store from "../store";
+import Head from "next/head";
 
 class MyApp extends App {
   static async getInitialProps(props) {
@@ -32,6 +33,9 @@ class MyApp extends App {
 
     return (
       <Container>
+        <Head>
+          <title>Igfluencer.id</title>
+        </Head>
         <Provider store={store}>
           <Component {...pageProps} />
         </Provider>

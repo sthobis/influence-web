@@ -1,30 +1,24 @@
 import { css } from "emotion";
+import Head from "next/head";
 import Router from "next/router";
 import NProgress from "nprogress";
 import PropTypes from "prop-types";
-import React, { PureComponent } from "react";
+import React from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 import Notification from "./Notification";
 
-class Layout extends PureComponent {
-  componentDidMount() {
-    const { title } = this.props;
-    document.title = title;
-  }
-
-  render() {
-    const { children } = this.props;
-    return (
-      <div className={styles.root}>
-        <Header />
-        <main className={styles.container}>{children}</main>
-        <Footer />
-        <Notification />
-      </div>
-    );
-  }
-}
+const Layout = ({ title, children }) => (
+  <div className={styles.root}>
+    <Head>
+      <title>{title}</title>
+    </Head>
+    <Header />
+    <main className={styles.container}>{children}</main>
+    <Footer />
+    <Notification />
+  </div>
+);
 
 const styles = {
   root: css({
