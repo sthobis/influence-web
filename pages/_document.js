@@ -5,6 +5,10 @@ const fa = `/*!
 * Font Awesome Free 5.3.1 by @fontawesome - https://fontawesome.com
 * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
 */`;
+const gTagScript = `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-107058891-2');`;
 
 class MyDocument extends Document {
   static getInitialProps({ renderPage }) {
@@ -32,6 +36,11 @@ class MyDocument extends Document {
             property="og:description"
             content="Find Top Instagram Influencers in Indonesia"
           />
+          <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=UA-107058891-2"
+          />
+          <script dangerouslySetInnerHTML={{ __html: gTagScript }} />
           <link
             rel="icon"
             type="image/png"
