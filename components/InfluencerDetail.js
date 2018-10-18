@@ -240,7 +240,7 @@ const styles = {
     alignItems: "center",
     margin: "10px 0 10px 0",
     "& > span": {
-      margin: "0 10 0 0",
+      margin: "0 10px 0 0",
       "&:last-of-type": {
         marginRight: 0
       }
