@@ -431,6 +431,9 @@ const styles = {
     "&:nth-last-child(-n+3)": {
       marginBottom: 0
     },
+    "&:nth-child(-n+3)": {
+      marginBottom: 25
+    },
     "@media (max-width: 767px)": {
       width: "100%",
       marginRight: 0,
