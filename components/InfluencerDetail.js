@@ -64,7 +64,7 @@ const InfluencerDetail = ({ influencer, isOwner }) => (
           />
           <div>
             <h1 className={styles.displayName}>
-              {influencer.displayName}{" "}
+              <span>{influencer.displayName}</span>
               <span>
                 (
                 <a
@@ -240,7 +240,10 @@ const styles = {
     alignItems: "center",
     margin: "10px 0 10px 0",
     "& > span": {
-      margin: "0 0 0 10px"
+      margin: "0 10 0 0",
+      "&:last-of-type": {
+        marginRight: 0
+      }
     },
     "& a": {
       color: "inherit"
@@ -253,7 +256,7 @@ const styles = {
     "@media (max-width: 767px)": {
       flexDirection: "column",
       "& > span": {
-        marginLeft: 0
+        marginRight: 0
       }
     }
   }),
