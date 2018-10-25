@@ -71,6 +71,7 @@ class Kitchen extends Component {
     textareaValue: "",
     usernames: [],
     crawlStatus: [],
+    errors: [],
     isCrawling: false
   };
 
@@ -95,7 +96,7 @@ class Kitchen extends Component {
       username,
       status: CRAWL_STATUS.QUEUE
     }));
-    this.setState({ crawlStatus, isCrawling: true }, async () => {
+    this.setState({ crawlStatus, isCrawling: true, errors: [] }, async () => {
       try {
         for (let counter = 0; counter < usernames.length; counter += 5) {
           // set visualization status to on processing
@@ -129,7 +130,7 @@ class Kitchen extends Component {
                     })
                   );
                 })
-                .catch(res => {
+                .catch(err => {
                   // on failure
                   // set visualization status to failed
                   // for 5 users being crawled
@@ -139,6 +140,10 @@ class Kitchen extends Component {
                         _username => _username === username
                       );
                       draft.crawlStatus[index].status = CRAWL_STATUS.FAILED;
+                      draft.errors.push({
+                        username,
+                        message: err.response.data.error
+                      });
                     })
                   );
                 })
@@ -176,7 +181,7 @@ class Kitchen extends Component {
 
   render() {
     const { isAdmin } = this.props;
-    const { textareaValue, crawlStatus, isCrawling } = this.state;
+    const { textareaValue, crawlStatus, isCrawling, errors } = this.state;
     let success = 0,
       failure = 0,
       processing = 0,
@@ -243,6 +248,19 @@ class Kitchen extends Component {
                       .filter(user => user.status === CRAWL_STATUS.FAILED)
                       .map(user => user.username)
                       .join(" ")
+                  }
+                  maxHeight={500}
+                  className={styles.textarea}
+                  disabled
+                />
+              )}
+              {errors.length > 0 && (
+                <Textarea
+                  value={
+                    "Errors :\n" +
+                    errors
+                      .map(error => `@${error.username} : ${error.message}`)
+                      .join("\n")
                   }
                   maxHeight={500}
                   className={styles.textarea}
@@ -339,7 +357,7 @@ const styles = {
     fontSize: 15
   }),
   list: css({
-    margin: 0,
+    margin: "0 0 20px 0",
     padding: 0,
     listStyleType: "none",
     maxHeight: 500,

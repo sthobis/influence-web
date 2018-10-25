@@ -23,7 +23,6 @@ class Textarea extends Component {
       this.textarea.style.height = "auto";
       // border
       let newHeight = this.textarea.scrollHeight + 2;
-      console.log(maxHeight, newHeight);
       if (maxHeight && newHeight > maxHeight) {
         newHeight = maxHeight;
       }
@@ -32,10 +31,10 @@ class Textarea extends Component {
   };
 
   render() {
-    const { onChange } = this.props;
+    const { onChange, maxHeight, ...rest } = this.props;
     return (
       <textarea
-        {...this.props}
+        {...rest}
         rows="1"
         ref={el => (this.textarea = el)}
         onChange={onChange}
