@@ -19,7 +19,7 @@ export default cookies => {
       const payload = JSON.parse(atob(base64));
 
       const now = new Date().getTime();
-      if (now > payload.exp) {
+      if (now < payload.exp * 1000) {
         // accessToken has not expired and is still valid
         return { user, accessToken, language };
       }
