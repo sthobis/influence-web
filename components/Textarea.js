@@ -18,10 +18,15 @@ class Textarea extends Component {
   }
 
   adjustHeight = () => {
+    const { maxHeight } = this.props;
     if (this.textarea) {
       this.textarea.style.height = "auto";
       // border
       let newHeight = this.textarea.scrollHeight + 2;
+      console.log(maxHeight, newHeight);
+      if (maxHeight && newHeight > maxHeight) {
+        newHeight = maxHeight;
+      }
       this.textarea.style.height = newHeight + "px";
     }
   };
@@ -45,6 +50,7 @@ Textarea.defaultProps = {
 
 Textarea.propTypes = {
   value: PropTypes.string.isRequired,
+  maxHeight: PropTypes.number,
   onChange: PropTypes.func
 };
 

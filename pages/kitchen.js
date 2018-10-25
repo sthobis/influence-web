@@ -201,6 +201,7 @@ class Kitchen extends Component {
               <Textarea
                 value={textareaValue}
                 placeholder="Insert instagram usernames, separated by space"
+                maxHeight={500}
                 className={styles.textarea}
                 onChange={e =>
                   this.setState({
@@ -243,6 +244,7 @@ class Kitchen extends Component {
                       .map(user => user.username)
                       .join(" ")
                   }
+                  maxHeight={500}
                   className={styles.textarea}
                   disabled
                 />
@@ -292,7 +294,7 @@ const styles = {
   root: css({
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "stretch",
+    alignItems: "flex-start",
     padding: 50,
     backgroundColor: "#fff",
     borderRadius: 5,
