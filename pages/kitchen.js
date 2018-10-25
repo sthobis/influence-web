@@ -8,15 +8,19 @@ import Layout from "../components/Layout";
 import Textarea from "../components/Textarea";
 import CONFIG from "../config";
 import { addNotification, setLanguage, setUser } from "../store";
-import { authAdministrator, crawlInstagramUser } from "../utils/api";
+import {
+  authAdministrator,
+  crawlInstagramUser,
+  getInfluencerList
+} from "../utils/api";
 import getUserGroup from "../utils/getUserGroup";
 import parseCookie from "../utils/parseCookie";
 
 /*
  * 🔥 WARNING 🔥
- * FOR NOW, THIS IS JUST FOR AN EASIER DX 💩
- * LATER ON THIS PAGE SHOULD BE REMOVED FROM INFLUENCE-WEB 💩
- * AND REWRITTEN + CONTAINED IN ANOTHER APPS/MICRO-FRONTEND 💩
+ * FOR NOW, THIS IS JUST FOR AN EASIER DX
+ * LATER ON THIS PAGE SHOULD BE REMOVED FROM INFLUENCE-WEB
+ * AND REWRITTEN + CONTAINED IN ANOTHER APPS/MICRO-FRONTEND
  * 🔥 WARNING 🔥
  */
 
@@ -30,10 +34,10 @@ const CRAWL_STATUS = {
 
 const CRAWL_STATUS_NUMBER = {
   PROCESSING: 0,
-  FAILED: 1,
-  CANCELLED: 2,
-  SUCCEED: 3,
-  QUEUE: 4
+  QUEUE: 1,
+  FAILED: 2,
+  CANCELLED: 3,
+  SUCCEED: 4
 };
 
 class Kitchen extends Component {
@@ -79,7 +83,7 @@ class Kitchen extends Component {
       setUser(administrator, accessToken);
       Router.push("/kitchen");
     } catch (err) {
-      addNotification("💩");
+      addNotification("Failed to login as administrator.");
     }
   };
 
@@ -149,6 +153,27 @@ class Kitchen extends Component {
     });
   };
 
+  recrawlAllInfluencer = async () => {
+    this.setState({ isCrawling: true });
+    try {
+      let { influencers } = await getInfluencerList({
+        page: 0,
+        limit: 0,
+        keyword: "",
+        tags: [],
+        sort: { followersCount: -1 }
+      });
+      influencers = influencers.map(influencer => influencer.instagramHandle);
+      this.setState(
+        { usernames: influencers, textareaValue: influencers.join(" ") },
+        this.startCrawling
+      );
+    } catch (err) {
+      this.setState({ isCrawling: false });
+      addNotification("Failed to fetch influencers data.");
+    }
+  };
+
   render() {
     const { isAdmin } = this.props;
     const { textareaValue, crawlStatus, isCrawling } = this.state;
@@ -185,11 +210,20 @@ class Kitchen extends Component {
                 }
               />
               <button
+                type="button"
                 onClick={this.startCrawling}
                 disabled={isCrawling}
                 className={styles.button}
               >
                 {isCrawling ? "crawling.. please wait" : "start crawling"}
+              </button>
+              <button
+                type="button"
+                onClick={this.recrawlAllInfluencer}
+                disabled={isCrawling}
+                className={styles.button}
+              >
+                {isCrawling ? "crawling.. please wait" : "update all profile"}
               </button>
               <p className={styles.summary}>
                 {queue} queue
