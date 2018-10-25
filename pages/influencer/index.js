@@ -156,13 +156,17 @@ class InfluencerListPage extends Component {
               <TagsFilter tags={tags} setFilter={this.setFilter} />
               <SortFilter sort={sort} setFilter={this.setFilter} />
             </div>
-            {influencers && <InfluencerList influencers={influencers} />}
-            <Paginator
-              page={page}
-              limit={limit}
-              count={count}
-              goToPage={this.goToPage}
-            />
+            {influencers && (
+              <>
+                <InfluencerList influencers={influencers} />
+                <Paginator
+                  page={page}
+                  limit={limit}
+                  count={count}
+                  goToPage={this.goToPage}
+                />
+              </>
+            )}
           </Layout>
         )}
       </Localize>
