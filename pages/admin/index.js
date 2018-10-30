@@ -135,7 +135,9 @@ class AdminDashboardPage extends Component {
                       draft.crawlStatus[index].status = CRAWL_STATUS.FAILED;
                       draft.errors.push({
                         username,
-                        message: err.response.data.error
+                        message: err.response
+                          ? err.response.data.error
+                          : "unknown error"
                       });
                     })
                   );
