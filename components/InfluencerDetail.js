@@ -45,12 +45,12 @@ const contactStyles = {
   }
 };
 
-const InfluencerDetail = ({ influencer, isOwner }) => (
+const InfluencerDetail = ({ influencer, showEditButton }) => (
   <Localize selector="components.influencerDetail">
     {localized => (
       <div className={styles.root}>
         <section className={styles.detail}>
-          {isOwner && (
+          {showEditButton && (
             <Link href="/influencer/edit">
               <a className={styles.editButton}>
                 <FaUserCog /> {localized[0]}
@@ -556,7 +556,7 @@ InfluencerDetail.propTypes = {
       })
     )
   }).isRequired,
-  isOwner: PropTypes.bool.isRequired
+  showEditButton: PropTypes.bool.isRequired
 };
 
 export default InfluencerDetail;

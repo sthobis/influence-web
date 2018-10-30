@@ -12,7 +12,7 @@ import getUserGroup from "../../utils/getUserGroup";
 import parseCookie from "../../utils/parseCookie";
 
 class InfluencerEditPage extends Component {
-  static async getInitialProps({ req, res, store }) {
+  static async getInitialProps({ req, res, store, query }) {
     if (req) {
       // server-rendered
       const { user, accessToken, language } = parseCookie(req.headers.cookie);
@@ -20,18 +20,13 @@ class InfluencerEditPage extends Component {
       if (user) {
         // user is logged in save user session for client rehydration
         store.dispatch(setUser(user, accessToken));
-
-        if (getUserGroup(accessToken) !== CONFIG.GROUP.INFLUENCER) {
-          // non-influencer, trying to access influencer edit page
-          // should not happen naturally
-          return res.redirect("/");
+        if (getUserGroup(accessToken) !== CONFIG.GROUP.SUPER_ADMIN) {
+          // non-admin, trying to access admin's influencer edit page
+          return res.redirect("/admin");
         }
-
         // fetch influencer detail
         try {
-          const { influencer } = await getInfluencerByUsername(
-            user.instagramHandle
-          );
+          const { influencer } = await getInfluencerByUsername(query.username);
           return { influencer };
         } catch (err) {
           store.dispatch(
@@ -43,26 +38,21 @@ class InfluencerEditPage extends Component {
         }
       } else {
         // user is not logged in
-        // redirect to login page
-        res.redirect("/login?redirect=/influencer/edit");
+        // redirect to admin login page
+        res.redirect("/admin");
       }
     } else {
       // client-rendered
       const { user, accessToken } = store.getState();
       if (user) {
         // user is logged in
-
-        if (getUserGroup(accessToken) !== CONFIG.GROUP.INFLUENCER) {
-          // non-influencer, trying to access influencer edit page
-          // should not happen naturally
-          return Router.replace("/");
+        if (getUserGroup(accessToken) !== CONFIG.GROUP.SUPER_ADMIN) {
+          // non-admin, trying to access admin's influencer edit page
+          return Router.replace("/admin");
         }
-
         //fetch influencer detail
         try {
-          const { influencer } = await getInfluencerByUsername(
-            user.instagramHandle
-          );
+          const { influencer } = await getInfluencerByUsername(query.username);
           return { influencer };
         } catch (err) {
           store.dispatch(
@@ -74,11 +64,12 @@ class InfluencerEditPage extends Component {
         }
       } else {
         // user is not logged in
-        // redirect to login page
-        Router.replace("/login?redirect=/influencer/edit");
+        // redirect to admin login page
+        Router.replace("/admin");
       }
     }
   }
+
   save = async influencer => {
     const { addNotification } = this.props;
     try {

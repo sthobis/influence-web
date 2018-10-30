@@ -16,6 +16,12 @@ app
       });
     });
 
+    server.get("/admin/edit/:username", (req, res) => {
+      return app.render(req, res, "/admin/edit", {
+        username: req.params.username
+      });
+    });
+
     server.get("*", (req, res) => {
       return handle(req, res);
     });
