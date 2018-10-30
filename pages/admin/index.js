@@ -106,8 +106,9 @@ class AdminDashboardPage extends Component {
           );
 
           // sent crawl request for the 5 users to crawler API
-          await Promise.all(
-            usernames.slice(counter, counter + 5).map(username =>
+          const crawlRequests = usernames
+            .slice(counter, counter + 5)
+            .map(username =>
               crawlInstagramUser(username)
                 .then(res => {
                   // on success
@@ -139,8 +140,18 @@ class AdminDashboardPage extends Component {
                     })
                   );
                 })
-            )
-          );
+            );
+          // 5 seconds timer to throttle crawl request
+          // to prevent being timed-out by instagram (HTTP ERROR 429: Too Many Requests)
+          // max 60 users per minute
+          const waitFiveSeconds = [
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                resolve();
+              }, 5000);
+            })
+          ];
+          await Promise.all(waitFiveSeconds.concat(crawlRequests));
         }
       } catch (err) {
         // no-op
