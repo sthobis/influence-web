@@ -2,6 +2,7 @@ import { css } from "emotion";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
+import { FaCheckCircle } from "react-icons/fa";
 import formatFollower from "../utils/formatFollower";
 import Localize from "./Localize";
 
@@ -9,46 +10,45 @@ const InfluencerItem = ({ influencer, viewType }) => (
   <Localize selector="components.influencerItem">
     {localized => (
       <div className={styles.root}>
-        <div className={styles.info}>
-          <img
-            src={influencer.profilePicture}
-            alt={influencer.displayName}
-            className={styles.thumbnail}
-          />
-          <div className={styles.nameContainer}>
-            <h2 className={styles.displayName}>
-              {influencer.displayName
-                .trim()
-                .toLowerCase()
-                .replace(/[^a-z ]/gi, "")}
-            </h2>
-            <a
-              href={`https://instagram.com/${influencer.instagramHandle}`}
-              className={styles.link}
-            >
-              <p className={styles.instagramHandle}>
-                @{influencer.instagramHandle}
-              </p>
-            </a>
-          </div>
-          <div>
-            <strong>{formatFollower(influencer.followersCount)}</strong>{" "}
-            {localized[0]}
-          </div>
-          <div className={styles.tagsContainer}>
-            {influencer.tags.map((tag, i) => (
-              <Link key={i} href={`/influencer?tags=${tag}`}>
-                <a className={styles.tags}>{tag}</a>
-              </Link>
-            ))}
-          </div>
-        </div>
         <Link
           href={`/influencer/detail?username=${influencer.instagramHandle}`}
           as={`/influencer/detail/${influencer.instagramHandle}`}
         >
-          <a className={styles.detail}>{localized[1]}</a>
+          <a className={styles.info}>
+            <img
+              src={influencer.profilePicture}
+              alt={influencer.displayName}
+              className={styles.thumbnail}
+            />
+            <div className={styles.nameContainer}>
+              <h2 className={styles.displayName}>
+                {influencer.displayName
+                  .trim()
+                  .toLowerCase()
+                  .replace(/[^a-z ]/gi, "")}
+              </h2>
+              <p className={styles.instagramHandle}>
+                @{influencer.instagramHandle}
+                {influencer.isVerified && (
+                  <span title={localized[1]} className={styles.verified}>
+                    <FaCheckCircle style={{ color: "#00a8ff" }} />
+                  </span>
+                )}
+              </p>
+            </div>
+            <div className={styles.followersCount}>
+              <strong>{formatFollower(influencer.followersCount)}</strong>{" "}
+              {localized[0]}
+            </div>
+          </a>
         </Link>
+        <div className={styles.tagsContainer}>
+          {influencer.tags.map((tag, i) => (
+            <Link key={i} href={`/influencer?tags=${tag}`}>
+              <a className={styles.tags}>{tag}</a>
+            </Link>
+          ))}
+        </div>
       </div>
     )}
   </Localize>
@@ -69,17 +69,14 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    padding: 30
-  }),
-  link: css({
-    color: "#0a3d62",
+    padding: "30px 30px 20px 30px",
     textDecoration: "none",
-    display: "inline-block"
+    color: "inherit"
   }),
   thumbnail: css({
     width: "100%",
-    maxWidth: 120,
-    margin: "20px 0 0 0",
+    maxWidth: 150,
+    margin: 0,
     borderRadius: "50%",
     overflow: "hidden"
   }),
@@ -87,49 +84,51 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    margin: "20px 0 10px 0"
+    margin: "20px 0 5px 0"
   }),
   displayName: css({
     textTransform: "capitalize",
     margin: "0 0 2px 0",
-    fontWeight: 400,
-    fontSize: 20
+    fontWeight: 700,
+    fontSize: 18,
+    fontFamily: "Nunito, sans-serif"
   }),
   instagramHandle: css({
+    display: "flex",
+    alignItems: "center",
     margin: 0,
     color: "#888",
-    fontWeight: 400,
-    fontSize: 14
+    fontWeight: 600,
+    fontSize: 14,
+    fontFamily: "Nunito, sans-serif"
   }),
-  tagsContainer: css({
-    margin: "20px 0 0 0"
-  }),
-  tags: css({
-    display: "inline-block",
-    backgroundColor: "rgba(24, 26, 40, 0.1)",
-    margin: "0 10px 10px 0",
-    padding: "7px 10px",
-    fontWeight: 700,
-    borderRadius: 3,
+  verified: css({
     fontSize: 13,
-    textDecoration: "none",
-    color: "rgb(24, 26, 40)",
-    "&:last-child": {
-      marginRight: 0
+    margin: "5px 0 0 6px"
+  }),
+  followersCount: css({
+    fontWeight: 600,
+    fontSize: 14,
+    "& strong": {
+      fontSize: 16
     }
   }),
-  detail: css({
+  tagsContainer: css({
     display: "block",
     width: "100%",
     backgroundColor: "#2e3040",
-    padding: 10,
-    textAlign: "center",
-    color: "#fff",
+    padding: "10px 10px",
+    borderRadius: "0 0 5px 5px"
+  }),
+  tags: css({
+    display: "inline-block",
+    margin: "5px",
+    padding: "4px 6px",
+    borderRadius: 3,
+    border: "1px solid #fff",
+    fontSize: 12,
     textDecoration: "none",
-    borderRadius: "0 0 5px 5px",
-    fontWeight: 600,
-    fontSize: 14,
-    textTransform: "uppercase"
+    color: "#fff"
   })
 };
 

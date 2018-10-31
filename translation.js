@@ -40,7 +40,7 @@ export default {
         "story endorsement price",
         "Save"
       ],
-      influencerItem: ["followers", "Detail"],
+      influencerItem: ["followers", "verified on instagram"],
       influencerList: ["No influencers found"],
       keywordFilter: ["Search influencer.."],
       login: [
@@ -113,7 +113,7 @@ export default {
         "endorse tipe story",
         "Simpan"
       ],
-      influencerItem: ["pengikut", "Info Lengkap"],
+      influencerItem: ["pengikut", "terverifikasi di instagram"],
       influencerList: ["Tidak ada influencer yang cocok"],
       keywordFilter: ["Cari influencer.."],
       login: [
