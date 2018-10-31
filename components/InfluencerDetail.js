@@ -136,20 +136,23 @@ const InfluencerDetail = ({ influencer, isOwner, isAdmin }) => (
               </div>
             </div>
             <ul className={styles.contactList}>
-              {Object.keys(contactStyles).map(key => (
-                <li className={styles.contactDetail} key={key}>
-                  <span
-                    style={{ background: contactStyles[key].background }}
-                    className={cx(styles.icon, styles.smallIcon)}
-                    title={key}
-                  >
-                    {contactStyles[key].icon}
-                  </span>
-                  <span className={styles.contactText}>
-                    {influencer.contact[key] || "---"}
-                  </span>
-                </li>
-              ))}
+              {Object.keys(contactStyles).map(key => {
+                if (!influencer.contact[key]) return null;
+                return (
+                  <li className={styles.contactDetail} key={key}>
+                    <span
+                      style={{ background: contactStyles[key].background }}
+                      className={cx(styles.icon, styles.smallIcon)}
+                      title={key}
+                    >
+                      {contactStyles[key].icon}
+                    </span>
+                    <span className={styles.contactText}>
+                      {influencer.contact[key] || "---"}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </section>
