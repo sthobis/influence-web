@@ -80,7 +80,7 @@ class AdminDashboardPage extends Component {
     }
   };
 
-  startCrawling = () => {
+  startCrawling = (opts = {}) => {
     const { usernames } = this.state;
 
     // set visualization status for all users to queue
@@ -106,7 +106,7 @@ class AdminDashboardPage extends Component {
           );
 
           // sent crawl request for the 5 users to crawler API
-          const crawlRequests = usernames
+          let crawlRequests = usernames
             .slice(counter, counter + 5)
             .map(username =>
               crawlInstagramUser(username)
@@ -143,17 +143,20 @@ class AdminDashboardPage extends Component {
                   );
                 })
             );
-          // 5 seconds timer to throttle crawl request
-          // to prevent being timed-out by instagram (HTTP ERROR 429: Too Many Requests)
-          // max 60 users per minute
-          const waitFiveSeconds = [
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                resolve();
-              }, 5000);
-            })
-          ];
-          await Promise.all(waitFiveSeconds.concat(crawlRequests));
+          if (opts.throttle) {
+            // 5 seconds timer to throttle crawl request
+            // to prevent being timed-out by instagram (HTTP ERROR 429: Too Many Requests)
+            // max 60 users per minute
+            const waitFiveSeconds = [
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  resolve();
+                }, 5000);
+              })
+            ];
+            crawlRequests.push(waitFiveSeconds);
+          }
+          await Promise.all(crawlRequests);
         }
       } catch (err) {
         // no-op
@@ -176,7 +179,9 @@ class AdminDashboardPage extends Component {
       influencers = influencers.map(influencer => influencer.instagramHandle);
       this.setState(
         { usernames: influencers, textareaValue: influencers.join(" ") },
-        this.startCrawling
+        () => {
+          this.startCrawling({ throttle: true });
+        }
       );
     } catch (err) {
       this.setState({ isCrawling: false });
