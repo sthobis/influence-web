@@ -22,10 +22,7 @@ const InfluencerItem = ({ influencer, viewType }) => (
             />
             <div className={styles.nameContainer}>
               <h2 className={styles.displayName}>
-                {influencer.displayName
-                  .trim()
-                  .toLowerCase()
-                  .replace(/[^a-z ]/gi, "")}
+                {influencer.displayName.trim().toLowerCase()}
               </h2>
               <p className={styles.instagramHandle}>
                 @{influencer.instagramHandle}
