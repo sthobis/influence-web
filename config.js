@@ -44,6 +44,7 @@ export default {
     "gaming",
     "handicrafts",
     "kids",
+    "official",
     "parenting",
     "pets",
     "photography",

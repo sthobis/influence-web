@@ -14,7 +14,7 @@ const TagsFilter = ({ tags, setFilter, alternateStyle }) => (
         instanceId="tags-filter"
         name="tags"
         placeholder={localized[0]}
-        options={CONFIG.TAGS_FILTER_OPTIONS.map(tag => ({
+        options={CONFIG.TAGS_FILTER_OPTIONS.sort().map(tag => ({
           label: tag,
           value: tag
         }))}
