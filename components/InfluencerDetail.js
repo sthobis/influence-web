@@ -45,13 +45,19 @@ const contactStyles = {
   }
 };
 
-const InfluencerDetail = ({ influencer, showEditButton }) => (
+const InfluencerDetail = ({ influencer, isOwner, isAdmin }) => (
   <Localize selector="components.influencerDetail">
     {localized => (
       <div className={styles.root}>
         <section className={styles.detail}>
-          {showEditButton && (
-            <Link href="/influencer/edit">
+          {(isOwner || isAdmin) && (
+            <Link
+              href={
+                isAdmin
+                  ? `/admin/edit/${influencer.instagramHandle}`
+                  : "/influencer/edit"
+              }
+            >
               <a className={styles.editButton}>
                 <FaUserCog /> {localized[0]}
               </a>
@@ -556,7 +562,8 @@ InfluencerDetail.propTypes = {
       })
     )
   }).isRequired,
-  showEditButton: PropTypes.bool.isRequired
+  isOwner: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired
 };
 
 export default InfluencerDetail;

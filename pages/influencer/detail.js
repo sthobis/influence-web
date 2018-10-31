@@ -20,21 +20,20 @@ class InfluencerDetailPage extends Component {
         // user is logged in, fetch influencer detail
         // and save user session for client rehydration
         store.dispatch(setUser(user, accessToken));
-        const showEditButton =
-          getUserGroup(accessToken) === CONFIG.GROUP.SUPER_ADMIN ||
-          (user.instagramHandle
-            ? user.instagramHandle === query.username
-            : false);
+        const isOwner = user.instagramHandle
+          ? user.instagramHandle === query.username
+          : false;
+        const isAdmin = getUserGroup(accessToken) === CONFIG.GROUP.SUPER_ADMIN;
         try {
           const { influencer } = await getInfluencerByUsername(query.username);
-          return { influencer, showEditButton };
+          return { influencer, isOwner, isAdmin };
         } catch (err) {
           store.dispatch(
             addNotification(
               "Failed to load influencer detail, please try again."
             )
           );
-          return { influencer: null, showEditButton };
+          return { influencer: null, isOwner, isAdmin };
         }
       } else {
         // user is not logged in
@@ -46,21 +45,20 @@ class InfluencerDetailPage extends Component {
       const { user, accessToken } = store.getState();
       if (user) {
         // user is logged in, fetch influencer detail
-        const showEditButton =
-          getUserGroup(accessToken) === CONFIG.GROUP.SUPER_ADMIN ||
-          (user.instagramHandle
-            ? user.instagramHandle === query.username
-            : false);
+        const isOwner = user.instagramHandle
+          ? user.instagramHandle === query.username
+          : false;
+        const isAdmin = getUserGroup(accessToken) === CONFIG.GROUP.SUPER_ADMIN;
         try {
           const { influencer } = await getInfluencerByUsername(query.username);
-          return { influencer, showEditButton };
+          return { influencer, isOwner, isAdmin };
         } catch (err) {
           store.dispatch(
             addNotification(
               "Failed to load influencer detail, please try again."
             )
           );
-          return { influencer: null, showEditButton };
+          return { influencer: null, isOwner, isAdmin };
         }
       } else {
         // user is not logged in
@@ -71,14 +69,15 @@ class InfluencerDetailPage extends Component {
   }
 
   render() {
-    const { influencer, showEditButton } = this.props;
+    const { influencer, isOwner, isAdmin } = this.props;
     return (
       <Layout
         title={`${influencer.displayName} (${influencer.instagramHandle})`}
       >
         <InfluencerDetail
           influencer={influencer}
-          showEditButton={showEditButton}
+          isOwner={isOwner}
+          isAdmin={isAdmin}
         />
       </Layout>
     );
@@ -115,7 +114,8 @@ InfluencerDetailPage.propTypes = {
       })
     )
   }),
-  showEditButton: PropTypes.bool.isRequired
+  isOwner: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired
 };
 
 export default connect(
