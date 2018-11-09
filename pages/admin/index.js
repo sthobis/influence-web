@@ -63,7 +63,6 @@ class AdminDashboardPage extends Component {
     textareaValue: "",
     usernames: [],
     crawlStatus: [],
-    errors: [],
     isCrawling: false
   };
 
@@ -74,21 +73,22 @@ class AdminDashboardPage extends Component {
     try {
       const { administrator, accessToken } = await authAdministrator({ token });
       setUser(administrator, accessToken);
-      Router.push("/kitchen");
+      Router.push("/admin");
     } catch (err) {
       addNotification("Failed to login as administrator.");
     }
   };
 
-  startCrawling = (opts = {}) => {
+  startCrawling = () => {
     const { usernames } = this.state;
 
     // set visualization status for all users to queue
     const crawlStatus = usernames.map(username => ({
       username,
-      status: CRAWL_STATUS.QUEUE
+      status: CRAWL_STATUS.QUEUE,
+      message: ""
     }));
-    this.setState({ crawlStatus, isCrawling: true, errors: [] }, async () => {
+    this.setState({ crawlStatus, isCrawling: true }, async () => {
       try {
         for (let counter = 0; counter < usernames.length; counter += 5) {
           // set visualization status to on processing
@@ -133,29 +133,24 @@ class AdminDashboardPage extends Component {
                         _username => _username === username
                       );
                       draft.crawlStatus[index].status = CRAWL_STATUS.FAILED;
-                      draft.errors.push({
-                        username,
-                        message: err.response
-                          ? err.response.data.error
-                          : "unknown error"
-                      });
+                      draft.crawlStatus[index].message = err.response
+                        ? err.response.data.error
+                        : "unknown error";
                     })
                   );
                 })
             );
-          if (opts.throttle) {
-            // 5 seconds timer to throttle crawl request
-            // to prevent being timed-out by instagram (HTTP ERROR 429: Too Many Requests)
-            // max 60 users per minute
-            const waitFiveSeconds = [
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  resolve();
-                }, 5000);
-              })
-            ];
-            crawlRequests.push(waitFiveSeconds);
-          }
+          // 5 seconds timer to throttle crawl request
+          // to prevent being timed-out by instagram (HTTP ERROR 429: Too Many Requests)
+          // max 60 users per minute
+          const waitFiveSeconds = [
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                resolve();
+              }, 5000);
+            })
+          ];
+          crawlRequests.push(waitFiveSeconds);
           await Promise.all(crawlRequests);
         }
       } catch (err) {
@@ -179,9 +174,7 @@ class AdminDashboardPage extends Component {
       influencers = influencers.map(influencer => influencer.instagramHandle);
       this.setState(
         { usernames: influencers, textareaValue: influencers.join(" ") },
-        () => {
-          this.startCrawling({ throttle: true });
-        }
+        this.startCrawling
       );
     } catch (err) {
       this.setState({ isCrawling: false });
@@ -189,9 +182,21 @@ class AdminDashboardPage extends Component {
     }
   };
 
+  recrawlFailedInfluencer = () => {
+    const { crawlStatus } = this.state;
+    this.setState({ isCrawling: true });
+    const influencers = crawlStatus
+      .filter(o => o.status === CRAWL_STATUS.FAILED)
+      .map(o => o.username);
+    this.setState(
+      { usernames: influencers, textareaValue: influencers.join(" ") },
+      this.startCrawling
+    );
+  };
+
   render() {
     const { isAdmin } = this.props;
-    const { textareaValue, crawlStatus, isCrawling, errors } = this.state;
+    const { textareaValue, crawlStatus, isCrawling } = this.state;
     let success = 0,
       failure = 0,
       processing = 0,
@@ -239,7 +244,22 @@ class AdminDashboardPage extends Component {
                 disabled={isCrawling}
                 className={styles.button}
               >
-                {isCrawling ? "crawling.. please wait" : "update all profile"}
+                {isCrawling
+                  ? "crawling.. please wait"
+                  : "update all influencer"}
+              </button>
+              <button
+                type="button"
+                onClick={this.recrawlFailedInfluencer}
+                disabled={
+                  crawlStatus.filter(o => o.status === CRAWL_STATUS.FAILED)
+                    .length === 0
+                }
+                className={styles.button}
+              >
+                {isCrawling
+                  ? "crawling.. please wait"
+                  : "recrawl failed influencer"}
               </button>
               <p className={styles.summary}>
                 {queue} queue
@@ -258,19 +278,6 @@ class AdminDashboardPage extends Component {
                       .filter(user => user.status === CRAWL_STATUS.FAILED)
                       .map(user => user.username)
                       .join(" ")
-                  }
-                  maxHeight={500}
-                  className={styles.textarea}
-                  disabled
-                />
-              )}
-              {errors.length > 0 && (
-                <Textarea
-                  value={
-                    "Errors :\n" +
-                    errors
-                      .map(error => `@${error.username} : ${error.message}`)
-                      .join("\n")
                   }
                   maxHeight={500}
                   className={styles.textarea}
