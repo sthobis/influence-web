@@ -304,6 +304,7 @@ class AdminDashboardPage extends Component {
                       >
                         @<strong>{user.username}</strong> -{" "}
                         <strong>{user.status}</strong>
+                        {user.message && <div>{user.message}</div>}
                       </li>
                     ))}
                 </ul>
