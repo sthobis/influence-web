@@ -55,7 +55,14 @@ class LoginPage extends Component {
       const { advertiser, accessToken } = await authAdvertiser({ token });
       setUser(advertiser, accessToken);
       if (query.redirect) {
-        Router.push(query.redirect);
+        const url =
+          query.redirect +
+          "?" +
+          Object.keys(query)
+            .filter(key => key !== "redirect")
+            .map(key => `${key}=${query[key]}`)
+            .join("&");
+        Router.push(url);
       } else {
         Router.push("/");
       }

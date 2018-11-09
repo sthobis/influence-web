@@ -42,6 +42,25 @@ const parseQuery = (query = {}) => {
 class InfluencerListPage extends Component {
   static async getInitialProps({ req, res, store, query }) {
     const filter = { ...initialState, ...parseQuery(query) };
+    const isDefaultFilter =
+      filter.limit === 12 &&
+      filter.page === 0 &&
+      filter.keyword === "" &&
+      filter.tags.length === 0 &&
+      filter.sort.followersCount === -1;
+
+    const fetchInfluencerList = async () => {
+      try {
+        const { influencers, count } = await getInfluencerList(filter);
+        return { influencers, count, filter };
+      } catch (err) {
+        store.dispatch(
+          addNotification("Failed to load influencer list, please try again.")
+        );
+        return { influencers: null, count: 0, filter };
+      }
+    };
+
     if (req) {
       // server-rendered
       const { user, accessToken, language } = parseCookie(req.headers.cookie);
@@ -50,38 +69,44 @@ class InfluencerListPage extends Component {
         // user is logged in, fetch influencer list
         // and save user session for client rehydration
         store.dispatch(setUser(user, accessToken));
-        try {
-          const { influencers, count } = await getInfluencerList(filter);
-          return { influencers, count, filter };
-        } catch (err) {
-          store.dispatch(
-            addNotification("Failed to load influencer list, please try again.")
-          );
-          return { influencers: null, count: 0, filter };
-        }
+        return fetchInfluencerList();
       } else {
         // user is not logged in
-        // redirect to login page
-        res.redirect("/login?redirect=/influencer");
+        // if it's a request to sample page, renders it
+        // else redirect to login page
+        if (isDefaultFilter) {
+          return fetchInfluencerList();
+        } else {
+          const { page, limit, keyword, tags, sort } = filter;
+          res.redirect(
+            `/login?redirect=/influencer&page=${page +
+              1}&limit=${limit}&keyword=${keyword}&tags=${tags.join(
+              ","
+            )}&sort=${encodeURI(JSON.stringify(sort))}`
+          );
+        }
       }
     } else {
       // client-rendered
       const { user } = store.getState();
       if (user) {
         // user is logged in, fetch influencer list
-        try {
-          const { influencers, count } = await getInfluencerList(filter);
-          return { influencers, count, filter };
-        } catch (err) {
-          store.dispatch(
-            addNotification("Failed to load influencer list, please try again.")
-          );
-          return { influencers: null, count: 0, filter };
-        }
+        return fetchInfluencerList();
       } else {
         // user is not logged in
-        // redirect to login page
-        Router.replace("/login?redirect=/influencer");
+        // if it's a request to sample page, renders it
+        // else redirect to login page
+        if (isDefaultFilter) {
+          return fetchInfluencerList();
+        } else {
+          const { page, limit, keyword, tags, sort } = filter;
+          Router.replace(
+            `/login?redirect=/influencer&page=${page +
+              1}&limit=${limit}&keyword=${keyword}&tags=${tags.join(
+              ","
+            )}&sort=${encodeURI(JSON.stringify(sort))}`
+          );
+        }
       }
     }
   }
