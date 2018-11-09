@@ -252,6 +252,7 @@ class AdminDashboardPage extends Component {
                 type="button"
                 onClick={this.recrawlFailedInfluencer}
                 disabled={
+                  isCrawling ||
                   crawlStatus.filter(o => o.status === CRAWL_STATUS.FAILED)
                     .length === 0
                 }
