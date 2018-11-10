@@ -1,3 +1,4 @@
+import format from "date-fns/format";
 import { css, cx } from "emotion";
 import Link from "next/link";
 import PropTypes from "prop-types";
@@ -16,11 +17,6 @@ import {
 } from "react-icons/fa";
 import formatFollower from "../utils/formatFollower";
 import Localize from "./Localize";
-
-const formatDate = dateStr => {
-  const date = new Date(dateStr);
-  return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-};
 
 const contactStyles = {
   email: {
@@ -182,7 +178,7 @@ const InfluencerDetail = ({ influencer, isOwner, isAdmin }) => (
           </ul>
         </section>
         <p className={styles.timestamp}>
-          {localized[8]} {formatDate(influencer.updatedAt)}
+          {localized[8]} {format(influencer.updatedAt, "DD/MM/YYYY hh:mm a")}
         </p>
       </div>
     )}

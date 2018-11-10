@@ -1,15 +1,10 @@
+import format from "date-fns/format";
 import { css } from "emotion";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { FaCreditCard, FaRegMeh, FaRegSmile } from "react-icons/fa";
 import Localize from "./Localize";
-
-const formatDate = dateStr => {
-  const date = new Date(dateStr);
-  return `${date.getDate()}/${date.getMonth() +
-    1}/${date.getFullYear()} ${date.getHours()}.${date.getMinutes()}`;
-};
 
 class PremiumNotice extends Component {
   state = {
@@ -49,7 +44,8 @@ class PremiumNotice extends Component {
                   </Link>
                 </p>
                 <span className={styles.expiration}>
-                  {localized[6]} {formatDate(premiumExpiredAt)}
+                  {localized[6]}{" "}
+                  {format(premiumExpiredAt, "DD/MM/YYYY hh:mm a")}
                 </span>
               </>
             ) : (
