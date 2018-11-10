@@ -1,5 +1,6 @@
 import { css } from "emotion";
 import produce from "immer";
+import uniq from "lodash/uniq";
 import Router from "next/router";
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
@@ -83,7 +84,7 @@ class AdminDashboardPage extends Component {
     const { usernames } = this.state;
 
     // set visualization status for all users to queue
-    const crawlStatus = usernames.map(username => ({
+    const crawlStatus = uniq(usernames).map(username => ({
       username,
       status: CRAWL_STATUS.QUEUE,
       message: ""
