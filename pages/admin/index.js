@@ -79,7 +79,7 @@ class AdminDashboardPage extends Component {
     }
   };
 
-  startCrawling = () => {
+  startCrawling = (opts = {}) => {
     const { usernames } = this.state;
 
     // set visualization status for all users to queue
@@ -143,14 +143,14 @@ class AdminDashboardPage extends Component {
           // 5 seconds timer to throttle crawl request
           // to prevent being timed-out by instagram (HTTP ERROR 429: Too Many Requests)
           // max 60 users per minute
-          const waitFiveSeconds = [
-            new Promise((resolve, reject) => {
+          if (opts.throttle) {
+            const throttleDuration = new Promise((resolve, reject) => {
               setTimeout(() => {
                 resolve();
               }, 5000);
-            })
-          ];
-          crawlRequests.push(waitFiveSeconds);
+            });
+            crawlRequests.push(throttleDuration);
+          }
           await Promise.all(crawlRequests);
         }
       } catch (err) {
@@ -174,7 +174,7 @@ class AdminDashboardPage extends Component {
       influencers = influencers.map(influencer => influencer.instagramHandle);
       this.setState(
         { usernames: influencers, textareaValue: influencers.join(" ") },
-        this.startCrawling
+        () => this.startCrawling({ throttle: true })
       );
     } catch (err) {
       this.setState({ isCrawling: false });
@@ -190,7 +190,7 @@ class AdminDashboardPage extends Component {
       .map(o => o.username);
     this.setState(
       { usernames: influencers, textareaValue: influencers.join(" ") },
-      this.startCrawling
+      () => this.startCrawling({ throttle: true })
     );
   };
 
