@@ -34,6 +34,24 @@ class InfluencerEdit extends Component {
         {localized => (
           <div className={styles.root}>
             <section className={styles.section}>
+              <h2 className={styles.title}>Instagram</h2>
+              <div className={cx(styles.field, styles.fullWidth)}>
+                <input
+                  type="text"
+                  id="instagramHandle"
+                  className={styles.input}
+                  placeholder="Instagram"
+                  value={influencer.instagramHandle}
+                  onChange={e =>
+                    this.handleChange(
+                      "influencer.instagramHandle",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+            </section>
+            <section className={styles.section}>
               <h2 className={styles.title}>Tags</h2>
               <div className={cx(styles.field, styles.fullWidth)}>
                 <TagsFilter
