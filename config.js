@@ -2,12 +2,12 @@ export default {
   BASE_URL: {
     development: "http://localhost:3100",
     test: "http://localhost:3100",
-    production: "https://igfluencer.id"
+    production: "https://igf.sthobis.com"
   },
   API_BASE_URL: {
     development: "http://localhost:3101",
     test: "http://localhost:3101",
-    production: "https://api.igfluencer.id"
+    production: "https://igf-api.sthobis.com"
   },
   FETCH_STATUS: {
     FETCHING: "FETCHING",
