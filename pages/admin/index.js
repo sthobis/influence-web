@@ -80,6 +80,98 @@ class AdminDashboardPage extends Component {
     }
   };
 
+  crawl = async (opts = { throttle: true }) => {
+    const { crawlStatus } = this.state;
+
+    const start = crawlStatus.findIndex(
+      item => item.status === CRAWL_STATUS.QUEUE
+    );
+
+    for (let counter = start; counter < crawlStatus.length; counter += 5) {
+      if (!this.state.isCrawling) {
+        console.log(
+          "Timed out, resuming crawling process on ",
+          new Date(new Date().getTime() + 600000)
+        );
+        setTimeout(this.resumeCrawling, 600000);
+        break;
+      }
+      try {
+        // set visualization status to on processing
+        // for 5 users being crawled
+        this.setState(
+          produce(draft => {
+            for (
+              let i = counter;
+              i < counter + 5 && i < crawlStatus.length;
+              i++
+            ) {
+              draft.crawlStatus[i].status = CRAWL_STATUS.PROCESSING;
+            }
+          })
+        );
+
+        // sent crawl request for the 5 users to crawler API
+        let crawlRequests = crawlStatus
+          .slice(counter, counter + 5)
+          .map(({ username }) =>
+            crawlInstagramUser(username)
+              .then(res => {
+                // on success
+                // set visualization status to succeed
+                // for 5 users being crawled
+                this.setState(
+                  produce(draft => {
+                    const index = crawlStatus.findIndex(
+                      item => item.username === username
+                    );
+                    draft.crawlStatus[index].status = CRAWL_STATUS.SUCCEED;
+                  })
+                );
+              })
+              .catch(err => {
+                // on failure
+                // set visualization status to failed
+                // for 5 users being crawled
+                this.setState(
+                  produce(draft => {
+                    const index = crawlStatus.findIndex(
+                      item => item.username === username
+                    );
+                    draft.crawlStatus[index].status = CRAWL_STATUS.FAILED;
+                    const errorMessage = err.response
+                      ? err.response.data.error
+                      : "unknown error";
+                    draft.crawlStatus[index].message = errorMessage;
+                    if (errorMessage.includes("429")) {
+                      // we're being rate limited
+                      // pause crawling to prevent spam-flagged
+                      this.setState({ isCrawling: false });
+                    }
+                  })
+                );
+              })
+          );
+        // 5 seconds timer to throttle crawl request
+        // to prevent being timed-out by instagram (HTTP ERROR 429: Too Many Requests)
+        // max 60 users per minute
+        if (opts.throttle) {
+          const throttleDuration = new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve();
+            }, 5000);
+          });
+          crawlRequests.push(throttleDuration);
+        }
+        await Promise.all(crawlRequests);
+      } catch (err) {
+        console.log(err);
+        break;
+      }
+    }
+    this.setState({ isCrawling: false });
+  };
+
   startCrawling = (opts = {}) => {
     const { usernames } = this.state;
 
@@ -89,77 +181,11 @@ class AdminDashboardPage extends Component {
       status: CRAWL_STATUS.QUEUE,
       message: ""
     }));
-    this.setState({ crawlStatus, isCrawling: true }, async () => {
-      try {
-        for (let counter = 0; counter < usernames.length; counter += 5) {
-          // set visualization status to on processing
-          // for 5 users being crawled
-          this.setState(
-            produce(draft => {
-              for (
-                let i = counter;
-                i < counter + 5 && i < usernames.length;
-                i++
-              ) {
-                draft.crawlStatus[i].status = CRAWL_STATUS.PROCESSING;
-              }
-            })
-          );
+    this.setState({ crawlStatus, isCrawling: true }, () => this.crawl(opts));
+  };
 
-          // sent crawl request for the 5 users to crawler API
-          let crawlRequests = usernames
-            .slice(counter, counter + 5)
-            .map(username =>
-              crawlInstagramUser(username)
-                .then(res => {
-                  // on success
-                  // set visualization status to succeed
-                  // for 5 users being crawled
-                  this.setState(
-                    produce(draft => {
-                      const index = usernames.findIndex(
-                        _username => _username === username
-                      );
-                      draft.crawlStatus[index].status = CRAWL_STATUS.SUCCEED;
-                    })
-                  );
-                })
-                .catch(err => {
-                  // on failure
-                  // set visualization status to failed
-                  // for 5 users being crawled
-                  this.setState(
-                    produce(draft => {
-                      const index = usernames.findIndex(
-                        _username => _username === username
-                      );
-                      draft.crawlStatus[index].status = CRAWL_STATUS.FAILED;
-                      draft.crawlStatus[index].message = err.response
-                        ? err.response.data.error
-                        : "unknown error";
-                    })
-                  );
-                })
-            );
-          // 5 seconds timer to throttle crawl request
-          // to prevent being timed-out by instagram (HTTP ERROR 429: Too Many Requests)
-          // max 60 users per minute
-          if (opts.throttle) {
-            const throttleDuration = new Promise((resolve, reject) => {
-              setTimeout(() => {
-                resolve();
-              }, 5000);
-            });
-            crawlRequests.push(throttleDuration);
-          }
-          await Promise.all(crawlRequests);
-        }
-      } catch (err) {
-        // no-op
-      } finally {
-        this.setState({ isCrawling: false });
-      }
-    });
+  resumeCrawling = () => {
+    this.setState({ isCrawling: true }, this.crawl);
   };
 
   recrawlAllInfluencer = async () => {
@@ -175,7 +201,7 @@ class AdminDashboardPage extends Component {
       influencers = influencers.map(influencer => influencer.instagramHandle);
       this.setState(
         { usernames: influencers, textareaValue: influencers.join(" ") },
-        () => this.startCrawling({ throttle: true })
+        () => this.startCrawling()
       );
     } catch (err) {
       this.setState({ isCrawling: false });
@@ -191,7 +217,7 @@ class AdminDashboardPage extends Component {
       .map(o => o.username);
     this.setState(
       { usernames: influencers, textareaValue: influencers.join(" ") },
-      () => this.startCrawling({ throttle: true })
+      () => this.startCrawling()
     );
   };
 
@@ -237,7 +263,9 @@ class AdminDashboardPage extends Component {
                 disabled={isCrawling}
                 className={styles.button}
               >
-                {isCrawling ? "crawling.. please wait" : "start crawling"}
+                {isCrawling
+                  ? "crawling.. please wait"
+                  : "start/resume crawling"}
               </button>
               <button
                 type="button"
