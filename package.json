@@ -17,7 +17,7 @@
     "precommit": "pretty-quick --staged",
     "dev": "cross-env NODE_ENV=development PORT=3100 node server.js",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production PORT=3100 node server.js",
+    "start": "yarn build && cross-env NODE_ENV=production PORT=3100 node server.js",
     "analyze": "cross-env BUNDLE_ANALYZE=both next build"
   },
   "dependencies": {
